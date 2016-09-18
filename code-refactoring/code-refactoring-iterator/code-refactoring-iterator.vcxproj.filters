@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="BalisticMotion">
+      <UniqueIdentifier>{1af0eba4-1924-4b22-bfeb-adac96f270e3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="system">
+      <UniqueIdentifier>{f9b55221-629e-442d-9a2f-4936d4f6c465}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="utils">
+      <UniqueIdentifier>{64538d2c-debc-4027-bcb8-a220256e3bc4}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="BalisticMotion\MotionUtils.h">
+      <Filter>BalisticMotion</Filter>
+    </ClInclude>
+    <ClInclude Include="BalisticMotion\MotionTimeIterator.h">
+      <Filter>BalisticMotion</Filter>
+    </ClInclude>
+    <ClInclude Include="BalisticMotion\Motion.h">
+      <Filter>BalisticMotion</Filter>
+    </ClInclude>
+    <ClInclude Include="BalisticMotion\Config.h">
+      <Filter>BalisticMotion</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>system</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>system</Filter>
+    </ClInclude>
+    <ClInclude Include="Math.h">
+      <Filter>utils</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>system</Filter>
+    </ClCompile>
+    <ClCompile Include="code-refactoring-iterator.cpp" />
+  </ItemGroup>
+</Project>
