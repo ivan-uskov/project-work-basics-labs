@@ -1,0 +1,100 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="system">
+      <UniqueIdentifier>{84dbf0ec-add8-4b47-9bda-a49d8a701108}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="model">
+      <UniqueIdentifier>{a57747a7-007b-4240-8181-c96094c117b8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="view">
+      <UniqueIdentifier>{e226d2c4-ff1d-417e-947e-b2eedf615e2b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="controller">
+      <UniqueIdentifier>{25bc4dc9-75de-4752-a8f6-ed4772b71243}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="utils">
+      <UniqueIdentifier>{b3d56297-d770-470f-bb0b-e827c9a63c10}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="model\transformation">
+      <UniqueIdentifier>{b70900b4-f91c-412c-91f6-6ebb44a2a60e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="model\shapes">
+      <UniqueIdentifier>{76e94677-d10c-4311-ad00-214a036d2e16}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="model\nodes">
+      <UniqueIdentifier>{904602bb-51d6-4cb6-8074-1c3662c49010}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="patterns">
+      <UniqueIdentifier>{54519159-8171-426f-989f-b585572e7dd4}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stdafx.h">
+      <Filter>system</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>system</Filter>
+    </ClInclude>
+    <ClInclude Include="Application.h">
+      <Filter>controller</Filter>
+    </ClInclude>
+    <ClInclude Include="Math.h">
+      <Filter>utils</Filter>
+    </ClInclude>
+    <ClInclude Include="ITransformation.h">
+      <Filter>model\transformation</Filter>
+    </ClInclude>
+    <ClInclude Include="Cube.h">
+      <Filter>model\shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="ISceneNode.h">
+      <Filter>model\nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneNode.h">
+      <Filter>model\nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="Visitor.h">
+      <Filter>patterns</Filter>
+    </ClInclude>
+    <ClInclude Include="Rotor.h">
+      <Filter>model\transformation</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer.h">
+      <Filter>view</Filter>
+    </ClInclude>
+    <ClInclude Include="CubeNode.h">
+      <Filter>model\nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="CubeRenderer.h">
+      <Filter>view</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>system</Filter>
+    </ClCompile>
+    <ClCompile Include="simple-animation.cpp" />
+    <ClCompile Include="Application.cpp">
+      <Filter>controller</Filter>
+    </ClCompile>
+    <ClCompile Include="Cube.cpp">
+      <Filter>model\shapes</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneNode.cpp">
+      <Filter>model\nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="Rotor.cpp">
+      <Filter>model\transformation</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer.cpp">
+      <Filter>view</Filter>
+    </ClCompile>
+    <ClCompile Include="CubeNode.cpp">
+      <Filter>model\nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="CubeRenderer.cpp">
+      <Filter>view</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
