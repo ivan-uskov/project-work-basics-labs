@@ -26,9 +26,15 @@ void SceneNode::addChild(std::unique_ptr<ISceneNode> && child)
 
 void SceneNode::update(sf::Time msec)
 {
-    std::for_each(mChildren.begin(), mChildren.end(), [msec](auto & childPtr) {
+    for (auto & ts : mTransformations)
+    {
+        ts->update(msec);
+    };
+
+    for (auto & childPtr : mChildren)
+    {
         childPtr->update(msec);
-    });
+    };
 }
 
 const glm::vec3 & SceneNode::getPosition() const

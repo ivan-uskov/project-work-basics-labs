@@ -1,6 +1,9 @@
 #include "stdafx.h"
 #include "Application.h"
 
+using namespace glm;
+using namespace std;
+
 int main()
 {
     try
@@ -9,7 +12,7 @@ int main()
     }
     catch (std::exception& e)
     {
-        std::cout << "\nEXCEPTION: " << e.what() << std::endl;
+        cout << "\nEXCEPTION: " << e.what() << endl;
         return 1;
     }
 

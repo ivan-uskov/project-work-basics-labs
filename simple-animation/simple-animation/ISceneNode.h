@@ -8,11 +8,12 @@
 
 class CubeNode;
 class SceneNode;
+class SphereNode;
 
 class ISceneNode
 {
 public:
-    typedef Visitor<CubeNode, SceneNode> SceneVisitor;
+    typedef Visitor<SphereNode, CubeNode, SceneNode> SceneVisitor;
 
     virtual ~ISceneNode() = default;
     virtual void update(sf::Time msec) = 0;

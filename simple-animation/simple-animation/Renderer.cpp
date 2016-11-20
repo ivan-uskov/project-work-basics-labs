@@ -17,3 +17,13 @@ void Renderer::visit(const CubeNode & cubeNode)
 
     mCubeRenderer->render(cubeNode);
 }
+
+void Renderer::visit(const SphereNode & sphereNode)
+{
+    if (!mSphereRenderer)
+    {
+        mSphereRenderer = make_unique<SphereRenderer>();
+    }
+
+    mSphereRenderer->render(sphereNode);
+}

@@ -54,11 +54,10 @@ void CubeRenderer::draw(const CubeNode & node, bool isOnlyBorder) const
 {
     auto vertices = fillVertices(node);
 
-    for_each(vertices.begin(), vertices.end(), [&node](Math::Vertex & vertex) {
+    for (auto & vertex : vertices)
+    {
         node.prepareVertex(vertex);
-    });
-
-    //prepareVertexArray(vertices);
+    };
 
     if (isOnlyBorder)
     {

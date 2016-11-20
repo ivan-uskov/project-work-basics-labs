@@ -2,7 +2,9 @@
 #include "Application.h"
 
 #include "Rotor.h"
+#include "Colorer.h"
 #include "CubeNode.h"
+#include "SphereNode.h"
 
 #include <SFML/Window/Event.hpp>
 #include <gl/GLU.h>
@@ -62,7 +64,6 @@ void Application::render()
     mWindow->clear(sf::Color::White);
 
     setupCamera();
-
     mView.render(*mModel);
 
     mWindow->pushGLStates();
@@ -72,22 +73,38 @@ void Application::render()
     mWindow->display();
 }
 
+void setOpenGLMatrix(const float *matrix, GLint mode)
+{
+    GLint oldMode = 0;
+    glGetIntegerv(GL_MATRIX_MODE, &oldMode);
+    if (oldMode != mode)
+    {
+        glMatrixMode(mode);
+        glLoadMatrixf(matrix);
+        glMatrixMode(oldMode);
+    }
+    else
+    {
+        glLoadMatrixf(matrix);
+    }
+}
+
+
 void Application::setupCamera()
 {
-    glMatrixMode(GL_PROJECTION);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+    glEnable(GL_DEPTH_TEST);
+    glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
+    glLineWidth(0.1f);
+    glEnable(GL_LINE_SMOOTH);
 
-    glLoadIdentity();
+    using namespace glm;
+    auto viewport = mWindow->getView().getViewport();
+    auto perspective = glm::perspective(80.f, float(viewport.width) / viewport.height, 0.f, 100.f);
+    setOpenGLMatrix(glm::value_ptr(perspective), GL_PROJECTION);
 
-    gluPerspective(mWindow->getSize().y / 45.0, 1.0f * mWindow->getSize().x / mWindow->getSize().y, 0.0f, 100.0f);
-
-    glMatrixMode(GL_MODELVIEW);
-
-    glLoadIdentity();
-
-    gluLookAt(0, 50, 500, 0, 0, 0, 0, 1, 0);
-
-    glColor3f(0.0, 0.0, 0.0);
-    glScalef(1, -1, 1);
+    auto modelView = lookAt(vec3(0, 10.f, 200.f), vec3(0.f, 0.f, 0.f), vec3(0.f, 1.f, 0.f));
+    setOpenGLMatrix(value_ptr(modelView), GL_MODELVIEW);
 }
 
 void Application::processInput()
@@ -101,7 +118,6 @@ void Application::processInput()
         }
         else if (event.type == sf::Event::Resized)
         {
-            // adjust the viewport when the window is resized
             glViewport(0, 0, event.size.width, event.size.height);
         }
     }
@@ -109,9 +125,60 @@ void Application::processInput()
 
 void Application::initializeScene()
 {
-    auto view = make_unique<CubeNode>(glm::vec3(40, 40, -50), Cube(glm::vec3(40, 40, -50), 20));
-    view->addTransformation(make_unique<Rotor>(1, glm::vec3(0, 0, -50), glm::vec3(0, 1, 0)));
-    mModel = move(view);
+    {
+        auto view = make_unique<SphereNode>(glm::vec3(0, 0, 0), Sphere(50));
+        view->addTransformation(make_unique<Rotor>(2000, glm::vec3(0, 0, 0), glm::vec3(0, 1, 0)));
+        view->addTransformation(make_unique<Colorer>(vector<glm::u8vec4>{
+            { 255, 0, 0, 255 },
+            { 255, 255, 0, 255 },
+            { 0, 255, 0, 255 },
+            { 255, 0, 255, 255 },
+            { 255, 255, 255, 255 },
+            { 0, 255, 255, 255 },
+            { 0, 0, 255, 255 }
+        }));
+        mModel = move(view);
+    }
+
+    {
+        auto view = make_unique<CubeNode>(glm::vec3(9, 50, -90), Cube(25));
+        view->addTransformation(make_unique<Rotor>(4000, glm::vec3(9, 50, -90), glm::vec3(1, 1, -1)));
+        view->addTransformation(make_unique<Rotor>(4000, glm::vec3(0, 0, 0), glm::vec3(-1, 1, -1)));
+        view->addTransformation(make_unique<Rotor>(4000, glm::vec3(40, 0, 0), glm::vec3(1, 1, 1)));
+        view->addTransformation(make_unique<Rotor>(3000, glm::vec3(0, 0, 20), glm::vec3(-1, 0, -1)));
+        mModel->addChild(move(view));
+    }
+
+    {
+        auto view = make_unique<CubeNode>(glm::vec3(9, 90, -90), Cube(35));
+        view->addTransformation(make_unique<Rotor>(3500, glm::vec3(9, 90, -90), glm::vec3(1, 0, -1)));
+        view->addTransformation(make_unique<Rotor>(4500, glm::vec3(0, 0, 0), glm::vec3(-1, -1, -1)));
+        view->addTransformation(make_unique<Rotor>(3500, glm::vec3(0, 0, 0), glm::vec3(1, 1, 1)));
+        view->addTransformation(make_unique<Rotor>(2500, glm::vec3(0, 0, 0), glm::vec3(1, 0, 1)));
+        mModel->addChild(move(view));
+    }
+
+    {
+        auto view = make_unique<CubeNode>(glm::vec3(90, 0, 0), Cube(35));
+        view->addTransformation(make_unique<Rotor>(3500, glm::vec3(-90, 0, 0), glm::vec3(1, 0, -1)));
+        view->addTransformation(make_unique<Rotor>(4000, glm::vec3(0, 0, 0), glm::vec3(-1, -1, -1)));
+        mModel->addChild(move(view));
+    }
+
+    {
+        auto view = make_unique<CubeNode>(glm::vec3(90, 0, 0), Cube(30));
+        view->addTransformation(make_unique<Rotor>(2000, glm::vec3(90, 0, 0), glm::vec3(1, 0, 0)));
+        view->addTransformation(make_unique<Rotor>(3000, glm::vec3(0, 0, 0), glm::vec3(1, 1, 1)));
+        view->addTransformation(make_unique<Rotor>(4000, glm::vec3(0, 0, 0), glm::vec3(0, 1, 1)));
+        mModel->addChild(move(view));
+    }
+
+    {
+        auto view = make_unique<CubeNode>(glm::vec3(80, 0, 0), Cube(20));
+        view->addTransformation(make_unique<Rotor>(5000, glm::vec3(80, 0, 0), glm::vec3(0, 0, 1)));
+        view->addTransformation(make_unique<Rotor>(3000, glm::vec3(0, 0, 0), glm::vec3(1, 1, 0)));
+        mModel->addChild(move(view));
+    }
 }
 
 void Application::updateStatistics(sf::Time dt)
@@ -129,7 +196,6 @@ void Application::updateStatistics(sf::Time dt)
 
 void Application::initializeWindow()
 {
-    // create the window
     mWindow = make_unique<sf::RenderWindow>(sf::VideoMode(1024, 768), "Animation", sf::Style::Default);
     mWindow->setVerticalSyncEnabled(true);
 }

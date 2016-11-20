@@ -159,6 +159,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
+    <ClInclude Include="Colorer.h" />
     <ClInclude Include="Cube.h" />
     <ClInclude Include="CubeNode.h" />
     <ClInclude Include="CubeRenderer.h" />
@@ -168,25 +169,35 @@
     <ClInclude Include="ISceneNode.h" />
     <ClInclude Include="ITransformation.h" />
     <ClInclude Include="Math.h" />
+    <ClInclude Include="Sphere.h" />
+    <ClInclude Include="SphereNode.h" />
+    <ClInclude Include="SphereRenderer.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="Tetrahedron.h" />
     <ClInclude Include="Visitor.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
+    <ClCompile Include="Colorer.cpp" />
     <ClCompile Include="Cube.cpp" />
     <ClCompile Include="CubeNode.cpp" />
     <ClCompile Include="CubeRenderer.cpp" />
+    <ClCompile Include="Math.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="Rotor.cpp" />
     <ClCompile Include="SceneNode.cpp" />
     <ClCompile Include="simple-animation.cpp" />
+    <ClCompile Include="Sphere.cpp" />
+    <ClCompile Include="SphereNode.cpp" />
+    <ClCompile Include="SphereRenderer.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="Tetrahedron.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

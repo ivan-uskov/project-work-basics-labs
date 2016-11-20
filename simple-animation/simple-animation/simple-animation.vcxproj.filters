@@ -69,6 +69,21 @@
     <ClInclude Include="CubeRenderer.h">
       <Filter>view</Filter>
     </ClInclude>
+    <ClInclude Include="Sphere.h">
+      <Filter>model\shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="Tetrahedron.h">
+      <Filter>model\shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="SphereNode.h">
+      <Filter>model\nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="SphereRenderer.h">
+      <Filter>view</Filter>
+    </ClInclude>
+    <ClInclude Include="Colorer.h">
+      <Filter>model\transformation</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -95,6 +110,24 @@
     </ClCompile>
     <ClCompile Include="CubeRenderer.cpp">
       <Filter>view</Filter>
+    </ClCompile>
+    <ClCompile Include="Sphere.cpp">
+      <Filter>model\shapes</Filter>
+    </ClCompile>
+    <ClCompile Include="Tetrahedron.cpp">
+      <Filter>model\shapes</Filter>
+    </ClCompile>
+    <ClCompile Include="SphereNode.cpp">
+      <Filter>model\nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="SphereRenderer.cpp">
+      <Filter>view</Filter>
+    </ClCompile>
+    <ClCompile Include="Math.cpp">
+      <Filter>utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Colorer.cpp">
+      <Filter>model\transformation</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
