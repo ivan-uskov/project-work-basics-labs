@@ -61,19 +61,20 @@ void Application::updateModel(sf::Clock & clock, sf::Time & timeSinceLastUpdate)
 
 void Application::render()
 {
-    mWindow->clear(sf::Color::White);
+    //mWindow->clear(sf::Color::White);
 
     setupCamera();
     mView.render(*mModel);
 
-    mWindow->pushGLStates();
-    mWindow->draw(mStatisticsText);
-    mWindow->popGLStates();
+    //mWindow->pushGLStates();
+    //mWindow->draw(mStatisticsText);
+    //mWindow->popGLStates();
 
+    assert(glGetError() == GL_NO_ERROR);
     mWindow->display();
 }
 
-void setOpenGLMatrix(const float *matrix, GLint mode)
+void     setOpenGLMatrix(const float *matrix, GLint mode)
 {
     GLint oldMode = 0;
     glGetIntegerv(GL_MATRIX_MODE, &oldMode);
@@ -89,7 +90,6 @@ void setOpenGLMatrix(const float *matrix, GLint mode)
     }
 }
 
-
 void Application::setupCamera()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
@@ -101,11 +101,13 @@ void Application::setupCamera()
     glLineWidth(0.1f);
     glEnable(GL_LINE_SMOOTH);
 
+    assert(glGetError() == GL_NO_ERROR);
+
     using namespace glm;
-    auto projection = perspective(80.f, float(mWindow->getSize().x) / mWindow->getSize().y, 0.02f, 300.f);
+    auto projection = perspective(glm::radians(80.f), float(mWindow->getSize().x) / mWindow->getSize().y, 0.1f, 350.f);
     setOpenGLMatrix(value_ptr(projection), GL_PROJECTION);
 
-    auto modelView = lookAt(vec3(0, 10.f, 200.f), vec3(0.f, 0.f, 0.f), vec3(0.f, 1.f, 0.f));
+    auto modelView = lookAt(vec3(0.f, 0.f, 200.f), vec3(0.f, 0.f, 0.f), vec3(0.f, 1.f, 0.f));
     setOpenGLMatrix(value_ptr(modelView), GL_MODELVIEW);
 }
 
@@ -127,8 +129,8 @@ void Application::processInput()
 
 void Application::initializeScene()
 {
-    {
-        auto view = make_unique<SphereNode>(glm::vec3(0, 0, 0), Sphere(20));
+    /*{
+        auto view = make_unique<SphereNode>(glm::vec3(0, 0, 0), Sphere(25));
         view->addTransformation(make_unique<Rotor>(2000, glm::vec3(0, 0, 0), glm::vec3(0, 1, 0)));
         view->addTransformation(make_unique<Colorer>(vector<glm::u8vec4>{
             { 255, 0, 0, 255 },
@@ -140,49 +142,54 @@ void Application::initializeScene()
             { 0, 0, 255, 255 }
         }));
         mModel = move(view);
+    }*/
+
+    {
+        auto view = make_unique<CubeNode>(glm::vec3(-1, 0, 80), Cube(25));
+        mModel = move(view);
     }
 
     {
-        auto view = make_unique<CubeNode>(glm::vec3(30, 0, -90), Cube(25));
+        auto view = make_unique<CubeNode>(glm::vec3(0, 0, 0), Cube(25));
         mModel->addChild(move(view));
     }
 
     {
         auto view = make_unique<CubeNode>(glm::vec3(9, 50, -90), Cube(25));
-        view->addTransformation(make_unique<Rotor>(4000, glm::vec3(9, 50, -90), glm::vec3(1, 1, -1)));
+    //    view->addTransformation(make_unique<Rotor>(4000, glm::vec3(9, 50, -90), glm::vec3(1, 1, -1)));
         view->addTransformation(make_unique<Rotor>(4000, glm::vec3(0, 0, 0), glm::vec3(-1, 1, -1)));
-        view->addTransformation(make_unique<Rotor>(4000, glm::vec3(40, 0, 0), glm::vec3(1, 1, 1)));
-        view->addTransformation(make_unique<Rotor>(3000, glm::vec3(0, 0, 20), glm::vec3(-1, 0, -1)));
+      //  view->addTransformation(make_unique<Rotor>(4000, glm::vec3(40, 0, 0), glm::vec3(1, 1, 1)));
+        //view->addTransformation(make_unique<Rotor>(3000, glm::vec3(0, 0, 20), glm::vec3(-1, 0, -1)));
         mModel->addChild(move(view));
     }
 
     {
         auto view = make_unique<CubeNode>(glm::vec3(9, 90, -90), Cube(35));
-        view->addTransformation(make_unique<Rotor>(3500, glm::vec3(9, 90, -90), glm::vec3(1, 0, -1)));
-        view->addTransformation(make_unique<Rotor>(4500, glm::vec3(0, 0, 0), glm::vec3(-1, -1, -1)));
-        view->addTransformation(make_unique<Rotor>(3500, glm::vec3(0, 0, 0), glm::vec3(1, 1, 1)));
-        view->addTransformation(make_unique<Rotor>(2500, glm::vec3(0, 0, 0), glm::vec3(1, 0, 1)));
+      //  view->addTransformation(make_unique<Rotor>(3500, glm::vec3(9, 90, -90), glm::vec3(1, 0, -1)));
+       // view->addTransformation(make_unique<Rotor>(4500, glm::vec3(0, 0, 0), glm::vec3(-1, -1, -1)));
+      //  view->addTransformation(make_unique<Rotor>(3500, glm::vec3(0, 0, 0), glm::vec3(1, 1, 1)));
+        view->addTransformation(make_unique<Rotor>(2500, glm::vec3(0, 0, 0), glm::vec3(1, 0, 0)));
         mModel->addChild(move(view));
     }
 
     {
         auto view = make_unique<CubeNode>(glm::vec3(90, 0, 0), Cube(35));
-        view->addTransformation(make_unique<Rotor>(3500, glm::vec3(-90, 0, 0), glm::vec3(1, 0, -1)));
+        //view->addTransformation(make_unique<Rotor>(3500, glm::vec3(-90, 0, 0), glm::vec3(1, 0, -1)));
         view->addTransformation(make_unique<Rotor>(4000, glm::vec3(0, 0, 0), glm::vec3(-1, -1, -1)));
         mModel->addChild(move(view));
     }
 
     {
         auto view = make_unique<CubeNode>(glm::vec3(90, 0, 0), Cube(30));
-        view->addTransformation(make_unique<Rotor>(2000, glm::vec3(90, 0, 0), glm::vec3(1, 0, 0)));
-        view->addTransformation(make_unique<Rotor>(3000, glm::vec3(0, 0, 0), glm::vec3(1, 1, 1)));
+       // view->addTransformation(make_unique<Rotor>(2000, glm::vec3(90, 0, 0), glm::vec3(1, 0, 0)));
+      //  view->addTransformation(make_unique<Rotor>(3000, glm::vec3(0, 0, 0), glm::vec3(1, 1, 1)));
         view->addTransformation(make_unique<Rotor>(4000, glm::vec3(0, 0, 0), glm::vec3(0, 1, 1)));
         mModel->addChild(move(view));
     }
 
     {
         auto view = make_unique<CubeNode>(glm::vec3(80, 0, 0), Cube(20));
-        view->addTransformation(make_unique<Rotor>(5000, glm::vec3(80, 0, 0), glm::vec3(0, 0, 1)));
+       // view->addTransformation(make_unique<Rotor>(5000, glm::vec3(80, 0, 0), glm::vec3(0, 0, 1)));
         view->addTransformation(make_unique<Rotor>(3000, glm::vec3(0, 0, 0), glm::vec3(1, 1, 0)));
         mModel->addChild(move(view));
     }
@@ -203,6 +210,11 @@ void Application::updateStatistics(sf::Time dt)
 
 void Application::initializeWindow()
 {
-    mWindow = make_unique<sf::RenderWindow>(sf::VideoMode(1024, 768), "Animation", sf::Style::Default);
+    mWindow = make_unique<sf::RenderWindow>(
+        sf::VideoMode(1024, 768),
+        "Animation",
+        sf::Style::Default,
+        sf::ContextSettings(24, 8, 2, 3, 3)
+        );
     mWindow->setVerticalSyncEnabled(true);
 }
