@@ -94,14 +94,16 @@ void Application::setupCamera()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
     glEnable(GL_DEPTH_TEST);
+    glDepthMask(GL_TRUE);
+    glEnable(GL_CULL_FACE);
+    glCullFace(GL_BACK);
     glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
     glLineWidth(0.1f);
     glEnable(GL_LINE_SMOOTH);
 
     using namespace glm;
-    auto viewport = mWindow->getView().getViewport();
-    auto perspective = glm::perspective(80.f, float(viewport.width) / viewport.height, 0.f, 100.f);
-    setOpenGLMatrix(glm::value_ptr(perspective), GL_PROJECTION);
+    auto projection = perspective(80.f, float(mWindow->getSize().x) / mWindow->getSize().y, 0.02f, 300.f);
+    setOpenGLMatrix(value_ptr(projection), GL_PROJECTION);
 
     auto modelView = lookAt(vec3(0, 10.f, 200.f), vec3(0.f, 0.f, 0.f), vec3(0.f, 1.f, 0.f));
     setOpenGLMatrix(value_ptr(modelView), GL_MODELVIEW);
@@ -126,7 +128,7 @@ void Application::processInput()
 void Application::initializeScene()
 {
     {
-        auto view = make_unique<SphereNode>(glm::vec3(0, 0, 0), Sphere(50));
+        auto view = make_unique<SphereNode>(glm::vec3(0, 0, 0), Sphere(20));
         view->addTransformation(make_unique<Rotor>(2000, glm::vec3(0, 0, 0), glm::vec3(0, 1, 0)));
         view->addTransformation(make_unique<Colorer>(vector<glm::u8vec4>{
             { 255, 0, 0, 255 },
@@ -138,6 +140,11 @@ void Application::initializeScene()
             { 0, 0, 255, 255 }
         }));
         mModel = move(view);
+    }
+
+    {
+        auto view = make_unique<CubeNode>(glm::vec3(30, 0, -90), Cube(25));
+        mModel->addChild(move(view));
     }
 
     {
