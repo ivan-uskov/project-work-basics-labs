@@ -88,30 +88,72 @@ void Application::updateStatistics(sf::Time dt)
 
 void Application::initializeScene()
 {
+    auto window = mWindow.get();
+
     {
-        mShapes.emplace_back(new sf::RectangleShape(sf::Vector2f(120, 50)));
+        mShapes.emplace_back(new sf::RectangleShape(sf::Vector2f(100, 80)));
         auto rect = mShapes.back();
         rect->setFillColor(sf::Color::Red);
         rect->setOutlineColor(sf::Color::Black);
         rect->setOutlineThickness(1.f);
-        rect->setPosition(200.f, 300.f);
+        rect->setPosition(window->getSize().x / 2.f , 100.f);
         auto raw = rect.get();
         mAnimations.push_back(Rotor(raw));
-    }
-
-    {
-        mShapes.emplace_back(new sf::CircleShape(30.f, 30));
-        auto circle = new sf::CircleShape(30.f, 30);
-        mShapes.emplace_back(circle);
-        circle->setFillColor(sf::Color::Yellow);
-        circle->setOutlineColor(sf::Color::Black);
-        circle->setOutlineThickness(1.f);
-        circle->setPosition(mWindow->getSize().x / 2.f, mWindow->getSize().y / 2.f);
-
-        mAnimations.push_back([circle](sf::Time dt) {
-            auto pointCount = circle->getPointCount() + 1;
-            pointCount = std::max(3u, (pointCount % 30));
-            circle->setPointCount(pointCount);
+        mAnimations.push_back([raw](sf::Time dt) {
+            auto color = raw->getFillColor();
+            color.a += 1;
+            raw->setFillColor(color);
+        });
+        mAnimations.push_back([raw, window](sf::Time dt) {
+            auto coef = 0.005f;
+            auto pos = raw->getPosition();
+            if (pos.x <= window->getSize().x / 2 && pos.y < window->getSize().y / 2)
+            {
+                auto scale = raw->getScale();
+                scale.x -= coef;
+                scale.y += coef;
+                raw->setScale(scale);
+            }
+            else if (pos.x <= window->getSize().x / 2 && pos.y >= window->getSize().y / 2)
+            {
+                auto scale = raw->getScale();
+                scale.x += coef;
+                scale.y += coef;
+                raw->setScale(scale);
+            }
+            else if (pos.x > window->getSize().x / 2 && pos.y <= window->getSize().y / 2)
+            {
+                auto scale = raw->getScale();
+                scale.x -= coef;
+                scale.y -= coef;
+                raw->setScale(scale);
+            }
+            else if (pos.x > window->getSize().x / 2 && pos.y >= window->getSize().y / 2)
+            {
+                auto scale = raw->getScale();
+                scale.x += coef;
+                scale.y -= coef;
+                raw->setScale(scale);
+            }
+        });
+        mAnimations.push_back([raw, window](sf::Time dt) {
+            auto pos = raw->getPosition();
+            if (pos.x <= window->getSize().x / 2 && pos.y < window->getSize().y / 2)
+            {
+                raw->move(-1.f, 1.f);
+            }
+            else if (pos.x <= window->getSize().x / 2 && pos.y >= window->getSize().y / 2)
+            {
+                raw->move(1.f, 1.f);
+            }
+            else if (pos.x > window->getSize().x / 2 && pos.y <= window->getSize().y / 2)
+            {
+                raw->move(-1.f, -1.f);
+            }
+            else if (pos.x > window->getSize().x / 2 && pos.y >= window->getSize().y / 2)
+            {
+                raw->move(1.f, -1.f);
+            }
         });
     }
 }
