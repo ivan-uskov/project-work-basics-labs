@@ -96,9 +96,7 @@ void Application::initializeScene()
         rect->setOutlineThickness(1.f);
         rect->setPosition(200.f, 300.f);
         auto raw = rect.get();
-        mAnimations.push_back([raw](sf::Time dt) {
-            raw->rotate(dt.asMilliseconds() * 0.01f);
-        });
+        mAnimations.push_back(Rotor(raw));
     }
 
     {

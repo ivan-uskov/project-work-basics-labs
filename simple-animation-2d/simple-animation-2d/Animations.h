@@ -8,24 +8,15 @@
 class Rotor
 {
 public:
-    Rotor(std::shared_ptr<sf::Shape> const& shape)
+    Rotor(sf::Shape * shape)
         : mShape(shape)
     {}
 
     void operator () (sf::Time dt)
     {
-        mStartAngle += dt.asMilliseconds();
-        if (mStartAngle > 360)
-        {
-            mStartAngle -= floor(mStartAngle / 360) * 360;
-        }
-
-        assert(mStartAngle <= 360);
-
-        mShape->setPosition(mStartAngle, mStartAngle);
+        mShape->rotate(dt.asMilliseconds() * 0.01f);
     }
 
 private:
-    float mStartAngle = 0.f;
-    std::shared_ptr<sf::Shape> const& mShape;
+    sf::Shape * mShape;
 };
