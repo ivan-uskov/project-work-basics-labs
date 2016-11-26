@@ -78,9 +78,13 @@ void Tractor::setMissileAmmo(int ammo)
 void Tractor::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
 {
     if (isDestroyed() && mShowExplosion)
+    {
         target.draw(mExplosion, states);
+    }
     else
+    {
         target.draw(mSprite, states);
+    }
 }
 
 void Tractor::disablePickups()
@@ -90,20 +94,16 @@ void Tractor::disablePickups()
 
 void Tractor::updateCurrent(sf::Time dt, CommandQueue& commands)
 {
-    // Update texts and roll animation
     updateTexts();
     updateRollAnimation();
 
-    // Entity has been destroyed: Possibly drop pickup, mark for removal
     if (isDestroyed())
     {
         checkPickupDrop(commands);
         mExplosion.update(dt);
 
-        // Play explosion sound only once
         if (!mExplosionBegan)
         {
-            // Play sound effect
             SoundEffect::ID soundEffect = (randomInt(2) == 0) ? SoundEffect::Explosion1 : SoundEffect::Explosion2;
             playLocalSound(commands, soundEffect);
 
@@ -112,10 +112,7 @@ void Tractor::updateCurrent(sf::Time dt, CommandQueue& commands)
         return;
     }
 
-    // Check if bullets or missiles are fired
     checkProjectileLaunch(dt, commands);
-
-    // Update enemy movement pattern; apply velocity
     Entity::updateCurrent(dt, commands);
 }
 

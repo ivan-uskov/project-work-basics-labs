@@ -16,30 +16,7 @@ std::vector<TractorData> initializeTractorData()
     data[Tractor::Eagle].speed = 200.f;
     data[Tractor::Eagle].fireInterval = sf::seconds(1);
     data[Tractor::Eagle].texture = Textures::Entities;
-    data[Tractor::Eagle].textureRect = sf::IntRect(0, 0, 48, 64);
-    data[Tractor::Eagle].hasRollAnimation = true;
-
-    data[Tractor::Raptor].hitpoints = 20;
-    data[Tractor::Raptor].speed = 80.f;
-    data[Tractor::Raptor].texture = Textures::Entities;
-    data[Tractor::Raptor].textureRect = sf::IntRect(144, 0, 84, 64);
-    data[Tractor::Raptor].directions.push_back(Direction(+45.f, 80.f));
-    data[Tractor::Raptor].directions.push_back(Direction(-45.f, 160.f));
-    data[Tractor::Raptor].directions.push_back(Direction(+45.f, 80.f));
-    data[Tractor::Raptor].fireInterval = sf::Time::Zero;
-    data[Tractor::Raptor].hasRollAnimation = false;
-
-    data[Tractor::Avenger].hitpoints = 40;
-    data[Tractor::Avenger].speed = 50.f;
-    data[Tractor::Avenger].texture = Textures::Entities;
-    data[Tractor::Avenger].textureRect = sf::IntRect(228, 0, 60, 59);
-    data[Tractor::Avenger].directions.push_back(Direction(+45.f, 50.f));
-    data[Tractor::Avenger].directions.push_back(Direction(0.f, 50.f));
-    data[Tractor::Avenger].directions.push_back(Direction(-45.f, 100.f));
-    data[Tractor::Avenger].directions.push_back(Direction(0.f, 50.f));
-    data[Tractor::Avenger].directions.push_back(Direction(+45.f, 50.f));
-    data[Tractor::Avenger].fireInterval = sf::seconds(2);
-    data[Tractor::Avenger].hasRollAnimation = false;
+    data[Tractor::Eagle].textureRect = sf::IntRect(0, 104, 145, 113);
 
     return data;
 }
