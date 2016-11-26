@@ -39,11 +39,15 @@ private:
 class ColorBlinker
 {
 public:
-    ColorBlinker(sf::Shape * shape, Direction direction = Forward, int speed = 1)
+    ColorBlinker(sf::Shape * shape, Direction direction, int speed, int initialValue)
         : mShape(shape)
         , mDirection(direction)
         , mSpeed(speed)
-    {}
+    {
+        auto color = mShape->getFillColor();
+        color.a = initialValue % std::numeric_limits<decltype(color.a)>::max();
+        mShape->setFillColor(color);
+    }
 
     void operator () (sf::Time dt)
     {
@@ -97,10 +101,11 @@ private:
 class Mover
 {
 public:
-    Mover(sf::Shape * shape, sf::RenderWindow * window, float speed = 1.f)
+    Mover(sf::Shape * shape, sf::RenderWindow * window, float speed = 1.f, Direction direction = Forward)
         : mShape(shape)
         , mWindow(window)
         , mSpeed(speed)
+        , mDirection(direction)
     {}
 
     void operator () (sf::Time dt)
@@ -108,8 +113,8 @@ public:
         auto pos = mShape->getPosition();
         auto hSize = mWindow->getSize() / 2u;
 
-        auto dx = mSpeed * (pos.y >= hSize.y ? 1 : -1);
-        auto dy = mSpeed * (pos.x <= hSize.x ? 1 : -1);
+        auto dx = mSpeed * (pos.y >= hSize.y ? mDirection : mDirection * -1);
+        auto dy = mSpeed * (pos.x <= hSize.x ? mDirection : mDirection * -1);
 
         mShape->move(dx, dy);
     }
@@ -118,4 +123,5 @@ private:
     float mSpeed;
     sf::Shape * mShape;
     sf::RenderWindow * mWindow;
+    Direction mDirection;
 };
