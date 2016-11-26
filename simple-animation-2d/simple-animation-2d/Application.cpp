@@ -89,7 +89,7 @@ void Application::updateStatistics(sf::Time dt)
 void Application::initializeScene()
 {
     auto window = mWindow.get();
-    auto const rectsCount = 5;
+    auto const rectsCount = 100;
     auto const rectSize = sf::Vector2f(50, 40);
     auto const rectDistance = 20.f;
     auto const colors = std::array<sf::Color, 5>({
@@ -105,13 +105,13 @@ void Application::initializeScene()
         rect->setOutlineThickness(1.f);
         rect->setPosition(
             window->getSize().x / 2.f ,
-            rectDistance + (i * (rectDistance + rectSize.y))
+            static_cast<int>(rectDistance + (i * (rectDistance + rectSize.y))) % window->getSize().y
         );
         auto raw = rect.get();
         mAnimations.push_back(Rotor(raw, intToDirection(i), i * 30.f));
         mAnimations.push_back(ColorBlinker(raw, intToDirection(i), i + 1));
-        mAnimations.push_back(Scaler(raw, window, 0.002f * (i + 1)));
-        mAnimations.push_back(Mover(raw, window, i + 1.f));
+        mAnimations.push_back(Scaler(raw, window, 0.002f * ((i + 1) % 20)));
+        mAnimations.push_back(Mover(raw, window, (i + 1) % 10));
     }
 }
 
