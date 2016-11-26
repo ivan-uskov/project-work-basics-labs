@@ -99,11 +99,7 @@ void Application::initializeScene()
         rect->setPosition(window->getSize().x / 2.f , 100.f);
         auto raw = rect.get();
         mAnimations.push_back(Rotor(raw));
-        mAnimations.push_back([raw](sf::Time dt) {
-            auto color = raw->getFillColor();
-            color.a += 1;
-            raw->setFillColor(color);
-        });
+        mAnimations.push_back(ColorBlinker(raw));
         mAnimations.push_back([raw, window](sf::Time dt) {
             auto coef = 0.005f;
             auto pos = raw->getPosition();

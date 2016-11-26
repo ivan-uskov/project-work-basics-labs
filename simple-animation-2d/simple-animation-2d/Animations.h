@@ -20,3 +20,41 @@ public:
 private:
     sf::Shape * mShape;
 };
+
+class ColorBlinker
+{
+public:
+    ColorBlinker(sf::Shape * shape)
+        : mShape(shape)
+    {}
+
+    void operator () (sf::Time dt)
+    {
+        auto color = mShape->getFillColor();
+        color.a += 1;
+        mShape->setFillColor(color);
+    }
+
+private:
+    sf::Shape * mShape;
+};
+
+class Scaler
+{
+public:
+    Scaler(sf::Shape * shape, sf::RenderWindow * window)
+        : mShape(shape)
+        , mWindow(window)
+    {}
+
+    void operator () (sf::Time dt)
+    {
+        auto color = mShape->getFillColor();
+        color.a += 1;
+        mShape->setFillColor(color);
+    }
+
+private:
+    sf::Shape * mShape;
+    sf::RenderWindow * mWindow;
+};
