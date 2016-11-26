@@ -105,13 +105,13 @@ void Application::initializeScene()
         rect->setOutlineThickness(1.f);
         rect->setPosition(
             window->getSize().x / 2.f ,
-            static_cast<int>(rectDistance + (i * (rectDistance + rectSize.y))) % window->getSize().y
+            float(static_cast<int>(rectDistance + (i * (rectDistance + rectSize.y))) % window->getSize().y)
         );
         auto raw = rect.get();
         mAnimations.push_back(Rotor(raw, intToDirection(i), i * 30.f));
         mAnimations.push_back(ColorBlinker(raw, intToDirection(i), i + 1));
         mAnimations.push_back(Scaler(raw, window, 0.002f * ((i + 1) % 20)));
-        mAnimations.push_back(Mover(raw, window, (i + 1) % 10));
+        mAnimations.push_back(Mover(raw, window, float((i + 1) % 10)));
     }
 }
 

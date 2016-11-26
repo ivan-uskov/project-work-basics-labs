@@ -48,13 +48,22 @@ public:
     void operator () (sf::Time dt)
     {
         auto color = mShape->getFillColor();
-        color.a += 1;
+        color.a += mDirection * 1;
+
+        if (color.a == std::numeric_limits<decltype(color.a)>::max())
+        {
+            mDirection = Backward;
+        }
+        else if (color.a == std::numeric_limits<decltype(color.a)>::min())
+        {
+            mDirection = Forward;
+        }
         mShape->setFillColor(color);
     }
 
 private:
+    Direction mDirection = Forward;
     int mSpeed;
-    Direction mDirection;
     sf::Shape * mShape;
 };
 
