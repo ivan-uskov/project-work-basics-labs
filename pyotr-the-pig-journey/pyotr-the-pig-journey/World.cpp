@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "World.h"
 
+#include "Platform.h"
 #include "Projectile.h"
 #include "Pickup.h"
 #include "TextNode.h"
@@ -27,37 +28,29 @@ World::World(sf::RenderTarget & outputTarget, FontHolder & fonts, SoundPlayer & 
     buildScene();
 
     mWorldView.setCenter(mWorldView.getSize().x / 2.f, mWorldView.getSize().y / 2.f);
+    initializePlatforms();
     initializeTractor();
 }
 
 void World::update(sf::Time dt)
 {
-    mWorldView.move(mScrollSpeed * dt.asSeconds(), 0.f);
+    //mWorldView.move(mScrollSpeed * dt.asSeconds(), 0.f);
 
     mPlayerTractor->setVelocity(0.f, 0.f);
 
-    // Setup commands to destroy entities, and guide missiles
     destroyEntitiesOutsideView();
     guideMissiles();
 
-    // Forward commands to scene graph, adapt velocity (scrolling, diagonal correction)
     while (!mCommandQueue.isEmpty())
     {
         mSceneGraph.onCommand(mCommandQueue.pop(), dt);
     }
 
     adaptPlayerVelocity();
-
-    // Collision detection and response (may destroy entities)
     handleCollisions();
-
-    // Remove all destroyed entities, create new ones
     mSceneGraph.removeWrecks();
-
-    // Regular update step, adapt position (correct if outside view)
     mSceneGraph.update(dt, mCommandQueue);
     adaptPlayerPosition();
-
     updateSounds();
 }
 
@@ -80,6 +73,19 @@ void World::initializeTractor()
 
     mPlayerTractor = player.get();
     mSceneLayers[UpperAir]->attachChild(std::move(player));
+}
+
+void World::initializePlatforms()
+{
+    auto grass = mTextures.get(Textures::Grass);
+    grass.setRepeated(true);
+
+    auto viewCenter = mWorldView.getCenter();
+
+    std::unique_ptr<Platform> ground(new Platform(sf::Vector2f(200, 40), mTextures));
+    ground->setPosition(200.f, 20.f);
+
+    mSceneLayers[LowerAir]->attachChild(std::move(ground));
 }
 
 void World::createPickup(sf::Vector2f position, Pickup::Type type)
@@ -110,7 +116,8 @@ bool World::hasPlayerReachedEnd() const
 void World::loadTextures()
 {
     mTextures.load(Textures::Entities, "Media/Textures/Entities.png");
-    mTextures.load(Textures::Jungle, "Media/Textures/Jungle.png");
+    mTextures.load(Textures::Clouds, "Media/Textures/Clouds.png");
+    mTextures.load(Textures::Grass, "Media/Textures/Grass.png");
     mTextures.load(Textures::Explosion, "Media/Textures/Explosion.png");
     mTextures.load(Textures::Particle, "Media/Textures/Particle.png");
     mTextures.load(Textures::FinishLine, "Media/Textures/FinishLine.png");
@@ -146,7 +153,7 @@ void World::adaptPlayerVelocity()
         }
 
         // Add scrolling velocity
-        mPlayerTractor->accelerate(mScrollSpeed, 0.f);
+        //mPlayerTractor->accelerate(mScrollSpeed, 0.f);
     }
 }
 
@@ -156,11 +163,11 @@ bool matchesCategories(SceneNode::Pair& colliders, Category::Type type1, Categor
     unsigned int category2 = colliders.second->getCategory();
 
     // Make sure first pair entry has category type1 and second has type2
-    if (type1 & category1 && type2 & category2)
+    if ((type1 & category1) && (type2 & category2))
     {
         return true;
     }
-    else if (type1 & category2 && type2 & category1)
+    else if ((type1 & category2) && (type2 & category1))
     {
         std::swap(colliders.first, colliders.second);
         return true;
@@ -187,7 +194,6 @@ void World::handleCollisions()
             player.damage(enemy.getHitpoints());
             enemy.destroy();
         }
-
         else if (matchesCategories(pair, Category::PlayerTractor, Category::Pickup))
         {
             auto& player = static_cast<Tractor&>(*pair.first);
@@ -197,7 +203,6 @@ void World::handleCollisions()
             pickup.destroy();
             player.playLocalSound(mCommandQueue, SoundEffect::CollectPickup);
         }
-
         else if (matchesCategories(pair, Category::EnemyTractor, Category::AlliedProjectile)
             || matchesCategories(pair, Category::PlayerTractor, Category::EnemyProjectile))
         {
@@ -225,7 +230,6 @@ void World::updateSounds()
     }
 
     mSounds.setListenerPosition(listenerPosition);
-
     mSounds.removeStoppedSounds();
 }
 
@@ -242,17 +246,17 @@ void World::buildScene()
     }
 
     {
-        sf::Texture & jungleTexture = mTextures.get(Textures::Jungle);
-        jungleTexture.setRepeated(true);
+        sf::Texture & cloudsTexture = mTextures.get(Textures::Clouds);
+        cloudsTexture.setRepeated(true);
 
         float viewWidth = mWorldView.getSize().x;
         sf::IntRect textureRect(mWorldBounds);
         textureRect.width += static_cast<int>(viewWidth);
 
         // Add the background sprite to the scene
-        auto jungleSprite = std::make_unique<SpriteNode>(jungleTexture, textureRect);
-        jungleSprite->setPosition(0.f, mWorldBounds.top);
-        mSceneLayers[Background]->attachChild(std::move(jungleSprite));
+        auto cloudsSprite = std::make_unique<SpriteNode>(cloudsTexture, textureRect);
+        cloudsSprite->setPosition(0.f, mWorldBounds.top);
+        mSceneLayers[Background]->attachChild(std::move(cloudsSprite));
         // Prepare the tiled background
     }
 

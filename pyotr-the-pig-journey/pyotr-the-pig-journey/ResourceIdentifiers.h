@@ -14,7 +14,8 @@ namespace Textures
     enum ID
     {
         Entities,
-        Jungle,
+        Clouds,
+        Grass,
         TitleScreen,
         Buttons,
         Explosion,
@@ -69,7 +70,6 @@ namespace Music
 // Forward declaration and a few type definitions
 template <typename Resource, typename Identifier>
 class ResourceHolder;
-
 
 typedef ResourceHolder<sf::Font, Fonts::ID> FontHolder;
 typedef ResourceHolder<sf::Shader, Shaders::ID> ShaderHolder;

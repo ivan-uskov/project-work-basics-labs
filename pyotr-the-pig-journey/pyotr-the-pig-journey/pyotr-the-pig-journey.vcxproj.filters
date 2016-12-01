@@ -165,6 +165,9 @@
     <ClInclude Include="Tractor.h">
       <Filter>entity</Filter>
     </ClInclude>
+    <ClInclude Include="Platform.h">
+      <Filter>entity</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pyotr-the-pig-journey.cpp" />
@@ -268,6 +271,9 @@
       <Filter>controllers</Filter>
     </ClCompile>
     <ClCompile Include="Tractor.cpp">
+      <Filter>entity</Filter>
+    </ClCompile>
+    <ClCompile Include="Platform.cpp">
       <Filter>entity</Filter>
     </ClCompile>
   </ItemGroup>

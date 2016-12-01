@@ -23,8 +23,6 @@ namespace sf
     class RenderTarget;
 }
 
-class NetworkNode;
-
 class World : private sf::NonCopyable
 {
 public:
@@ -55,6 +53,7 @@ private:
     void guideMissiles();
 
     void initializeTractor();
+    void initializePlatforms();
 
 private:
     enum Layer

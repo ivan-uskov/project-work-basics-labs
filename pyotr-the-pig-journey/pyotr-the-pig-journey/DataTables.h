@@ -16,8 +16,7 @@ struct Direction
     Direction(float angle, float distance)
         : angle(angle)
         , distance(distance)
-    {
-    }
+    {}
 
     float angle;
     float distance;
@@ -49,13 +48,20 @@ struct PickupData
     sf::IntRect textureRect;
 };
 
+struct PlatformData
+{
+    Textures::ID texture;
+    sf::IntRect textureRect;
+};
+
 struct ParticleData
 {
     sf::Color color;
     sf::Time lifetime;
 };
 
-std::vector<TractorData>   initializeTractorData();
+std::vector<TractorData>    initializeTractorData();
 std::vector<ProjectileData> initializeProjectileData();
 std::vector<PickupData>     initializePickupData();
+std::vector<PlatformData>   initializePlatformData();
 std::vector<ParticleData>   initializeParticleData();

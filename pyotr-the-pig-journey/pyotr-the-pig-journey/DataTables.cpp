@@ -4,6 +4,7 @@
 #include "Tractor.h"
 #include "Projectile.h"
 #include "Pickup.h"
+#include "Platform.h"
 #include "Particle.h"
 
 using namespace std::placeholders;
@@ -62,6 +63,16 @@ std::vector<PickupData> initializePickupData()
     data[Pickup::FireRate].texture = Textures::Entities;
     data[Pickup::FireRate].textureRect = sf::IntRect(120, 64, 40, 40);
     data[Pickup::FireRate].action = std::bind(&Tractor::increaseFireRate, _1);
+
+    return data;
+}
+
+std::vector<PlatformData> initializePlatformData()
+{
+    std::vector<PlatformData> data(Platform::TypeCount);
+
+    data[Platform::Ground].texture = Textures::Grass;
+    data[Platform::Ground].textureRect = sf::IntRect(0, 0, 288, 72);
 
     return data;
 }

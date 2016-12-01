@@ -211,9 +211,10 @@ void Tractor::setIdentifier(int identifier)
 void Tractor::checkPickupDrop(CommandQueue& commands)
 {
     // Drop pickup, if enemy airplane, with probability 1/3, if pickup not yet dropped
-    // and if not in network mode (where pickups are dropped via packets)
     if (!isAllied() && randomInt(3) == 0 && !mSpawnedPickup && mPickupsEnabled)
+    {
         commands.push(mDropPickupCommand);
+    }
 
     mSpawnedPickup = true;
 }

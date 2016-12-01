@@ -11,7 +11,7 @@
 
 namespace
 {
-    const std::vector<PickupData> Table = initializePickupData();
+    const auto Table = initializePickupData();
 }
 
 Pickup::Pickup(Type type, const TextureHolder& textures)
