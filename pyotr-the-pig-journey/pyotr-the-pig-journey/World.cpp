@@ -34,9 +34,9 @@ World::World(sf::RenderTarget & outputTarget, FontHolder & fonts, SoundPlayer & 
 
 void World::update(sf::Time dt)
 {
-    //mWorldView.move(mScrollSpeed * dt.asSeconds(), 0.f);
+    mWorldView.move(mScrollSpeed * dt.asSeconds(), 0.f);
 
-    mPlayerTractor->setVelocity(0.f, 0.f);
+    mPlayerTractor->setVelocity(0.f, 100.f);
 
     destroyEntitiesOutsideView();
     guideMissiles();
@@ -86,7 +86,7 @@ void World::initializePlatforms()
     auto height = mWorldBounds.height / 4;
     std::unique_ptr<Platform> ground(new Platform(sf::Vector2f(width, height), mTextures));
     ground->setPosition(width / 2, mWorldBounds.height - height + height / 2);
-
+    mGround = ground.get();
     mSceneLayers[LowerAir]->attachChild(std::move(ground));
 }
 
@@ -133,11 +133,16 @@ void World::adaptPlayerPosition()
         sf::FloatRect viewBounds = getViewBounds();
         const float borderDistance = 40.f;
 
+        auto rect = mPlayerTractor->getBoundingRect();
+
         sf::Vector2f position = mPlayerTractor->getPosition();
-        position.x = std::max(position.x, viewBounds.left + borderDistance);
-        position.x = std::min(position.x, viewBounds.left + viewBounds.width - borderDistance);
-        position.y = std::max(position.y, viewBounds.top + borderDistance);
-        position.y = std::min(position.y, viewBounds.top + viewBounds.height - borderDistance);
+        position.x = std::max(position.x, viewBounds.left + borderDistance + rect.width / 2);
+        position.x = std::min(position.x, viewBounds.left + viewBounds.width - borderDistance - rect.width / 2);
+        position.y = std::max(position.y, viewBounds.top + borderDistance + rect.height / 2);
+        position.y = std::min(position.y, viewBounds.top + viewBounds.height - borderDistance - rect.height / 2);
+
+        position.y = std::min(position.y, mGround->getBoundingRect().top - mGround->getBoundingRect().height / 2);
+
         mPlayerTractor->setPosition(position);
     }
 }
@@ -155,7 +160,7 @@ void World::adaptPlayerVelocity()
         }
 
         // Add scrolling velocity
-        //mPlayerTractor->accelerate(mScrollSpeed, 0.f);
+        mPlayerTractor->accelerate(mScrollSpeed, 0.f);
     }
 }
 

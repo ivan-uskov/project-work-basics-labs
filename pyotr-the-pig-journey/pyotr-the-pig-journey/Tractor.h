@@ -55,11 +55,14 @@ private:
     void createPickup(SceneNode& node, const TextureHolder& textures) const;
 
     void updateTexts();
+    void updateWheelsRotation(sf::Time dt);
     void updateRollAnimation();
 
 private:
     Type mType;
     sf::Sprite mSprite;
+    sf::Sprite mBigWheelSprite;
+    sf::Sprite mSmallWheelSprite;
     Animation mExplosion;
     Command mFireCommand;
     Command mMissileCommand;

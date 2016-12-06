@@ -17,6 +17,8 @@
 #include <array>
 #include <queue>
 
+class Platform;
+
 // Forward declaration
 namespace sf
 {
@@ -78,6 +80,7 @@ private:
     float mScrollSpeed;
     sf::FloatRect mWorldBounds;
 
+    Platform * mGround = nullptr;
     Tractor * mPlayerTractor = nullptr;
     SpriteNode * mFinishSprite = nullptr;
 };

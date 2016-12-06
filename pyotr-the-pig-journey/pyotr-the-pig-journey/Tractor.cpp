@@ -24,6 +24,8 @@ Tractor::Tractor(Type type, const TextureHolder& textures, const FontHolder& fon
     : Entity(Table[type].hitpoints)
     , mType(type)
     , mSprite(textures.get(Table[type].texture), Table[type].textureRect)
+    , mBigWheelSprite(textures.get(Table[type].texture), Table[type].bigWheelTextureRect)
+    , mSmallWheelSprite(textures.get(Table[type].texture), Table[type].smallWheelTextureRect)
     , mExplosion(textures.get(Textures::Explosion))
 {
     mExplosion.setFrameSize(sf::Vector2i(256, 256));
@@ -31,7 +33,12 @@ Tractor::Tractor(Type type, const TextureHolder& textures, const FontHolder& fon
     mExplosion.setDuration(sf::seconds(1));
 
     centerOrigin(mSprite);
+    centerOrigin(mBigWheelSprite);
+    centerOrigin(mSmallWheelSprite);
     centerOrigin(mExplosion);
+
+    mSmallWheelSprite.setPosition(55, 62);
+    mBigWheelSprite.setPosition(-10, 50);
 
     mFireCommand.category = Category::SceneAirLayer;
     mFireCommand.action = [this, &textures](SceneNode& node, sf::Time) {
@@ -84,6 +91,8 @@ void Tractor::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) con
     else
     {
         target.draw(mSprite, states);
+        target.draw(mBigWheelSprite, states);
+        target.draw(mSmallWheelSprite, states);
     }
 }
 
@@ -92,10 +101,17 @@ void Tractor::disablePickups()
     mPickupsEnabled = false;
 }
 
+void Tractor::updateWheelsRotation(sf::Time dt)
+{
+    mBigWheelSprite.rotate(getVelocity().x * dt.asSeconds());
+    mSmallWheelSprite.rotate(getVelocity().x * dt.asSeconds());
+}
+
 void Tractor::updateCurrent(sf::Time dt, CommandQueue& commands)
 {
     updateTexts();
     updateRollAnimation();
+    updateWheelsRotation(dt);
 
     if (isDestroyed())
     {
@@ -126,7 +142,24 @@ unsigned int Tractor::getCategory() const
 
 sf::FloatRect Tractor::getBoundingRect() const
 {
-    return getWorldTransform().transformRect(mSprite.getGlobalBounds());
+    auto right = [](auto & rect) {
+        return rect.left + rect.width;
+    };
+
+    auto bottom = [](auto & rect) {
+        return rect.top + rect.height;
+    };
+
+    auto baseBounds = mSprite.getGlobalBounds();
+    auto smallBounds = mSmallWheelSprite.getGlobalBounds();
+    auto bigBounds = mBigWheelSprite.getGlobalBounds();
+
+    auto leftP = std::min({ baseBounds.left, smallBounds.left, bigBounds.left });
+    auto topP = std::min({ baseBounds.top, smallBounds.top, bigBounds.top });
+    auto rightP = std::max({ right(baseBounds), right(smallBounds), right(bigBounds) });
+    auto bottomP = std::max({bottom(baseBounds), bottom(smallBounds), bottom(bigBounds)});
+
+    return getWorldTransform().transformRect(sf::FloatRect(leftP, topP, rightP - leftP, bottomP - topP));
 }
 
 bool Tractor::isMarkedForRemoval() const

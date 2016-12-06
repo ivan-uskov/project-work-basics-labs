@@ -28,6 +28,8 @@ struct TractorData
     float speed;
     Textures::ID texture;
     sf::IntRect textureRect;
+    sf::IntRect bigWheelTextureRect;
+    sf::IntRect smallWheelTextureRect;
     sf::Time fireInterval;
     std::vector<Direction> directions;
     bool hasRollAnimation;
