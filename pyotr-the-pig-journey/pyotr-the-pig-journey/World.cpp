@@ -82,8 +82,10 @@ void World::initializePlatforms()
 
     auto viewCenter = mWorldView.getCenter();
 
-    std::unique_ptr<Platform> ground(new Platform(sf::Vector2f(200, 40), mTextures));
-    ground->setPosition(200.f, 20.f);
+    auto width = mWorldBounds.width;
+    auto height = mWorldBounds.height / 4;
+    std::unique_ptr<Platform> ground(new Platform(sf::Vector2f(width, height), mTextures));
+    ground->setPosition(width / 2, mWorldBounds.height - height + height / 2);
 
     mSceneLayers[LowerAir]->attachChild(std::move(ground));
 }

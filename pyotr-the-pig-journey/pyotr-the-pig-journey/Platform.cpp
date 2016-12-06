@@ -18,8 +18,9 @@ Platform::Platform(const sf::Vector2f & size, const TextureHolder& textures, con
     : Entity(1)
     , mSize(size)
     , mType(type)
-    , mSprite(textures.get(Table[type].texture), Table[type].textureRect)
+    , mSprite(textures.get(Table[type].texture), sf::IntRect(sf::Vector2i(0, 0), sf::Vector2i(size)))
 {
+    sf::IntRect();
     centerOrigin(mSprite);
 }
 
@@ -35,8 +36,6 @@ sf::FloatRect Platform::getBoundingRect() const
 
 void Platform::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
 {
-    auto position = getPosition();
-    states.transform.translate(position);
     target.draw(mSprite, states);
 }
 
