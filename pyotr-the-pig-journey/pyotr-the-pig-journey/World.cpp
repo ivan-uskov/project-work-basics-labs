@@ -77,8 +77,7 @@ void World::initializeTractor()
 
 void World::initializePlatforms()
 {
-    auto grass = mTextures.get(Textures::Grass);
-    grass.setRepeated(true);
+    mTextures.get(Textures::Grass).setRepeated(true);
 
     auto viewCenter = mWorldView.getCenter();
 
@@ -252,6 +251,7 @@ void World::buildScene()
         mSceneGraph.attachChild(std::move(layer));
     }
 
+    // Add the background sprite to the scene
     {
         sf::Texture & cloudsTexture = mTextures.get(Textures::Clouds);
         cloudsTexture.setRepeated(true);
@@ -260,33 +260,37 @@ void World::buildScene()
         sf::IntRect textureRect(mWorldBounds);
         textureRect.width += static_cast<int>(viewWidth);
 
-        // Add the background sprite to the scene
         auto cloudsSprite = std::make_unique<SpriteNode>(cloudsTexture, textureRect);
         cloudsSprite->setPosition(0.f, mWorldBounds.top);
         mSceneLayers[Background]->attachChild(std::move(cloudsSprite));
-        // Prepare the tiled background
     }
 
+    // Add the finish line to the scene
     {
-        // Add the finish line to the scene
         sf::Texture& finishTexture = mTextures.get(Textures::FinishLine);
         auto finishSprite = std::make_unique<SpriteNode>(finishTexture);
-        finishSprite->setPosition(0.f, -76.f);
+        finishSprite->setPosition(0.f, 0.f);
         mFinishSprite = finishSprite.get();
         mSceneLayers[Background]->attachChild(std::move(finishSprite));
     }
 
     // Add particle node to the scene
-    auto smokeNode = std::make_unique<ParticleNode>(Particle::Smoke, mTextures);
-    mSceneLayers[LowerAir]->attachChild(std::move(smokeNode));
+    {
+        auto smokeNode = std::make_unique<ParticleNode>(Particle::Smoke, mTextures);
+        mSceneLayers[LowerAir]->attachChild(std::move(smokeNode));
+    }
 
     // Add propellant particle node to the scene
-    auto propellantNode = std::make_unique<ParticleNode>(Particle::Propellant, mTextures);
-    mSceneLayers[LowerAir]->attachChild(std::move(propellantNode));
+    {
+        auto propellantNode = std::make_unique<ParticleNode>(Particle::Propellant, mTextures);
+        mSceneLayers[LowerAir]->attachChild(std::move(propellantNode));
+    }
 
     // Add sound effect node
-    auto soundNode = std::make_unique<SoundNode>(mSounds);
-    mSceneGraph.attachChild(std::move(soundNode));
+    {
+        auto soundNode = std::make_unique<SoundNode>(mSounds);
+        mSceneGraph.attachChild(std::move(soundNode));
+    }
 }
 
 void World::destroyEntitiesOutsideView()

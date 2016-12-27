@@ -76,7 +76,7 @@ private:
 
     int mFireRateLevel = 1;
     int mSpreadLevel = 1;
-    int mMissileAmmo = 2;
+    int mMissileAmmo = 10;
 
     Command mDropPickupCommand;
     float mTravelledDistance = 0.f;

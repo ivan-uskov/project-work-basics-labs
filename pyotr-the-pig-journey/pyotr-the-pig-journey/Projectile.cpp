@@ -29,11 +29,11 @@ Projectile::Projectile(Type type, const TextureHolder& textures)
     if (isGuided())
     {
         std::unique_ptr<EmitterNode> smoke(new EmitterNode(Particle::Smoke));
-        smoke->setPosition(0.f, getBoundingRect().height / 2.f);
+        smoke->setPosition(-getBoundingRect().width / 2.f, 0.f);
         attachChild(std::move(smoke));
 
         std::unique_ptr<EmitterNode> propellant(new EmitterNode(Particle::Propellant));
-        propellant->setPosition(0.f, getBoundingRect().height / 2.f);
+        propellant->setPosition(-getBoundingRect().width / 2.f, 0.f);
         attachChild(std::move(propellant));
 
     }
@@ -60,7 +60,7 @@ void Projectile::updateCurrent(sf::Time dt, CommandQueue& commands)
         newVelocity *= getMaxSpeed();
         float angle = std::atan2(newVelocity.y, newVelocity.x);
 
-        setRotation(toDegree(angle) + 90.f);
+        setRotation(toDegree(angle));
         setVelocity(newVelocity);
     }
 
@@ -75,9 +75,13 @@ void Projectile::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) 
 unsigned int Projectile::getCategory() const
 {
     if (mType == EnemyBullet)
+    {
         return Category::EnemyProjectile;
+    }
     else
+    {
         return Category::AlliedProjectile;
+    }
 }
 
 sf::FloatRect Projectile::getBoundingRect() const

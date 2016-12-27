@@ -20,7 +20,6 @@ Platform::Platform(const sf::Vector2f & size, const TextureHolder& textures, con
     , mType(type)
     , mSprite(textures.get(Table[type].texture), sf::IntRect(sf::Vector2i(0, 0), sf::Vector2i(size)))
 {
-    sf::IntRect();
     centerOrigin(mSprite);
 }
 

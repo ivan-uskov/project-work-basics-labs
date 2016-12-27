@@ -51,8 +51,7 @@ Tractor::Tractor(Type type, const TextureHolder& textures, const FontHolder& fon
     };
 
     mDropPickupCommand.category = Category::SceneAirLayer;
-    mDropPickupCommand.action = [this, &textures](SceneNode& node, sf::Time)
-    {
+    mDropPickupCommand.action = [this, &textures](SceneNode& node, sf::Time) {
         createPickup(node, textures);
     };
 
@@ -292,7 +291,7 @@ void Tractor::createBullets(SceneNode& node, const TextureHolder& textures) cons
     switch (mSpreadLevel)
     {
     case 1:
-        createProjectile(node, type, 0.0f, 0.5f, textures);
+        createProjectile(node, type, 0.5f, 0.0f, textures);
         break;
 
     case 2:
@@ -313,11 +312,10 @@ void Tractor::createProjectile(SceneNode& node, Projectile::Type type, float xOf
     std::unique_ptr<Projectile> projectile(new Projectile(type, textures));
 
     sf::Vector2f offset(xOffset * mSprite.getGlobalBounds().width, yOffset * mSprite.getGlobalBounds().height);
-    sf::Vector2f velocity(0, projectile->getMaxSpeed());
+    sf::Vector2f velocity(projectile->getMaxSpeed(), 0);
 
-    float sign = isAllied() ? -1.f : +1.f;
-    projectile->setPosition(getWorldPosition() + offset * sign);
-    projectile->setVelocity(velocity * sign);
+    projectile->setPosition(getWorldPosition() + offset);
+    projectile->setVelocity(velocity);
     node.attachChild(std::move(projectile));
 }
 
