@@ -10,27 +10,17 @@ template <typename Resource, typename Identifier>
 class ResourceHolder
 {
 public:
-    void load(Identifier id, const std::string& filename)
+    template <typename ...Parameters>
+    void load(Identifier id, const std::string& filename, Parameters&&... params)
     {
-        // Create and load resource
-        std::unique_ptr<Resource> resource(new Resource());
-        if (!resource->loadFromFile(filename))
+        auto resource = std::make_unique<Resource>();
+        if (!resource->loadFromFile(filename, std::forward<Parameters>(params)...))
+        {
             throw std::runtime_error("ResourceHolder::load - Failed to load " + filename);
+        }
 
         // If loading successful, insert resource to map
-        insertResource(id, std::move(resource));
-    }
-
-    template <typename Parameter>
-    void load(Identifier id, const std::string& filename, const Parameter& secondParam)
-    {
-        // Create and load resource
-        std::unique_ptr<Resource> resource(new Resource());
-        if (!resource->loadFromFile(filename, secondParam))
-            throw std::runtime_error("ResourceHolder::load - Failed to load " + filename);
-
-        // If loading successful, insert resource to map
-        insertResource(id, std::move(resource));
+        insertResource(std::move(id), std::move(resource));
     }
 
     Resource & get(Identifier id)
@@ -49,15 +39,12 @@ public:
         return *found->second;
     }
 
-
 private:
     void insertResource(Identifier id, std::unique_ptr<Resource> resource)
     {
-        // Insert and check success
-        auto inserted = mResourceMap.insert(std::make_pair(id, std::move(resource)));
-        assert(inserted.second);
+        mResourceMap.insert(std::make_pair(id, std::move(resource)));
     }
 
 private:
-    std::map<Identifier, std::unique_ptr<Resource>>	mResourceMap;
+    std::map<Identifier, std::unique_ptr<Resource>> mResourceMap;
 };

@@ -11,7 +11,7 @@ int main()
     }
     catch (std::exception& e)
     {
-        std::cout << "\nEXCEPTION: " << e.what() << std::endl;
+        cout << "\nEXCEPTION: " << e.what() << endl;
         return 1;
     }
 

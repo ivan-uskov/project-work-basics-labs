@@ -11,7 +11,6 @@
 #include <cassert>
 #include <cmath>
 
-
 SceneNode::SceneNode(Category::Type category)
     : mChildren()
     , mParent(nullptr)
@@ -156,7 +155,21 @@ void SceneNode::removeWrecks()
 
 sf::FloatRect SceneNode::getBoundingRect() const
 {
-    return sf::FloatRect();
+    auto bounds = std::shared_ptr<sf::FloatRect>();
+    for (auto & child : mChildren)
+    {
+        auto childRect = child->getBoundingRect();
+        if (bounds)
+        {
+            *bounds = max(*bounds, childRect);
+        }
+        else
+        {
+            bounds = std::make_shared<sf::FloatRect>(childRect);
+        }
+    }
+
+    return bounds ? *bounds : sf::FloatRect();
 }
 
 bool SceneNode::isMarkedForRemoval() const

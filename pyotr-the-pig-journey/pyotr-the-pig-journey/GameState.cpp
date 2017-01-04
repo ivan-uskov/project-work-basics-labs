@@ -13,6 +13,22 @@ GameState::GameState(StateStack & stack, Context context)
     mPlayer.setMissionStatus(Player::MissionRunning);
 
     context.music->play(Music::MissionTheme);
+
+    //TODO: run async
+    initialize();
+}
+
+void GameState::initialize()
+{
+    mLevels = getLevels("Media/scene_list.conf");
+    mLevelTextures = std::make_shared<LevelTextureHolder>();
+    auto & currentLevel = mLevels[0];
+    currentLevel->iterateElements([&](auto const& textureInfo) {
+        auto key = textureInfo.key;
+        mLevelTextures->load(key, "Media/" + key);
+        mLevelTextures->get(key).setRepeated(textureInfo.repeated);
+    });
+    mWorld.installLevel(currentLevel, mLevelTextures);
 }
 
 void GameState::draw()

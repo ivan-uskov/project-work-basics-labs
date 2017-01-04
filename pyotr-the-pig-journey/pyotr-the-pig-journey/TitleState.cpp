@@ -19,7 +19,7 @@ TitleState::TitleState(StateStack & stack, Context context)
     mText.setString("Press any key");
     mText.setFillColor(sf::Color::Black);
     centerOrigin(mText);
-    mText.setPosition(sf::Vector2f(context.window->getSize().x / 2u, context.window->getSize().y * 2.1f / 3u));
+    mText.setPosition(sf::Vector2f(context.window->getSize().x / 2.f, context.window->getSize().y * 2.1f / 3));
 }
 
 void TitleState::draw()

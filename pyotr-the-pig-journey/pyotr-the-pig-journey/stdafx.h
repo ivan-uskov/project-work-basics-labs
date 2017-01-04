@@ -8,3 +8,8 @@
 #include <math.h>
 
 #include <iostream>
+#include <string>
+#include <vector>
+#include <functional>
+#include <algorithm>
+#include <memory>

@@ -65,7 +65,6 @@ private:
         States::ID stateID;
     };
 
-
 private:
     std::vector<State::Ptr> mStack;
     std::vector<PendingChange> mPendingList;

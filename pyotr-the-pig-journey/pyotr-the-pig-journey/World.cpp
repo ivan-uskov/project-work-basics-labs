@@ -1,7 +1,6 @@
 #include "stdafx.h"
 #include "World.h"
 
-#include "Platform.h"
 #include "Projectile.h"
 #include "Pickup.h"
 #include "TextNode.h"
@@ -16,29 +15,21 @@
 #include <cmath>
 #include <limits>
 
+using namespace std;
+
 World::World(sf::RenderTarget & outputTarget, FontHolder & fonts, SoundPlayer & sounds)
     : mTarget(outputTarget)
     , mWorldView(outputTarget.getDefaultView())
     , mFonts(fonts)
     , mSounds(sounds)
-    , mWorldBounds(0.f, 0.f, 5000.f, mWorldView.getSize().y)
-    , mScrollSpeed(50.f)
 {
-    loadTextures();
-    buildScene();
-
-    mWorldView.setCenter(mWorldView.getSize().x / 2.f, mWorldView.getSize().y / 2.f);
-    initializePlatforms();
+    mWorldView.zoom(1.5);
+    initializeLayers();
     initializeTractor();
 }
 
 void World::update(sf::Time dt)
 {
-    mWorldView.move(mScrollSpeed * dt.asSeconds(), 0.f);
-
-    mPlayerTractor->setVelocity(0.f, 100.f);
-
-    destroyEntitiesOutsideView();
     guideMissiles();
 
     while (!mCommandQueue.isEmpty())
@@ -46,10 +37,10 @@ void World::update(sf::Time dt)
         mSceneGraph.onCommand(mCommandQueue.pop(), dt);
     }
 
-    adaptPlayerVelocity();
     handleCollisions();
     mSceneGraph.removeWrecks();
     mSceneGraph.update(dt, mCommandQueue);
+
     adaptPlayerPosition();
     updateSounds();
 }
@@ -60,41 +51,9 @@ void World::draw()
     mTarget.draw(mSceneGraph);
 }
 
-CommandQueue& World::getCommandQueue()
+CommandQueue & World::getCommandQueue()
 {
     return mCommandQueue;
-}
-
-void World::initializeTractor()
-{
-    std::unique_ptr<Tractor> player(new Tractor(Tractor::Eagle, mTextures, mFonts));
-    player->setPosition(mWorldView.getCenter());
-    player->setIdentifier(1);
-
-    mPlayerTractor = player.get();
-    mSceneLayers[UpperAir]->attachChild(std::move(player));
-}
-
-void World::initializePlatforms()
-{
-    mTextures.get(Textures::Grass).setRepeated(true);
-
-    auto viewCenter = mWorldView.getCenter();
-
-    auto width = mWorldBounds.width;
-    auto height = mWorldBounds.height / 4;
-    std::unique_ptr<Platform> ground(new Platform(sf::Vector2f(width, height), mTextures));
-    ground->setPosition(width / 2, mWorldBounds.height - height + height / 2);
-    mGround = ground.get();
-    mSceneLayers[LowerAir]->attachChild(std::move(ground));
-}
-
-void World::createPickup(sf::Vector2f position, Pickup::Type type)
-{
-    std::unique_ptr<Pickup> pickup(new Pickup(type, mTextures));
-    pickup->setPosition(position);
-    pickup->setVelocity(0.f, 1.f);
-    mSceneLayers[UpperAir]->attachChild(std::move(pickup));
 }
 
 bool World::hasAlivePlayer() const
@@ -104,31 +63,71 @@ bool World::hasAlivePlayer() const
 
 bool World::hasPlayerReachedEnd() const
 {
-    if (mPlayerTractor)
+    return false;
+}
+
+void World::initializeLayers()
+{
     {
-        return !mWorldBounds.contains(mPlayerTractor->getPosition());
+        auto levelLayer = make_unique<SceneNode>();
+        mSceneLayers[Layer::Level] = levelLayer.get();
+        mSceneGraph.attachChild(move(levelLayer));
     }
-    else
     {
-        return false;
+        auto playerLayer = make_unique<SceneNode>();
+        mSceneLayers[Layer::Player] = playerLayer.get();
+        mSceneGraph.attachChild(move(playerLayer));
     }
 }
 
-void World::loadTextures()
+void World::initializeTractor()
 {
     mTextures.load(Textures::Entities, "Media/Textures/Entities.png");
-    mTextures.load(Textures::Clouds, "Media/Textures/Clouds.png");
-    mTextures.load(Textures::Grass, "Media/Textures/Grass.png");
-    mTextures.load(Textures::Explosion, "Media/Textures/Explosion.png");
     mTextures.load(Textures::Particle, "Media/Textures/Particle.png");
-    mTextures.load(Textures::FinishLine, "Media/Textures/FinishLine.png");
+    mTextures.load(Textures::Explosion, "Media/Textures/Explosion.png");
+
+    std::unique_ptr<Tractor> player(new Tractor(Tractor::Eagle, mTextures, mFonts));
+    player->setPosition(mWorldView.getCenter());
+    player->setIdentifier(1);
+
+    mPlayerTractor = player.get();
+    mSceneLayers[Layer::Player]->attachChild(std::move(player));
+
+    // Add particle node to the scene
+    {
+        auto smokeNode = std::make_unique<ParticleNode>(Particle::Smoke, mTextures);
+        mSceneLayers[Layer::Player]->attachChild(std::move(smokeNode));
+    }
+
+    // Add propellant particle node to the scene
+    {
+        auto propellantNode = std::make_unique<ParticleNode>(Particle::Propellant, mTextures);
+        mSceneLayers[Layer::Player]->attachChild(std::move(propellantNode));
+    }
+
+    // Add sound effect node
+    {
+        auto soundNode = std::make_unique<SoundNode>(mSounds);
+        mSceneLayers[Layer::Player]->attachChild(std::move(soundNode));
+    }
+}
+
+void World::installLevel(const LevelPtr & level, const LevelTexturesPtr & levelTextures)
+{
+    mPlayerTractor->setPosition(level->startPos);
+    mWorldView.setCenter(level->startPos);
+
+    level->iterateElements([&](const LevelElementInfo & info) {
+        auto node = make_unique<SpriteNode>(levelTextures->get(info.key), info.rect, info.type);
+        node->setPosition(info.pos);
+        mSceneLayers[Layer::Level]->attachChild(move(node));
+    });
 }
 
 void World::adaptPlayerPosition()
 {
     if (mPlayerTractor)
     {
-        // Keep player's position inside the screen bounds, at least borderDistance units from the border
         sf::FloatRect viewBounds = getViewBounds();
         const float borderDistance = 40.f;
 
@@ -140,26 +139,7 @@ void World::adaptPlayerPosition()
         position.y = std::max(position.y, viewBounds.top + borderDistance + rect.height / 2);
         position.y = std::min(position.y, viewBounds.top + viewBounds.height - borderDistance - rect.height / 2);
 
-        position.y = std::min(position.y, mGround->getBoundingRect().top - rect.height / 2);
-
         mPlayerTractor->setPosition(position);
-    }
-}
-
-void World::adaptPlayerVelocity()
-{
-    if (mPlayerTractor)
-    {
-        sf::Vector2f velocity = mPlayerTractor->getVelocity();
-
-        // If moving diagonally, reduce velocity (to have always same velocity)
-        if (velocity.x != 0.f && velocity.y != 0.f)
-        {
-            mPlayerTractor->setVelocity(velocity / std::sqrt(2.f));
-        }
-
-        // Add scrolling velocity
-        mPlayerTractor->accelerate(mScrollSpeed, 0.f);
     }
 }
 
@@ -209,8 +189,7 @@ void World::handleCollisions()
             pickup.destroy();
             player.playLocalSound(mCommandQueue, SoundEffect::CollectPickup);
         }
-        else if (matchesCategories(pair, Category::EnemyTractor, Category::AlliedProjectile)
-            || matchesCategories(pair, Category::PlayerTractor, Category::EnemyProjectile))
+        else if (matchesCategories(pair, Category::EnemyTractor, Category::AlliedProjectile) || matchesCategories(pair, Category::PlayerTractor, Category::EnemyProjectile))
         {
             auto& tractor = static_cast<Tractor&>(*pair.first);
             auto& projectile = static_cast<Projectile&>(*pair.second);
@@ -239,73 +218,6 @@ void World::updateSounds()
     mSounds.removeStoppedSounds();
 }
 
-void World::buildScene()
-{
-    for (std::size_t i = 0; i < LayerCount; ++i)
-    {
-        Category::Type category = (i == LowerAir) ? Category::SceneAirLayer : Category::None;
-
-        auto layer = std::make_unique<SceneNode>(category);
-        mSceneLayers[i] = layer.get();
-
-        mSceneGraph.attachChild(std::move(layer));
-    }
-
-    // Add the background sprite to the scene
-    {
-        sf::Texture & cloudsTexture = mTextures.get(Textures::Clouds);
-        cloudsTexture.setRepeated(true);
-
-        float viewWidth = mWorldView.getSize().x;
-        sf::IntRect textureRect(mWorldBounds);
-        textureRect.width += static_cast<int>(viewWidth);
-
-        auto cloudsSprite = std::make_unique<SpriteNode>(cloudsTexture, textureRect);
-        cloudsSprite->setPosition(0.f, mWorldBounds.top);
-        mSceneLayers[Background]->attachChild(std::move(cloudsSprite));
-    }
-
-    // Add the finish line to the scene
-    {
-        sf::Texture& finishTexture = mTextures.get(Textures::FinishLine);
-        auto finishSprite = std::make_unique<SpriteNode>(finishTexture);
-        finishSprite->setPosition(0.f, 0.f);
-        mFinishSprite = finishSprite.get();
-        mSceneLayers[Background]->attachChild(std::move(finishSprite));
-    }
-
-    // Add particle node to the scene
-    {
-        auto smokeNode = std::make_unique<ParticleNode>(Particle::Smoke, mTextures);
-        mSceneLayers[LowerAir]->attachChild(std::move(smokeNode));
-    }
-
-    // Add propellant particle node to the scene
-    {
-        auto propellantNode = std::make_unique<ParticleNode>(Particle::Propellant, mTextures);
-        mSceneLayers[LowerAir]->attachChild(std::move(propellantNode));
-    }
-
-    // Add sound effect node
-    {
-        auto soundNode = std::make_unique<SoundNode>(mSounds);
-        mSceneGraph.attachChild(std::move(soundNode));
-    }
-}
-
-void World::destroyEntitiesOutsideView()
-{
-    mCommandQueue.emplace(
-        Category::Projectile | Category::EnemyTractor,
-        derivedAction<Entity>([this](Entity& e, sf::Time) {
-            if (!getBattlefieldBounds().intersects(e.getBoundingRect()))
-            {
-                e.remove();
-            }
-        })
-    );
-}
-
 void World::guideMissiles()
 {
     mCommandQueue.emplace(
@@ -322,9 +234,4 @@ void World::guideMissiles()
 sf::FloatRect World::getViewBounds() const
 {
     return sf::FloatRect(mWorldView.getCenter() - mWorldView.getSize() / 2.f, mWorldView.getSize());
-}
-
-sf::FloatRect World::getBattlefieldBounds() const
-{
-    return getViewBounds();
 }

@@ -73,7 +73,6 @@ Player::Player(sf::Int32 identifier, const KeyBinding* binding)
     , mCurrentMissionStatus(MissionRunning)
     , mIdentifier(identifier)
 {
-    // Set initial action bindings
     initializeActions();
 
     // Assign all categories to player's tractor

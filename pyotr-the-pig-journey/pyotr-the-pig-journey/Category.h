@@ -10,7 +10,6 @@ namespace Category
         PlayerTractor = 1 << 1,
         AlliedTractor = 1 << 2,
         EnemyTractor = 1 << 3,
-        Platform = 1 << 4,
         Pickup = 1 << 5,
         AlliedProjectile = 1 << 6,
         EnemyProjectile = 1 << 7,

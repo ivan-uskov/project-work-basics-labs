@@ -179,3 +179,22 @@ sf::Vector2f unitVector(sf::Vector2f vector)
     assert(vector != sf::Vector2f(0.f, 0.f));
     return vector / length(vector);
 }
+
+sf::FloatRect max(const sf::FloatRect & lhs, const sf::FloatRect & rhs)
+{
+    auto right = [](sf::FloatRect const& rect) {
+        return rect.left + rect.width;
+    };
+
+    auto bottom = [](sf::FloatRect const& rect) {
+        return rect.top + rect.height;
+    };
+
+    auto rect = sf::FloatRect();
+    rect.left = std::min(lhs.left, rhs.left);
+    rect.top = std::min(lhs.top, rhs.top);
+    rect.width = std::max(right(lhs), right(rhs)) - rect.left;
+    rect.height = std::max(bottom(lhs), bottom(rhs)) - rect.top;
+
+    return rect;
+}

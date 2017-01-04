@@ -2,6 +2,7 @@
 
 #include <SFML/Window/Keyboard.hpp>
 #include <SFML/System/Vector2.hpp>
+#include <SFML/Graphics/Rect.hpp>
 
 #include <sstream>
 
@@ -43,3 +44,5 @@ int randomInt(int exclusiveMax);
 // Vector operations
 float length(sf::Vector2f vector);
 sf::Vector2f unitVector(sf::Vector2f vector);
+
+sf::FloatRect max(const sf::FloatRect & lhs, const sf::FloatRect & rhs);

@@ -154,7 +154,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Platform.h" />
+    <ClInclude Include="LevelInfo.h" />
     <ClInclude Include="Tractor.h" />
     <ClInclude Include="Animation.h" />
     <ClInclude Include="Application.h" />
@@ -197,7 +197,7 @@
     <ClInclude Include="World.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Platform.cpp" />
+    <ClCompile Include="LevelInfo.cpp" />
     <ClCompile Include="Tractor.cpp" />
     <ClCompile Include="Animation.cpp" />
     <ClCompile Include="Application.cpp" />

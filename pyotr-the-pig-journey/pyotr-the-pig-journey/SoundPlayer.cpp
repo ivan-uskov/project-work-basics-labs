@@ -12,7 +12,7 @@ namespace
     const float ListenerZ = 300.f;
     const float Attenuation = 8.f;
     const float MinDistance2D = 200.f;
-    const float MinDistance3D = std::sqrt(MinDistance2D*MinDistance2D + ListenerZ*ListenerZ);
+    const float MinDistance3D = std::sqrt(MinDistance2D * MinDistance2D + ListenerZ * ListenerZ);
 }
 
 SoundPlayer::SoundPlayer()

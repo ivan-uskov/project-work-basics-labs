@@ -66,12 +66,20 @@ namespace Music
     };
 }
 
+enum class NodeType
+{
+    Background,
+    Platform,
+    Finish
+};
 
-// Forward declaration and a few type definitions
+//forward decl
+
 template <typename Resource, typename Identifier>
 class ResourceHolder;
 
 typedef ResourceHolder<sf::Font, Fonts::ID> FontHolder;
-typedef ResourceHolder<sf::Shader, Shaders::ID> ShaderHolder;
 typedef ResourceHolder<sf::Texture, Textures::ID> TextureHolder;
 typedef ResourceHolder<sf::SoundBuffer, SoundEffect::ID> SoundBufferHolder;
+typedef ResourceHolder<sf::Texture, std::string> LevelTextureHolder;
+typedef std::shared_ptr<LevelTextureHolder> LevelTexturesPtr;

@@ -165,8 +165,8 @@
     <ClInclude Include="Tractor.h">
       <Filter>node\entity</Filter>
     </ClInclude>
-    <ClInclude Include="Platform.h">
-      <Filter>node\entity</Filter>
+    <ClInclude Include="LevelInfo.h">
+      <Filter>data</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -273,8 +273,8 @@
     <ClCompile Include="Tractor.cpp">
       <Filter>node\entity</Filter>
     </ClCompile>
-    <ClCompile Include="Platform.cpp">
-      <Filter>node\entity</Filter>
+    <ClCompile Include="LevelInfo.cpp">
+      <Filter>data</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

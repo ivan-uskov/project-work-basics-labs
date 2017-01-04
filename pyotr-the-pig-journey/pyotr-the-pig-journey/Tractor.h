@@ -47,12 +47,10 @@ public:
 private:
     virtual void drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const;
     virtual void updateCurrent(sf::Time dt, CommandQueue& commands);
-    void checkPickupDrop(CommandQueue& commands);
     void checkProjectileLaunch(sf::Time dt, CommandQueue& commands);
 
     void createBullets(SceneNode& node, const TextureHolder& textures) const;
     void createProjectile(SceneNode& node, Projectile::Type type, float xOffset, float yOffset, const TextureHolder& textures) const;
-    void createPickup(SceneNode& node, const TextureHolder& textures) const;
 
     void updateTexts();
     void updateWheelsRotation(sf::Time dt);

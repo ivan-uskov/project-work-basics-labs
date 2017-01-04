@@ -53,11 +53,6 @@ Tractor::Tractor(Type type, const TextureHolder& textures, const FontHolder& fon
         createProjectile(node, Projectile::Missile, 0.f, 0.5f, textures);
     };
 
-    mDropPickupCommand.category = Category::SceneAirLayer;
-    mDropPickupCommand.action = [this, &textures](SceneNode& node, sf::Time) {
-        createPickup(node, textures);
-    };
-
     auto healthDisplay = std::make_unique<TextNode>(fonts, "");
     healthDisplay->setPosition(0.f, -90.f);
     mHealthDisplay = healthDisplay.get();
@@ -132,7 +127,6 @@ void Tractor::updateCurrent(sf::Time dt, CommandQueue& commands)
 
     if (isDestroyed())
     {
-        checkPickupDrop(commands);
         mExplosion.update(dt);
 
         if (!mExplosionBegan)
@@ -248,10 +242,10 @@ void Tractor::playLocalSound(CommandQueue& commands, SoundEffect::ID effect)
     Command command;
     command.category = Category::SoundEffect;
     command.action = derivedAction<SoundNode>(
-        [effect, worldPosition](SoundNode& node, sf::Time)
-    {
-        node.playSound(effect, worldPosition);
-    });
+        [effect, worldPosition](SoundNode& node, sf::Time) {
+            node.playSound(effect, worldPosition);
+        }
+    );
 
     commands.push(command);
 }
@@ -264,17 +258,6 @@ int	Tractor::getIdentifier()
 void Tractor::setIdentifier(int identifier)
 {
     mIdentifier = identifier;
-}
-
-void Tractor::checkPickupDrop(CommandQueue& commands)
-{
-    // Drop pickup, if enemy airplane, with probability 1/3, if pickup not yet dropped
-    if (!isAllied() && randomInt(3) == 0 && !mSpawnedPickup && mPickupsEnabled)
-    {
-        commands.push(mDropPickupCommand);
-    }
-
-    mSpawnedPickup = true;
 }
 
 void Tractor::checkProjectileLaunch(sf::Time dt, CommandQueue& commands)
@@ -343,16 +326,6 @@ void Tractor::createProjectile(SceneNode& node, Projectile::Type type, float xOf
     projectile->setPosition(getWorldPosition() + offset);
     projectile->setVelocity(velocity);
     node.attachChild(std::move(projectile));
-}
-
-void Tractor::createPickup(SceneNode& node, const TextureHolder& textures) const
-{
-    auto type = static_cast<Pickup::Type>(randomInt(Pickup::TypeCount));
-
-    std::unique_ptr<Pickup> pickup(new Pickup(type, textures));
-    pickup->setPosition(getWorldPosition());
-    pickup->setVelocity(0.f, 1.f);
-    node.attachChild(std::move(pickup));
 }
 
 void Tractor::updateTexts()
