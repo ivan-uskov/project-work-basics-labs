@@ -140,7 +140,7 @@ void World::adaptPlayerPosition()
         position.y = std::max(position.y, viewBounds.top + borderDistance + rect.height / 2);
         position.y = std::min(position.y, viewBounds.top + viewBounds.height - borderDistance - rect.height / 2);
 
-        position.y = std::min(position.y, mGround->getBoundingRect().top - mGround->getBoundingRect().height / 2);
+        position.y = std::min(position.y, mGround->getBoundingRect().top - rect.height / 2);
 
         mPlayerTractor->setPosition(position);
     }

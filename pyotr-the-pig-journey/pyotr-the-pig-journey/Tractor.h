@@ -76,7 +76,7 @@ private:
 
     int mFireRateLevel = 1;
     int mSpreadLevel = 1;
-    int mMissileAmmo = 10;
+    int mMissileAmmo = 1;
 
     Command mDropPickupCommand;
     float mTravelledDistance = 0.f;
@@ -85,4 +85,5 @@ private:
     TextNode * mMissileDisplay = nullptr;
 
     int mIdentifier = 0;
+    float mWheelsRotation = 0;
 };

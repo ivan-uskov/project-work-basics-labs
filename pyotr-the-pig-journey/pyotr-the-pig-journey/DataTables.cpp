@@ -17,7 +17,7 @@ std::vector<TractorData> initializeTractorData()
     data[Tractor::Eagle].speed = 200.f;
     data[Tractor::Eagle].fireInterval = sf::seconds(1);
     data[Tractor::Eagle].texture = Textures::Entities;
-    data[Tractor::Eagle].textureRect = sf::IntRect(0, 104, 145, 113);
+    data[Tractor::Eagle].textureRect = sf::IntRect(0, 105, 145, 113);
     data[Tractor::Eagle].bigWheelTextureRect = sf::IntRect(152, 109, 66, 67);
     data[Tractor::Eagle].smallWheelTextureRect = sf::IntRect(190, 68, 39, 39);
 

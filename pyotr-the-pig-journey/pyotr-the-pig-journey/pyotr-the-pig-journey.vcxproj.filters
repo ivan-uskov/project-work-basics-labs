@@ -37,11 +37,11 @@
     <Filter Include="animation">
       <UniqueIdentifier>{0fffcf12-7fe0-4698-b48d-effb4a5d4250}</UniqueIdentifier>
     </Filter>
-    <Filter Include="entity">
-      <UniqueIdentifier>{9c85ef6a-5be3-41d6-b0a4-55a27bc33b88}</UniqueIdentifier>
-    </Filter>
     <Filter Include="controllers">
       <UniqueIdentifier>{fe2a42b0-85e3-449e-8b62-c3c25ef27806}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="node\entity">
+      <UniqueIdentifier>{9c85ef6a-5be3-41d6-b0a4-55a27bc33b88}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -124,13 +124,13 @@
       <Filter>node</Filter>
     </ClInclude>
     <ClInclude Include="Projectile.h">
-      <Filter>entity</Filter>
+      <Filter>node\entity</Filter>
     </ClInclude>
     <ClInclude Include="Pickup.h">
-      <Filter>entity</Filter>
+      <Filter>node\entity</Filter>
     </ClInclude>
     <ClInclude Include="Particle.h">
-      <Filter>entity</Filter>
+      <Filter>node\entity</Filter>
     </ClInclude>
     <ClInclude Include="SoundNode.h">
       <Filter>node</Filter>
@@ -154,7 +154,7 @@
       <Filter>animation</Filter>
     </ClInclude>
     <ClInclude Include="Entity.h">
-      <Filter>entity</Filter>
+      <Filter>node\entity</Filter>
     </ClInclude>
     <ClInclude Include="Player.h">
       <Filter>controllers</Filter>
@@ -163,10 +163,10 @@
       <Filter>controllers</Filter>
     </ClInclude>
     <ClInclude Include="Tractor.h">
-      <Filter>entity</Filter>
+      <Filter>node\entity</Filter>
     </ClInclude>
     <ClInclude Include="Platform.h">
-      <Filter>entity</Filter>
+      <Filter>node\entity</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -241,10 +241,10 @@
       <Filter>node</Filter>
     </ClCompile>
     <ClCompile Include="Projectile.cpp">
-      <Filter>entity</Filter>
+      <Filter>node\entity</Filter>
     </ClCompile>
     <ClCompile Include="Pickup.cpp">
-      <Filter>entity</Filter>
+      <Filter>node\entity</Filter>
     </ClCompile>
     <ClCompile Include="SoundNode.cpp">
       <Filter>node</Filter>
@@ -262,7 +262,7 @@
       <Filter>animation</Filter>
     </ClCompile>
     <ClCompile Include="Entity.cpp">
-      <Filter>entity</Filter>
+      <Filter>node\entity</Filter>
     </ClCompile>
     <ClCompile Include="Player.cpp">
       <Filter>controllers</Filter>
@@ -271,10 +271,10 @@
       <Filter>controllers</Filter>
     </ClCompile>
     <ClCompile Include="Tractor.cpp">
-      <Filter>entity</Filter>
+      <Filter>node\entity</Filter>
     </ClCompile>
     <ClCompile Include="Platform.cpp">
-      <Filter>entity</Filter>
+      <Filter>node\entity</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

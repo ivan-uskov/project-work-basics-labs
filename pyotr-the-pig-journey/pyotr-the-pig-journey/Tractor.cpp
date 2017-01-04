@@ -10,6 +10,7 @@
 
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/Graphics/RenderStates.hpp>
+#include <SFML/Graphics/CircleShape.hpp>
 
 #include <cmath>
 
@@ -18,6 +19,8 @@ using namespace std::placeholders;
 namespace
 {
     const std::vector<TractorData> Table = initializeTractorData();
+    const sf::Vector2f SMALL_WHEEL_POS = { 55, 62 };
+    const sf::Vector2f BIG_WHEEL_POS = { -10, 50 };
 }
 
 Tractor::Tractor(Type type, const TextureHolder& textures, const FontHolder& fonts)
@@ -37,8 +40,8 @@ Tractor::Tractor(Type type, const TextureHolder& textures, const FontHolder& fon
     centerOrigin(mSmallWheelSprite);
     centerOrigin(mExplosion);
 
-    mSmallWheelSprite.setPosition(55, 62);
-    mBigWheelSprite.setPosition(-10, 50);
+    mSmallWheelSprite.setPosition(SMALL_WHEEL_POS);
+    mBigWheelSprite.setPosition(BIG_WHEEL_POS);
 
     mFireCommand.category = Category::SceneAirLayer;
     mFireCommand.action = [this, &textures](SceneNode& node, sf::Time) {
@@ -55,20 +58,35 @@ Tractor::Tractor(Type type, const TextureHolder& textures, const FontHolder& fon
         createPickup(node, textures);
     };
 
-    std::unique_ptr<TextNode> healthDisplay(new TextNode(fonts, ""));
-    healthDisplay->setPosition(0.f, -70.f);
+    auto healthDisplay = std::make_unique<TextNode>(fonts, "");
+    healthDisplay->setPosition(0.f, -90.f);
     mHealthDisplay = healthDisplay.get();
     attachChild(std::move(healthDisplay));
 
     if (getCategory() == Category::PlayerTractor)
     {
-        std::unique_ptr<TextNode> missileDisplay(new TextNode(fonts, ""));
-        missileDisplay->setPosition(0, -50.f);
+        auto missileDisplay = std::make_unique<TextNode>(fonts, "");
+        missileDisplay->setPosition(0, -70.f);
         mMissileDisplay = missileDisplay.get();
         attachChild(std::move(missileDisplay));
     }
 
     updateTexts();
+
+    {
+        auto pos = getPosition();
+        auto rect = getBoundingRect();
+
+        auto dx = pos.x - (rect.left + rect.width / 2.f);
+        auto dy = pos.y - (rect.top + rect.height / 2.f);
+
+        mSprite.move(dx, dy);
+        mBigWheelSprite.move(dx, dy);
+        mSmallWheelSprite.move(dx, dy);
+        mExplosion.move(dx, dy);
+        mHealthDisplay->move(dx, dy);
+        mMissileDisplay->move(dx, dy);
+    }
 }
 
 int Tractor::getMissileAmmo() const
@@ -149,9 +167,17 @@ sf::FloatRect Tractor::getBoundingRect() const
         return rect.top + rect.height;
     };
 
-    auto baseBounds = mSprite.getGlobalBounds();
-    auto smallBounds = mSmallWheelSprite.getGlobalBounds();
-    auto bigBounds = mBigWheelSprite.getGlobalBounds();
+    auto getBounds = [](sf::Sprite const& sprite) {
+        auto baseBounds = sprite.getLocalBounds();
+        baseBounds.left = sprite.getPosition().x - baseBounds.width / 2.f;
+        baseBounds.top = sprite.getPosition().y - baseBounds.height / 2.f;
+
+        return baseBounds;
+    };
+
+    auto baseBounds = getBounds(mSprite);
+    auto smallBounds = getBounds(mSmallWheelSprite);
+    auto bigBounds = getBounds(mBigWheelSprite);
 
     auto leftP = std::min({ baseBounds.left, smallBounds.left, bigBounds.left });
     auto topP = std::min({ baseBounds.top, smallBounds.top, bigBounds.top });
