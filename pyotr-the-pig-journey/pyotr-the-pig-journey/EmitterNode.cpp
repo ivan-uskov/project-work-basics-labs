@@ -5,7 +5,6 @@
 #include "CommandQueue.h"
 #include "Command.h"
 
-
 EmitterNode::EmitterNode(Particle::Type type)
     : SceneNode()
     , mAccumulatedTime(sf::Time::Zero)

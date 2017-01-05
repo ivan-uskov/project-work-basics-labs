@@ -18,7 +18,7 @@ namespace
 }
 
 Projectile::Projectile(Type type, const TextureHolder& textures)
-    : Entity(1)
+    : Entity(1, Category::AlliedProjectile)
     , mType(type)
     , mSprite(textures.get(Table[type].texture), Table[type].textureRect)
     , mTargetDirection()
@@ -70,18 +70,6 @@ void Projectile::updateCurrent(sf::Time dt, CommandQueue& commands)
 void Projectile::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
 {
     target.draw(mSprite, states);
-}
-
-unsigned int Projectile::getCategory() const
-{
-    if (mType == EnemyBullet)
-    {
-        return Category::EnemyProjectile;
-    }
-    else
-    {
-        return Category::AlliedProjectile;
-    }
 }
 
 sf::FloatRect Projectile::getBoundingRect() const

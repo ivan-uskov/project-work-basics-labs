@@ -61,9 +61,9 @@ bool World::hasAlivePlayer() const
     return mPlayerTractor != nullptr;
 }
 
-bool World::hasPlayerReachedEnd() const
+bool World::hasPlayerReachedFinish() const
 {
-    return false;
+    return mPlayerReachedFinish;
 }
 
 void World::initializeLayers()
@@ -114,6 +114,7 @@ void World::initializeTractor()
 
 void World::installLevel(const LevelPtr & level, const LevelTexturesPtr & levelTextures)
 {
+    mPlayerReachedFinish = false;
     mPlayerTractor->setPosition(level->startPos);
     mWorldView.setCenter(level->startPos);
 
@@ -171,16 +172,12 @@ void World::handleCollisions()
 
     for (SceneNode::Pair pair : collisionPairs)
     {
-        if (matchesCategories(pair, Category::PlayerTractor, Category::EnemyTractor))
+        if (matchesCategories(pair, Category::Tractor, Category::Finish))
         {
-            auto& player = static_cast<Tractor&>(*pair.first);
-            auto& enemy = static_cast<Tractor&>(*pair.second);
-
-            // Collision: Player damage = enemy's remaining HP
-            player.damage(enemy.getHitpoints());
-            enemy.destroy();
+            mPlayerReachedFinish = true;
+            
         }
-        else if (matchesCategories(pair, Category::PlayerTractor, Category::Pickup))
+        else if (matchesCategories(pair, Category::Tractor, Category::Pickup))
         {
             auto& player = static_cast<Tractor&>(*pair.first);
             auto& pickup = static_cast<Pickup&>(*pair.second);
@@ -188,15 +185,6 @@ void World::handleCollisions()
             pickup.apply(player);
             pickup.destroy();
             player.playLocalSound(mCommandQueue, SoundEffect::CollectPickup);
-        }
-        else if (matchesCategories(pair, Category::EnemyTractor, Category::AlliedProjectile) || matchesCategories(pair, Category::PlayerTractor, Category::EnemyProjectile))
-        {
-            auto& tractor = static_cast<Tractor&>(*pair.first);
-            auto& projectile = static_cast<Projectile&>(*pair.second);
-
-            // Apply projectile damage to tractor, destroy projectile
-            tractor.damage(projectile.getDamage());
-            projectile.destroy();
         }
     }
 }

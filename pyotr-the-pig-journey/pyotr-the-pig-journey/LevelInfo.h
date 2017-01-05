@@ -2,16 +2,17 @@
 
 #include <SFML/Graphics/Rect.hpp>
 #include "ResourceIdentifiers.h"
+#include "Category.h"
 
 struct LevelElementInfo
 {
     std::string key;
     sf::IntRect rect;
     sf::Vector2f pos;
-    NodeType type;
+    Category::Type type;
     bool repeated = false;
 
-    LevelElementInfo(std::string && key, sf::IntRect && rect, sf::Vector2f && pos, NodeType type, bool repeated = false)
+    LevelElementInfo(std::string && key, sf::IntRect && rect, sf::Vector2f && pos, Category::Type type, bool repeated = false)
         : key(key)
         , rect(rect)
         , pos(pos)

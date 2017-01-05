@@ -14,7 +14,7 @@ namespace
 }
 
 ParticleNode::ParticleNode(Particle::Type type, const TextureHolder& textures)
-    : SceneNode()
+    : SceneNode(Category::ParticleSystem)
     , mParticles()
     , mTexture(textures.get(Textures::Particle))
     , mType(type)
@@ -36,11 +36,6 @@ void ParticleNode::addParticle(sf::Vector2f position)
 Particle::Type ParticleNode::getParticleType() const
 {
     return mType;
-}
-
-unsigned int ParticleNode::getCategory() const
-{
-    return Category::ParticleSystem;
 }
 
 void ParticleNode::updateCurrent(sf::Time dt, CommandQueue&)

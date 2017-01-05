@@ -37,7 +37,7 @@ public:
     CommandQueue & getCommandQueue();
 
     bool hasAlivePlayer() const;
-    bool hasPlayerReachedEnd() const;
+    bool hasPlayerReachedFinish() const;
 
     void installLevel(const LevelPtr & level, const LevelTexturesPtr & levelTextures);
 
@@ -71,4 +71,5 @@ private:
     CommandQueue mCommandQueue;
 
     Tractor * mPlayerTractor = nullptr;
+    bool mPlayerReachedFinish = false;
 };

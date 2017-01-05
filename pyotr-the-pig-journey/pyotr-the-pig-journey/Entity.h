@@ -5,7 +5,7 @@
 class Entity : public SceneNode
 {
 public:
-    explicit Entity(int hitpoints);
+    explicit Entity(int hitpoints, Category::Type category = Category::None);
 
     void setVelocity(sf::Vector2f velocity);
     void setVelocity(float vx, float vy);

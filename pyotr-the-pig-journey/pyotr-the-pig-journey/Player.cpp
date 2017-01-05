@@ -67,7 +67,6 @@ struct TractorMissileTrigger
     int tractorID;
 };
 
-
 Player::Player(sf::Int32 identifier, const KeyBinding* binding)
     : mKeyBinding(binding)
     , mCurrentMissionStatus(MissionRunning)
@@ -77,7 +76,7 @@ Player::Player(sf::Int32 identifier, const KeyBinding* binding)
 
     // Assign all categories to player's tractor
     std::for_each(mActionBinding.begin(), mActionBinding.end(), [](auto & pair) {
-        pair.second.category = Category::PlayerTractor;
+        pair.second.category = Category::Tractor;
     });
 }
 

@@ -15,16 +15,11 @@ namespace
 }
 
 Pickup::Pickup(Type type, const TextureHolder& textures)
-    : Entity(1)
+    : Entity(1, Category::Pickup)
     , mType(type)
     , mSprite(textures.get(Table[type].texture), Table[type].textureRect)
 {
     centerOrigin(mSprite);
-}
-
-unsigned int Pickup::getCategory() const
-{
-    return Category::Pickup;
 }
 
 sf::FloatRect Pickup::getBoundingRect() const

@@ -66,15 +66,7 @@ namespace Music
     };
 }
 
-enum class NodeType
-{
-    Background,
-    Platform,
-    Finish
-};
-
 //forward decl
-
 template <typename Resource, typename Identifier>
 class ResourceHolder;
 

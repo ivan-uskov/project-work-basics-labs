@@ -24,7 +24,7 @@ namespace
 }
 
 Tractor::Tractor(Type type, const TextureHolder& textures, const FontHolder& fonts)
-    : Entity(Table[type].hitpoints)
+    : Entity(Table[type].hitpoints, Category::Tractor)
     , mType(type)
     , mSprite(textures.get(Table[type].texture), Table[type].textureRect)
     , mBigWheelSprite(textures.get(Table[type].texture), Table[type].bigWheelTextureRect)
@@ -58,13 +58,10 @@ Tractor::Tractor(Type type, const TextureHolder& textures, const FontHolder& fon
     mHealthDisplay = healthDisplay.get();
     attachChild(std::move(healthDisplay));
 
-    if (getCategory() == Category::PlayerTractor)
-    {
-        auto missileDisplay = std::make_unique<TextNode>(fonts, "");
-        missileDisplay->setPosition(0, -70.f);
-        mMissileDisplay = missileDisplay.get();
-        attachChild(std::move(missileDisplay));
-    }
+    auto missileDisplay = std::make_unique<TextNode>(fonts, "");
+    missileDisplay->setPosition(0, -70.f);
+    mMissileDisplay = missileDisplay.get();
+    attachChild(std::move(missileDisplay));
 
     updateTexts();
 
@@ -141,14 +138,6 @@ void Tractor::updateCurrent(sf::Time dt, CommandQueue& commands)
 
     checkProjectileLaunch(dt, commands);
     Entity::updateCurrent(dt, commands);
-}
-
-unsigned int Tractor::getCategory() const
-{
-    if (isAllied())
-        return Category::PlayerTractor;
-    else
-        return Category::EnemyTractor;
 }
 
 sf::FloatRect Tractor::getBoundingRect() const

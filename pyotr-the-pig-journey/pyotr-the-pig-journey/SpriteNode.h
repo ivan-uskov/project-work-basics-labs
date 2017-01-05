@@ -8,7 +8,7 @@
 class SpriteNode : public SceneNode
 {
 public:
-    SpriteNode(const sf::Texture & texture, const sf::IntRect& textureRect, const NodeType & nodeType);
+    SpriteNode(const sf::Texture & texture, const sf::IntRect& textureRect, Category::Type category);
 
     sf::FloatRect getBoundingRect() const override;
 
@@ -17,5 +17,4 @@ private:
 
 private:
     sf::Sprite mSprite;
-    NodeType mNodeType;
 };

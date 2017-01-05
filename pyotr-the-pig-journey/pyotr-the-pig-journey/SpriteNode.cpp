@@ -5,9 +5,9 @@
 
 #include <SFML/Graphics/RenderTarget.hpp>
 
-SpriteNode::SpriteNode(const sf::Texture& texture, const sf::IntRect& textureRect, const NodeType & nodeType)
+SpriteNode::SpriteNode(const sf::Texture& texture, const sf::IntRect& textureRect, Category::Type category)
     : mSprite(texture, textureRect)
-    , mNodeType(nodeType)
+    , SceneNode(category)
 {
 }
 

@@ -33,7 +33,7 @@ public:
     sf::Transform getWorldTransform() const;
 
     void onCommand(const Command& command, sf::Time dt);
-    virtual unsigned int getCategory() const;
+    unsigned int getCategory() const;
 
     void checkSceneCollision(SceneNode& sceneGraph, std::set<Pair>& collisionPairs);
     void checkNodeCollision(SceneNode& node, std::set<Pair>& collisionPairs);
@@ -54,8 +54,8 @@ private:
 
 private:
     std::vector<Ptr> mChildren;
-    SceneNode* mParent;
-    Category::Type mDefaultCategory;
+    SceneNode * mParent = nullptr;
+    Category::Type mCategory;
 };
 
 bool collision(const SceneNode& lhs, const SceneNode& rhs);

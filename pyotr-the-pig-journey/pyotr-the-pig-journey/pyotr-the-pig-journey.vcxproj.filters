@@ -31,9 +31,6 @@
     <Filter Include="gui">
       <UniqueIdentifier>{b76efd52-90f0-4070-b2b8-226b47c33317}</UniqueIdentifier>
     </Filter>
-    <Filter Include="data">
-      <UniqueIdentifier>{500f9d45-b872-4b71-9f01-487ad6be8f96}</UniqueIdentifier>
-    </Filter>
     <Filter Include="animation">
       <UniqueIdentifier>{0fffcf12-7fe0-4698-b48d-effb4a5d4250}</UniqueIdentifier>
     </Filter>
@@ -108,9 +105,6 @@
     <ClInclude Include="Button.h">
       <Filter>gui</Filter>
     </ClInclude>
-    <ClInclude Include="DataTables.h">
-      <Filter>data</Filter>
-    </ClInclude>
     <ClInclude Include="Component.h">
       <Filter>gui</Filter>
     </ClInclude>
@@ -165,8 +159,11 @@
     <ClInclude Include="Tractor.h">
       <Filter>node\entity</Filter>
     </ClInclude>
+    <ClInclude Include="DataTables.h">
+      <Filter>conf</Filter>
+    </ClInclude>
     <ClInclude Include="LevelInfo.h">
-      <Filter>data</Filter>
+      <Filter>conf</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -222,9 +219,6 @@
     <ClCompile Include="Button.cpp">
       <Filter>gui</Filter>
     </ClCompile>
-    <ClCompile Include="DataTables.cpp">
-      <Filter>data</Filter>
-    </ClCompile>
     <ClCompile Include="Component.cpp">
       <Filter>gui</Filter>
     </ClCompile>
@@ -273,8 +267,11 @@
     <ClCompile Include="Tractor.cpp">
       <Filter>node\entity</Filter>
     </ClCompile>
+    <ClCompile Include="DataTables.cpp">
+      <Filter>conf</Filter>
+    </ClCompile>
     <ClCompile Include="LevelInfo.cpp">
-      <Filter>data</Filter>
+      <Filter>conf</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

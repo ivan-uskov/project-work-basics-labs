@@ -23,7 +23,6 @@ public:
 public:
     Pickup(Type type, const TextureHolder& textures);
 
-    virtual unsigned int getCategory() const;
     virtual sf::FloatRect getBoundingRect() const;
 
     void apply(Tractor& player) const;

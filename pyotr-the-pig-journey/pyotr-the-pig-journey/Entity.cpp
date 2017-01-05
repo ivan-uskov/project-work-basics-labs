@@ -3,11 +3,10 @@
 
 #include <cassert>
 
-Entity::Entity(int hitpoints)
-    : mVelocity()
+Entity::Entity(int hitpoints, Category::Type category)
+    : SceneNode(category)
     , mHitpoints(hitpoints)
-{
-}
+{}
 
 void Entity::setVelocity(sf::Vector2f velocity)
 {
