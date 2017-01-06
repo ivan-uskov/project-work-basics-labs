@@ -43,6 +43,7 @@ void World::update(sf::Time dt)
 
     adaptPlayerPosition();
     updateSounds();
+    mWorldView.setCenter(mPlayerTractor->getPosition());
 }
 
 void World::draw()

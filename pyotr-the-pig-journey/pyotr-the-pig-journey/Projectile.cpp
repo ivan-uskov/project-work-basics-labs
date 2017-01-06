@@ -42,7 +42,7 @@ Projectile::Projectile(Type type, const TextureHolder& textures)
 void Projectile::guideTowards(sf::Vector2f position)
 {
     assert(isGuided());
-    mTargetDirection = unitVector(position - getWorldPosition());
+    mTargetDirection = normalize(position - getWorldPosition());
 }
 
 bool Projectile::isGuided() const
@@ -56,7 +56,7 @@ void Projectile::updateCurrent(sf::Time dt, CommandQueue& commands)
     {
         const float approachRate = 200.f;
 
-        sf::Vector2f newVelocity = unitVector(approachRate * dt.asSeconds() * mTargetDirection + getVelocity());
+        sf::Vector2f newVelocity = normalize(approachRate * dt.asSeconds() * mTargetDirection + getVelocity());
         newVelocity *= getMaxSpeed();
         float angle = std::atan2(newVelocity.y, newVelocity.x);
 

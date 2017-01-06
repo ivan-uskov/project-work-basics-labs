@@ -14,7 +14,7 @@ using namespace std::placeholders;
 struct TractorMover
 {
     TractorMover(float vx, float vy, int identifier)
-        : velocity(vx, vy)
+        : direction(vx, vy)
         , tractorID(identifier)
     {
     }
@@ -23,11 +23,11 @@ struct TractorMover
     {
         if (tractor.getIdentifier() == tractorID)
         {
-            tractor.accelerate(velocity * tractor.getMaxSpeed());
+            tractor.go(direction);
         }
     }
 
-    sf::Vector2f velocity;
+    sf::Vector2f direction;
     int tractorID;
 };
 

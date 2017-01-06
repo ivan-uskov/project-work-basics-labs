@@ -43,6 +43,6 @@ int randomInt(int exclusiveMax);
 
 // Vector operations
 float length(sf::Vector2f vector);
-sf::Vector2f unitVector(sf::Vector2f vector);
+sf::Vector2f normalize(sf::Vector2f vector);
 
 sf::FloatRect max(const sf::FloatRect & lhs, const sf::FloatRect & rhs);

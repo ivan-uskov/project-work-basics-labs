@@ -1,7 +1,15 @@
 #include "stdafx.h"
 #include "Entity.h"
+#include "Utility.h"
 
 #include <cassert>
+
+namespace
+{
+    const float GRAVITY = 9.8f;
+    const float TRACTION = 10.f;
+    const float PIXELS_IN_METER = 30;
+}
 
 Entity::Entity(int hitpoints, Category::Type category)
     : SceneNode(category)
@@ -24,15 +32,9 @@ sf::Vector2f Entity::getVelocity() const
     return mVelocity;
 }
 
-void Entity::accelerate(sf::Vector2f velocity)
+void Entity::go(sf::Vector2f const& direction)
 {
-    mVelocity += velocity;
-}
-
-void Entity::accelerate(float vx, float vy)
-{
-    mVelocity.x += vx;
-    mVelocity.y += vy;
+    mDirection += direction;
 }
 
 int Entity::getHitpoints() const
@@ -77,5 +79,10 @@ bool Entity::isDestroyed() const
 
 void Entity::updateCurrent(sf::Time dt, CommandQueue&)
 {
+    auto resultAccseleration = (normalize(mDirection) * TRACTION) + GRAVITY * sf::Vector2f(0, 1);
+    resultAccseleration *= PIXELS_IN_METER;
+    mVelocity += resultAccseleration * dt.asSeconds();
     move(mVelocity * dt.asSeconds());
+
+    mDirection = sf::Vector2f(0, 0);
 }

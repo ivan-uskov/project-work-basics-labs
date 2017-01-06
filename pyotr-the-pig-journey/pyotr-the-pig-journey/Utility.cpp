@@ -174,10 +174,9 @@ float length(sf::Vector2f vector)
     return std::sqrt(vector.x * vector.x + vector.y * vector.y);
 }
 
-sf::Vector2f unitVector(sf::Vector2f vector)
+sf::Vector2f normalize(sf::Vector2f vector)
 {
-    assert(vector != sf::Vector2f(0.f, 0.f));
-    return vector / length(vector);
+    return vector != sf::Vector2f(0.f, 0.f) ? vector / length(vector) : vector;
 }
 
 sf::FloatRect max(const sf::FloatRect & lhs, const sf::FloatRect & rhs)
