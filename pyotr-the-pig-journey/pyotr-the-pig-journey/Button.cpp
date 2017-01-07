@@ -11,7 +11,6 @@
 
 namespace GUI
 {
-
     Button::Button(State::Context context)
         : mCallback()
         , mSprite(context.textures->get(Textures::Buttons))

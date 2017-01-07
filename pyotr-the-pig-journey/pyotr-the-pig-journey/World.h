@@ -41,6 +41,8 @@ public:
 
     void installLevel(const LevelPtr & level, const LevelTexturesPtr & levelTextures);
 
+    void setCollectStarHandler(std::function<void()> && handler);
+
 private:
     void adaptPlayerPosition();
     void handleCollisions();
@@ -65,6 +67,8 @@ private:
     TextureHolder mTextures;
     FontHolder & mFonts;
     SoundPlayer & mSounds;
+
+    std::function<void()> mCollectStarHandler;
 
     SceneNode mSceneGraph;
     std::array<SceneNode*, LayerCount> mSceneLayers;

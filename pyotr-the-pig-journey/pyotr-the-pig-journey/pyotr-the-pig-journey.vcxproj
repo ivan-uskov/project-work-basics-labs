@@ -155,6 +155,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="LevelInfo.h" />
+    <ClInclude Include="ScoreInfo.h" />
     <ClInclude Include="Tractor.h" />
     <ClInclude Include="Animation.h" />
     <ClInclude Include="Application.h" />
@@ -198,6 +199,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="LevelInfo.cpp" />
+    <ClCompile Include="ScoreInfo.cpp" />
     <ClCompile Include="Tractor.cpp" />
     <ClCompile Include="Animation.cpp" />
     <ClCompile Include="Application.cpp" />

@@ -4,6 +4,7 @@
 #include "World.h"
 #include "Player.h"
 #include "LevelInfo.h"
+#include "ScoreInfo.h"
 
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Text.hpp>
@@ -20,8 +21,13 @@ public:
     void initialize();
 
 private:
+    void loadTextures();
+
+private:
     World mWorld;
     Player mPlayer;
     Levels mLevels;
+    TextureHolder mTextures;
     LevelTexturesPtr mLevelTextures;
+    std::unique_ptr<GUI::ScoreInfo> mScoreInfo;
 };

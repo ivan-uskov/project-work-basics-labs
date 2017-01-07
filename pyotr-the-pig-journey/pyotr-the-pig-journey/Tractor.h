@@ -25,8 +25,8 @@ public:
     Tractor(Type type, const TextureHolder& textures, const FontHolder& fonts);
 
     virtual sf::FloatRect getBoundingRect() const;
-    virtual void remove();
-    virtual bool isMarkedForRemoval() const;
+    void doDestroy() override;
+    bool isMarkedForRemoval() const override;
     bool isAllied() const;
     float getMaxSpeed() const;
     void disablePickups();

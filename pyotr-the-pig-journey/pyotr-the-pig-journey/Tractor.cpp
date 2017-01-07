@@ -172,12 +172,12 @@ sf::FloatRect Tractor::getBoundingRect() const
 
 bool Tractor::isMarkedForRemoval() const
 {
-    return isDestroyed() && (mExplosion.isFinished() || !mShowExplosion);
+    return isDestroyed() && (!mShowExplosion || mExplosion.isFinished());
 }
 
-void Tractor::remove()
+void Tractor::doDestroy()
 {
-    Entity::remove();
+    Entity::doDestroy();
     mShowExplosion = false;
 }
 

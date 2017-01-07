@@ -39,7 +39,12 @@ public:
     void removeWrecks();
     virtual sf::FloatRect getBoundingRect() const;
     virtual bool isMarkedForRemoval() const;
-    virtual bool isDestroyed() const;
+
+    bool isDestroyed() const;
+    void destroy();
+
+protected:
+    virtual void doDestroy() {};
 
 private:
     void checkNodeCollision(SceneNode& node, std::set<Pair>& collisionPairs);
@@ -54,6 +59,7 @@ private:
     void drawBoundingRect(sf::RenderTarget& target, sf::RenderStates states) const;
 
 private:
+    bool mMarkedForRemoval = false;
     std::vector<Ptr> mChildren;
     SceneNode * mParent = nullptr;
     Category::Type mCategory;

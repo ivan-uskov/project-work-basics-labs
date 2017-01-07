@@ -64,7 +64,6 @@ protected:
 
     Context getContext() const;
 
-
 private:
     StateStack * mStack;
     Context mContext;

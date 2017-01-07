@@ -126,6 +126,11 @@ void World::installLevel(const LevelPtr & level, const LevelTexturesPtr & levelT
     });
 }
 
+void World::setCollectStarHandler(std::function<void()> && handler)
+{
+    mCollectStarHandler = move(handler);
+}
+
 void World::adaptPlayerPosition()
 {
     if (mPlayerTractor)
@@ -181,6 +186,17 @@ void World::handleCollisions()
         {
             auto& entity = static_cast<Entity&>(*pair.first);
             entity.addCollision(pair.second);
+        }
+        else if (matchesCategories(pair, Category::Tractor, Category::Star))
+        {
+            pair.second->destroy();
+            auto & player = static_cast<Tractor&>(*pair.first);
+            player.playLocalSound(mCommandQueue, SoundEffect::CollectStar);
+
+            if (mCollectStarHandler)
+            {
+                mCollectStarHandler();
+            }
         }
         else if (matchesCategories(pair, Category::Tractor, Category::Pickup))
         {

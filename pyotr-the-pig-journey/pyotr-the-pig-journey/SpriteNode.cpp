@@ -9,6 +9,10 @@ SpriteNode::SpriteNode(const sf::Texture& texture, const sf::IntRect& textureRec
     : mSprite(texture, textureRect)
     , SceneNode(category)
 {
+    if (category & Category::CenterOriginSprite)
+    {
+        centerOrigin(mSprite);
+    }
 }
 
 void SpriteNode::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const

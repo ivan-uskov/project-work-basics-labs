@@ -132,7 +132,10 @@ bool SceneNode::canCollide() const
 
 void SceneNode::checkSceneCollision(SceneNode& node, std::set<Pair>& collisionPairs)
 {
-    checkNodeCollision(node, collisionPairs);
+    if (node.canCollide())
+    {
+        checkNodeCollision(node, collisionPairs);
+    }
 
     for (auto const& nodeChild : node.mChildren)
     {
@@ -147,9 +150,10 @@ void SceneNode::checkNodeCollision(SceneNode& node, std::set<Pair>& collisionPai
         collisionPairs.insert(std::minmax(this, &node));
     }
 
-    std::for_each(mChildren.begin(), mChildren.end(), [&](auto & child) {
+    for (auto & child : mChildren)
+    {
         child->checkNodeCollision(node, collisionPairs);
-    });
+    }
 }
 
 void SceneNode::removeWrecks()
@@ -188,7 +192,13 @@ bool SceneNode::isMarkedForRemoval() const
 
 bool SceneNode::isDestroyed() const
 {
-    return false;
+    return mMarkedForRemoval;
+}
+
+void SceneNode::destroy()
+{
+    mMarkedForRemoval = true;
+    doDestroy();
 }
 
 bool collision(const SceneNode& lhs, const SceneNode& rhs)

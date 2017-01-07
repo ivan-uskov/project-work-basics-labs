@@ -19,12 +19,10 @@ public:
     void setHitpoints(int points);
     void repair(int points);
     void damage(int points);
-    void destroy();
-    virtual void remove();
-    virtual bool isDestroyed() const;
 
 protected:
-    virtual void updateCurrent(sf::Time dt, CommandQueue& commands);
+    void doDestroy() override;
+    void updateCurrent(sf::Time dt, CommandQueue& commands) override;
 
 private:
     void safeMove(const sf::Vector2f& offset);

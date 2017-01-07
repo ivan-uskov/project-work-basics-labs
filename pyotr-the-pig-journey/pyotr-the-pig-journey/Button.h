@@ -42,18 +42,20 @@ namespace GUI
         void setText(const std::string& text);
         void setToggle(bool flag);
 
-        virtual bool isSelectable() const;
-        virtual void select();
-        virtual void deselect();
+        bool isSelectable() const override;
+        void select() override;
+        void deselect() override;
 
-        virtual void activate();
-        virtual void deactivate();
+        void activate() override;
+        void deactivate() override;
 
-        virtual void handleEvent(const sf::Event& event);
+        void handleEvent(const sf::Event& event) override;
 
+
+    protected:
+        void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
     private:
-        virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
         void changeTexture(Type buttonType);
 
 

@@ -21,6 +21,7 @@ namespace Textures
         Explosion,
         Particle,
         FinishLine,
+        ScoreInfo
     };
 }
 
@@ -53,6 +54,7 @@ namespace SoundEffect
         Explosion2,
         LaunchMissile,
         CollectPickup,
+        CollectStar,
         Button,
     };
 }

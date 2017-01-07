@@ -69,19 +69,9 @@ void Entity::damage(int points)
     mHitpoints -= points;
 }
 
-void Entity::destroy()
+void Entity::doDestroy()
 {
     mHitpoints = 0;
-}
-
-void Entity::remove()
-{
-    destroy();
-}
-
-bool Entity::isDestroyed() const
-{
-    return mHitpoints <= 0;
 }
 
 void Entity::updateCurrent(sf::Time dt, CommandQueue&)

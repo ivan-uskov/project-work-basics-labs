@@ -25,7 +25,7 @@ struct LevelInfo
 {
     std::string name;
     LevelElementInfo background;
-    std::vector<LevelElementInfo> platforms;
+    std::vector<LevelElementInfo> elements;
     sf::Vector2f startPos;
     LevelElementInfo finish;
 
