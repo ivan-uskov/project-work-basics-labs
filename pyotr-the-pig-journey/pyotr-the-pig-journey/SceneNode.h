@@ -36,13 +36,15 @@ public:
     unsigned int getCategory() const;
 
     void checkSceneCollision(SceneNode& sceneGraph, std::set<Pair>& collisionPairs);
-    void checkNodeCollision(SceneNode& node, std::set<Pair>& collisionPairs);
     void removeWrecks();
     virtual sf::FloatRect getBoundingRect() const;
     virtual bool isMarkedForRemoval() const;
     virtual bool isDestroyed() const;
 
 private:
+    void checkNodeCollision(SceneNode& node, std::set<Pair>& collisionPairs);
+    bool canCollide() const;
+
     virtual void updateCurrent(sf::Time dt, CommandQueue& commands);
     void updateChildren(sf::Time dt, CommandQueue& commands);
 

@@ -18,7 +18,7 @@ vector<shared_ptr<LevelInfo>> getLevels(std::string const&)
     return{
         shared_ptr<LevelInfo>(new LevelInfo{
             "Simple Scene",
-            LevelElementInfo("scene1/Background.png", sf::IntRect(0, 0, 5000 + 1024,  768 + 768), sf::Vector2f(-512, -768 / 2), Category::None, true),
+            LevelElementInfo("scene1/Background.png", sf::IntRect(0, 0, 8000, 3000), sf::Vector2f(-1000, -1000), Category::None, true),
             std::vector<LevelElementInfo>{
                 LevelElementInfo("scene1/MainPlatform.png", sf::IntRect(0, 0, 5000, 168), sf::Vector2f(0, 500), Category::Platform, true)
             },

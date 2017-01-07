@@ -46,3 +46,5 @@ float length(sf::Vector2f vector);
 sf::Vector2f normalize(sf::Vector2f vector);
 
 sf::FloatRect max(const sf::FloatRect & lhs, const sf::FloatRect & rhs);
+sf::Vector2f max(const sf::Vector2f & lhs, const sf::Vector2f & rhs);
+sf::Vector2f min(const sf::Vector2f & lhs, const sf::Vector2f & rhs);

@@ -12,7 +12,7 @@ GameState::GameState(StateStack & stack, Context context)
 {
     mPlayer.setMissionStatus(Player::MissionRunning);
 
-    context.music->play(Music::MissionTheme);
+    //context.music->play(Music::MissionTheme);
 
     //TODO: run async
     initialize();
@@ -51,7 +51,7 @@ bool GameState::update(sf::Time dt)
         requestStackPush(States::MissionSuccess);
     }
 
-    CommandQueue & commands = mWorld.getCommandQueue();
+    auto & commands = mWorld.getCommandQueue();
     mPlayer.handleRealtimeInput(commands);
 
     return true;

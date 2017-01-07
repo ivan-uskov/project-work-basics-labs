@@ -7,8 +7,10 @@
 namespace
 {
     const float GRAVITY = 9.8f;
-    const float TRACTION = 10.f;
+    const float TRACTION = 15.f;
+    const float FRICTION = 3.f;
     const float PIXELS_IN_METER = 30;
+    const auto MAX_VELOCITY = sf::Vector2f(400, 400);
 }
 
 Entity::Entity(int hitpoints, Category::Type category)
@@ -25,6 +27,11 @@ void Entity::setVelocity(float vx, float vy)
 {
     mVelocity.x = vx;
     mVelocity.y = vy;
+}
+
+void Entity::addCollision(SceneNode* node)
+{
+    mCollisions.insert(node);
 }
 
 sf::Vector2f Entity::getVelocity() const
@@ -79,10 +86,44 @@ bool Entity::isDestroyed() const
 
 void Entity::updateCurrent(sf::Time dt, CommandQueue&)
 {
-    auto resultAccseleration = (normalize(mDirection) * TRACTION) + GRAVITY * sf::Vector2f(0, 1);
-    resultAccseleration *= PIXELS_IN_METER;
-    mVelocity += resultAccseleration * dt.asSeconds();
-    move(mVelocity * dt.asSeconds());
+    auto dts = dt.asSeconds();
+    updateVelocity(dts);
+    safeMove(mVelocity * dts);
 
     mDirection = sf::Vector2f(0, 0);
+    mCollisions.clear();
+}
+
+void Entity::safeMove(const sf::Vector2f& offset)
+{
+    for (auto node : mCollisions)
+    {
+        auto pos = getPosition();
+        auto rect = getBoundingRect();
+        auto nRect = node->getBoundingRect();
+
+        pos.y = std::min(pos.y, nRect.top - rect.height / 2);
+        if (mVelocity.y >= 0)
+        {
+            move(pos - getPosition());
+        }
+    }
+
+    move(offset);
+}
+
+void Entity::updateVelocity(float dt)
+{
+    auto tractionAcceleration = (normalize(mDirection) * TRACTION);
+    auto gravityAcceleration = GRAVITY * sf::Vector2f(0, 1);
+    auto frictionAcceleration = mCollisions.empty() ? sf::Vector2f() : normalize(sf::Vector2f(-mVelocity.x, 0)) * FRICTION;
+    auto resultAccseleration =
+        tractionAcceleration +
+        gravityAcceleration +
+        frictionAcceleration;
+
+    resultAccseleration *= PIXELS_IN_METER;
+    mVelocity += resultAccseleration * dt;
+    mVelocity = min(mVelocity, MAX_VELOCITY);
+    mVelocity = max(mVelocity, -MAX_VELOCITY);
 }

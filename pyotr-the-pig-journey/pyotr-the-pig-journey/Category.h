@@ -15,6 +15,8 @@ namespace Category
         ParticleSystem = 1 << 7,
         SoundEffect = 1 << 8,
 
+        CanCollide = Tractor | Finish | Platform,
         Projectile = AlliedProjectile | EnemyProjectile,
+        Entity = Tractor | Pickup | Projectile
     };
 }

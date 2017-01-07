@@ -116,8 +116,8 @@ void Player::initializeActions()
 {
     mActionBinding[PlayerAction::MoveLeft].action = derivedAction<Tractor>(TractorMover(-1, 0, mIdentifier));
     mActionBinding[PlayerAction::MoveRight].action = derivedAction<Tractor>(TractorMover(+1, 0, mIdentifier));
-    mActionBinding[PlayerAction::MoveUp].action = derivedAction<Tractor>(TractorMover(0, -1, mIdentifier));
-    mActionBinding[PlayerAction::MoveDown].action = derivedAction<Tractor>(TractorMover(0, +1, mIdentifier));
+    //mActionBinding[PlayerAction::MoveUp].action = derivedAction<Tractor>(TractorMover(0, -1, mIdentifier));
+    //mActionBinding[PlayerAction::MoveDown].action = derivedAction<Tractor>(TractorMover(0, +1, mIdentifier));
     mActionBinding[PlayerAction::Fire].action = derivedAction<Tractor>(TractorFireTrigger(mIdentifier));
     mActionBinding[PlayerAction::LaunchMissile].action = derivedAction<Tractor>(TractorMissileTrigger(mIdentifier));
 }

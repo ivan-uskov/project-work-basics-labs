@@ -53,7 +53,7 @@ MenuState::MenuState(StateStack& stack, Context context)
     mGUIContainer.pack(settingsButton);
     mGUIContainer.pack(exitButton);
 
-    context.music->play(Music::MenuTheme);
+    //context.music->play(Music::MenuTheme);
 }
 
 void MenuState::draw()

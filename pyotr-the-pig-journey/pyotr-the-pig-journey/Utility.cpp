@@ -197,3 +197,19 @@ sf::FloatRect max(const sf::FloatRect & lhs, const sf::FloatRect & rhs)
 
     return rect;
 }
+
+sf::Vector2f max(const sf::Vector2f & lhs, const sf::Vector2f & rhs)
+{
+    return sf::Vector2f(
+        std::max(lhs.x, rhs.x),
+        std::max(lhs.y, rhs.y)
+    );
+}
+
+sf::Vector2f min(const sf::Vector2f & lhs, const sf::Vector2f & rhs)
+{
+    return sf::Vector2f(
+        std::min(lhs.x, rhs.x),
+        std::min(lhs.y, rhs.y)
+    );
+}

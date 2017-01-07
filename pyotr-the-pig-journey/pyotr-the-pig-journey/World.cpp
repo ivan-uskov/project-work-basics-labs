@@ -176,7 +176,11 @@ void World::handleCollisions()
         if (matchesCategories(pair, Category::Tractor, Category::Finish))
         {
             mPlayerReachedFinish = true;
-            
+        }
+        else if (matchesCategories(pair, Category::Entity, Category::Platform))
+        {
+            auto& entity = static_cast<Entity&>(*pair.first);
+            entity.addCollision(pair.second);
         }
         else if (matchesCategories(pair, Category::Tractor, Category::Pickup))
         {

@@ -125,26 +125,31 @@ unsigned int SceneNode::getCategory() const
     return mCategory;
 }
 
-void SceneNode::checkSceneCollision(SceneNode& sceneGraph, std::set<Pair>& collisionPairs)
+bool SceneNode::canCollide() const
 {
-    checkNodeCollision(sceneGraph, collisionPairs);
+    return (getCategory() & Category::CanCollide) && !isDestroyed();
+}
 
-    std::for_each(sceneGraph.mChildren.begin(), sceneGraph.mChildren.end(), [&](auto & child) {
-        checkSceneCollision(*child, collisionPairs);
-    });
+void SceneNode::checkSceneCollision(SceneNode& node, std::set<Pair>& collisionPairs)
+{
+    checkNodeCollision(node, collisionPairs);
+
+    for (auto const& nodeChild : node.mChildren)
+    {
+        checkSceneCollision(*nodeChild, collisionPairs);
+    }
 }
 
 void SceneNode::checkNodeCollision(SceneNode& node, std::set<Pair>& collisionPairs)
 {
-    if (this != &node && collision(*this, node) && !isDestroyed() && !node.isDestroyed())
+    if (this != std::addressof(node) && canCollide() && node.canCollide() && collision(*this, node))
     {
         collisionPairs.insert(std::minmax(this, &node));
     }
 
-    for (auto & child : mChildren)
-    {
+    std::for_each(mChildren.begin(), mChildren.end(), [&](auto & child) {
         child->checkNodeCollision(node, collisionPairs);
-    }
+    });
 }
 
 void SceneNode::removeWrecks()
