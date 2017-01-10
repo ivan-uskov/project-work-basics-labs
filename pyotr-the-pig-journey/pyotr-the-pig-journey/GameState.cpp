@@ -9,17 +9,13 @@ GameState::GameState(StateStack & stack, Context context)
     : State(stack, context)
     , mWorld(*context.window, *context.fonts, *context.sounds)
     , mPlayer(1, context.keys1)
-    , mScoreInfo()
 {
-    mPlayer.setMissionStatus(Player::MissionRunning);
-
     //context.music->play(Music::MissionTheme);
-
-    initialize();
 }
 
 void GameState::initialize()
 {
+    mPlayer.setMissionStatus(Player::MissionRunning);
     loadTextures();
 
     mScoreInfo = std::make_unique<GUI::ScoreInfo>(mTextures.get(Textures::ScoreInfo), sf::IntRect(0, 0, 180, 50));

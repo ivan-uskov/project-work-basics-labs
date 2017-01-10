@@ -12,14 +12,18 @@
 
 GameOverState::GameOverState(StateStack & stack, Context context, const std::string & text)
     : State(stack, context)
-    , mGameOverText()
     , mElapsedTime(sf::Time::Zero)
 {
+    mGameOverText.setString(text);
+}
+
+void GameOverState::initialize()
+{
+    auto context = getContext();
     sf::Font& font = context.fonts->get(Fonts::Main);
     sf::Vector2f windowSize(context.window->getSize());
 
     mGameOverText.setFont(font);
-    mGameOverText.setString(text);
     mGameOverText.setCharacterSize(70);
     centerOrigin(mGameOverText);
     mGameOverText.setPosition(0.5f * windowSize.x, 0.4f * windowSize.y);
@@ -41,7 +45,6 @@ void GameOverState::draw()
 
 bool GameOverState::update(sf::Time dt)
 {
-    // Show state for 3 seconds, after return to menu
     mElapsedTime += dt;
     if (mElapsedTime > sf::seconds(3))
     {

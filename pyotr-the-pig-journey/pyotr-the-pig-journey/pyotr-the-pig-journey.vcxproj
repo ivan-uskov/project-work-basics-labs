@@ -96,6 +96,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)SFML_DYNAMIC</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -126,6 +127,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)SFML_DYNAMIC</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -155,6 +157,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="LevelInfo.h" />
+    <ClInclude Include="LoadingState.h" />
     <ClInclude Include="ScoreInfo.h" />
     <ClInclude Include="Tractor.h" />
     <ClInclude Include="Animation.h" />
@@ -199,6 +202,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="LevelInfo.cpp" />
+    <ClCompile Include="LoadingState.cpp" />
     <ClCompile Include="ScoreInfo.cpp" />
     <ClCompile Include="Tractor.cpp" />
     <ClCompile Include="Animation.cpp" />

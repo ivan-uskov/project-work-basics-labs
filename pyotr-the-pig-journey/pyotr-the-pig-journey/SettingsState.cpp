@@ -9,8 +9,11 @@
 
 SettingsState::SettingsState(StateStack& stack, Context context)
     : State(stack, context)
-    , mGUIContainer()
+{}
+
+void SettingsState::initialize()
 {
+    auto context = getContext();
     mBackgroundSprite.setTexture(context.textures->get(Textures::TitleScreen));
 
     // Build key binding buttons and labels

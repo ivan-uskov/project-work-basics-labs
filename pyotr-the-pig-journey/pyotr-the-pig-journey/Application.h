@@ -16,7 +16,7 @@ class Application
 public:
     Application();
     void run();
-
+    void initialize();
 
 private:
     void processInput();
@@ -27,7 +27,7 @@ private:
     void registerStates();
 
 private:
-    static const sf::Time	TimePerFrame;
+    static const sf::Time TimePerFrame;
 
     sf::RenderWindow mWindow;
     TextureHolder mTextures;
@@ -41,5 +41,5 @@ private:
 
     sf::Text mStatisticsText;
     sf::Time mStatisticsUpdateTime;
-    std::size_t mStatisticsNumFrames;
+    size_t mStatisticsNumFrames = 0;
 };

@@ -10,12 +10,15 @@ class PauseState : public State
 {
 public:
     PauseState(StateStack& stack, Context context, bool letUpdatesThrough = false);
-    ~PauseState();
 
-    virtual void		draw();
-    virtual bool		update(sf::Time dt);
-    virtual bool		handleEvent(const sf::Event& event);
+    void draw() override;
+    bool update(sf::Time dt) override;
+    bool handleEvent(const sf::Event& event) override;
 
+    void initialize() override;
+
+    void onActivate() override;
+    void onDeactivate() override;
 
 private:
     sf::Sprite			mBackgroundSprite;

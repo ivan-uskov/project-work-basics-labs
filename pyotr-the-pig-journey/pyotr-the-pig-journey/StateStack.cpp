@@ -4,6 +4,8 @@
 #include <algorithm>
 #include <cassert>
 
+using namespace std;
+
 StateStack::StateStack(State::Context context)
     : mContext(context)
 {}
@@ -67,7 +69,9 @@ State::Ptr StateStack::createState(States::ID stateID)
     auto found = mFactories.find(stateID);
     assert(found != mFactories.end());
 
-    return found->second();
+    auto state = found->second();
+    state->initialize();
+    return std::move(state);
 }
 
 void StateStack::applyPendingChanges()
@@ -80,7 +84,7 @@ void StateStack::applyPendingChanges()
             break;
 
         case Pop:
-            mStack.back()->onDestroy();
+            mStack.back()->onDeactivate();
             mStack.pop_back();
 
             if (!mStack.empty())
@@ -89,7 +93,7 @@ void StateStack::applyPendingChanges()
 
         case Clear:
             std::for_each(mStack.begin(), mStack.end(), [](auto & state) {
-                state->onDestroy();
+                state->onDeactivate();
             });
 
             mStack.clear();
@@ -98,10 +102,4 @@ void StateStack::applyPendingChanges()
     });
 
     mPendingList.clear();
-}
-
-StateStack::PendingChange::PendingChange(Action action, States::ID stateID)
-    : action(action)
-    , stateID(stateID)
-{
 }

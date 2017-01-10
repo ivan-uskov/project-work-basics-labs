@@ -26,7 +26,7 @@ vector<shared_ptr<LevelInfo>> getLevels(std::string const&)
                 LevelElementInfo("Textures/Star.png", sf::IntRect(0, 0, 50, 48), sf::Vector2f(3000, 420), Category::Star)
             },
             sf::Vector2f(100, 200),
-            LevelElementInfo("scene1/FinishLine.png", sf::IntRect(0, 0, 76, 500), sf::Vector2f(4900, 0), Category::Finish)
+            LevelElementInfo("scene1/FinishLine.png", sf::IntRect(0, 0, 76, 200), sf::Vector2f(4900, 300), Category::Finish)
         })
     };
 }

@@ -18,7 +18,7 @@ public:
     virtual bool update(sf::Time dt);
     virtual bool handleEvent(const sf::Event& event);
 
-    void initialize();
+    void initialize() override;
 
 private:
     void loadTextures();

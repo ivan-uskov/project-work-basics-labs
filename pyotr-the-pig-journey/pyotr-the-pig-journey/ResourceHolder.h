@@ -5,6 +5,7 @@
 #include <memory>
 #include <stdexcept>
 #include <cassert>
+#include <mutex>
 
 template <typename Resource, typename Identifier>
 class ResourceHolder
@@ -19,7 +20,6 @@ public:
             throw std::runtime_error("ResourceHolder::load - Failed to load " + filename);
         }
 
-        // If loading successful, insert resource to map
         insertResource(std::move(id), std::move(resource));
     }
 

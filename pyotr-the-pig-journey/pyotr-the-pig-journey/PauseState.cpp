@@ -14,10 +14,22 @@
 PauseState::PauseState(StateStack& stack, Context context, bool letUpdatesThrough)
     : State(stack, context)
     , mBackgroundSprite()
-    , mPausedText()
-    , mGUIContainer()
     , mLetUpdatesThrough(letUpdatesThrough)
+{}
+
+void PauseState::onActivate()
 {
+    getContext().music->setPaused(true);
+}
+
+void PauseState::onDeactivate()
+{
+    getContext().music->setPaused(false);
+}
+
+void PauseState::initialize()
+{
+    auto context = getContext();
     sf::Font& font = context.fonts->get(Fonts::Main);
     sf::Vector2f windowSize(context.window->getSize());
 
@@ -46,13 +58,6 @@ PauseState::PauseState(StateStack& stack, Context context, bool letUpdatesThroug
 
     mGUIContainer.pack(returnButton);
     mGUIContainer.pack(backToMenuButton);
-
-    getContext().music->setPaused(true);
-}
-
-PauseState::~PauseState()
-{
-    getContext().music->setPaused(false);
 }
 
 void PauseState::draw()

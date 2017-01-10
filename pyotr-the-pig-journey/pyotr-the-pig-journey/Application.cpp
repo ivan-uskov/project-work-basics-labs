@@ -10,37 +10,39 @@
 #include "PauseState.h"
 #include "SettingsState.h"
 #include "GameOverState.h"
+#include "LoadingState.h"
 
 const sf::Time Application::TimePerFrame = sf::seconds(1.f / 60.f);
 
 Application::Application()
     : mWindow(sf::VideoMode(1024, 768), "Survive Game", sf::Style::Close)
-    , mTextures()
-    , mFonts()
-    , mMusic()
-    , mSounds()
     , mKeyBinding1(1)
     , mKeyBinding2(2)
     , mStateStack(State::Context(mWindow, mTextures, mFonts, mMusic, mSounds, mKeyBinding1, mKeyBinding2))
-    , mStatisticsText()
-    , mStatisticsUpdateTime()
-    , mStatisticsNumFrames(0)
 {
     mWindow.setKeyRepeatEnabled(false);
     mWindow.setVerticalSyncEnabled(true);
 
     mFonts.load(Fonts::Main, "Media/Sansation.ttf");
     mTextures.load(Textures::TitleScreen, "Media/Textures/TitleScreen.png");
-    mTextures.load(Textures::Buttons, "Media/Textures/Buttons.png");
+    mTextures.load(Textures::Preloader, "Media/Textures/Preloader.png");
 
     mStatisticsText.setFont(mFonts.get(Fonts::Main));
     mStatisticsText.setPosition(5.f, 5.f);
-    mStatisticsText.setCharacterSize(10u);
+    mStatisticsText.setCharacterSize(12u);
 
+    mTextures.load(Textures::Buttons, "Media/Textures/Buttons.png");
     registerStates();
-    mStateStack.pushState(States::Title);
-
     mMusic.setVolume(25.f);
+
+    mStateStack.registerState<LoadingState>(States::Loading);
+    mStateStack.pushState(States::Title);
+    mStateStack.pushState(States::Loading);
+}
+
+void Application::initialize()
+{
+    mStateStack.popState();
 }
 
 void Application::run()
@@ -59,7 +61,6 @@ void Application::run()
             processInput();
             update(TimePerFrame);
 
-            // Check inside this loop, because stack might be empty before update() call
             if (mStateStack.isEmpty())
             {
                 mWindow.close();

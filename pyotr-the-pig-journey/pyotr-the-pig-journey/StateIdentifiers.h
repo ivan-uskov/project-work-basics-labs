@@ -12,6 +12,6 @@ namespace States
         Pause,
         Settings,
         GameOver,
-        MissionSuccess,
+        MissionSuccess
     };
 }

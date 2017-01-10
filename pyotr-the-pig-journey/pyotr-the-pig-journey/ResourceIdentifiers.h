@@ -21,7 +21,8 @@ namespace Textures
         Explosion,
         Particle,
         FinishLine,
-        ScoreInfo
+        ScoreInfo,
+        Preloader
     };
 }
 

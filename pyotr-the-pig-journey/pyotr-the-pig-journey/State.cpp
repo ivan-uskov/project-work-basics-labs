@@ -25,8 +25,7 @@ State::Context::Context(
 State::State(StateStack & stack, Context context)
     : mStack(&stack)
     , mContext(context)
-{
-}
+{}
 
 void State::requestStackPush(States::ID stateID)
 {
@@ -46,14 +45,4 @@ void State::requestStateClear()
 State::Context State::getContext() const
 {
     return mContext;
-}
-
-void State::onActivate()
-{
-
-}
-
-void State::onDestroy()
-{
-
 }

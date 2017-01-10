@@ -12,7 +12,6 @@
 #include <functional>
 #include <map>
 
-
 namespace sf
 {
     class Event;
@@ -22,22 +21,15 @@ namespace sf
 class StateStack : private sf::NonCopyable
 {
 public:
-    enum Action
-    {
-        Push,
-        Pop,
-        Clear,
-    };
-
-
-public:
     explicit StateStack(State::Context context);
 
-    template <typename T>
-    void registerState(States::ID stateID);
-
-    template <typename T, typename Param1>
-    void registerState(States::ID stateID, Param1 arg1);
+    template <typename StateType, typename ...Parameters>
+    void registerState(States::ID stateID, Parameters&&... params)
+    {
+        mFactories[stateID] = [&] {
+            return std::make_unique<StateType>(*this, mContext, std::forward<Parameters>(params)...);
+        };
+    }
 
     void update(sf::Time dt);
     void draw();
@@ -47,19 +39,24 @@ public:
     void popState();
     void clearStates();
 
-
     bool isEmpty() const;
-
+    void applyPendingChanges();
 
 private:
     State::Ptr createState(States::ID stateID);
-    void applyPendingChanges();
-
 
 private:
+    enum Action
+    {
+        Push,
+        Pop,
+        Clear,
+    };
+
     struct PendingChange
     {
-        explicit PendingChange(Action action, States::ID stateID = States::None);
+        explicit PendingChange(Action action, States::ID stateID = States::None)
+            : action(action), stateID(stateID) {}
 
         Action action;
         States::ID stateID;
@@ -72,20 +69,3 @@ private:
     State::Context mContext;
     std::map<States::ID, std::function<State::Ptr()>> mFactories;
 };
-
-
-template <typename T>
-void StateStack::registerState(States::ID stateID)
-{
-    mFactories[stateID] = [this] () {
-        return State::Ptr(new T(*this, mContext));
-    };
-}
-
-template <typename T, typename Param1>
-void StateStack::registerState(States::ID stateID, Param1 arg1)
-{
-    mFactories[stateID] = [this, arg1] () {
-        return State::Ptr(new T(*this, mContext, arg1));
-    };
-}

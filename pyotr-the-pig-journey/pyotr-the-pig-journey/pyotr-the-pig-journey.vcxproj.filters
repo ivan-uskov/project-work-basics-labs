@@ -168,6 +168,9 @@
     <ClInclude Include="ScoreInfo.h">
       <Filter>gui</Filter>
     </ClInclude>
+    <ClInclude Include="LoadingState.h">
+      <Filter>state</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pyotr-the-pig-journey.cpp" />
@@ -278,6 +281,9 @@
     </ClCompile>
     <ClCompile Include="ScoreInfo.cpp">
       <Filter>gui</Filter>
+    </ClCompile>
+    <ClCompile Include="LoadingState.cpp">
+      <Filter>state</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
