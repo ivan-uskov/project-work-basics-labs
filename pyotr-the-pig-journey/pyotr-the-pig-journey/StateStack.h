@@ -3,6 +3,7 @@
 #include "State.h"
 #include "StateIdentifiers.h"
 #include "ResourceIdentifiers.h"
+#include "LazyLoad.h"
 
 #include <SFML/System/NonCopyable.hpp>
 #include <SFML/System/Time.hpp>
@@ -18,17 +19,15 @@ namespace sf
     class RenderWindow;
 }
 
-class StateStack : private sf::NonCopyable
+class StateStack : private sf::NonCopyable, public LazyLoad
 {
 public:
     explicit StateStack(State::Context context);
 
     template <typename StateType, typename ...Parameters>
-    void registerState(States::ID stateID, Parameters&&... params)
+    void registerState(States::ID stateID, Parameters &&... params)
     {
-        mFactories[stateID] = [&] {
-            return std::make_unique<StateType>(*this, mContext, std::forward<Parameters>(params)...);
-        };
+        mStates[stateID] = std::make_shared<StateType>(*this, mContext, std::forward<Parameters>(params)...);
     }
 
     void update(sf::Time dt);
@@ -42,8 +41,8 @@ public:
     bool isEmpty() const;
     void applyPendingChanges();
 
-private:
-    State::Ptr createState(States::ID stateID);
+protected:
+    void doInitialize() override;
 
 private:
     enum Action
@@ -67,5 +66,5 @@ private:
     std::vector<PendingChange> mPendingList;
 
     State::Context mContext;
-    std::map<States::ID, std::function<State::Ptr()>> mFactories;
+    std::map<States::ID, State::Ptr> mStates;
 };

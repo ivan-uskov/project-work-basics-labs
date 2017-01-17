@@ -19,6 +19,7 @@ PauseState::PauseState(StateStack& stack, Context context, bool letUpdatesThroug
 
 void PauseState::onActivate()
 {
+    State::onActivate();
     getContext().music->setPaused(true);
 }
 
@@ -27,7 +28,7 @@ void PauseState::onDeactivate()
     getContext().music->setPaused(false);
 }
 
-void PauseState::initialize()
+void PauseState::doInitialize()
 {
     auto context = getContext();
     sf::Font& font = context.fonts->get(Fonts::Main);

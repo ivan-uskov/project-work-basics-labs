@@ -12,6 +12,8 @@
 #include "GameOverState.h"
 #include "LoadingState.h"
 
+using namespace std;
+
 const sf::Time Application::TimePerFrame = sf::seconds(1.f / 60.f);
 
 Application::Application()
@@ -23,32 +25,16 @@ Application::Application()
     mWindow.setKeyRepeatEnabled(false);
     mWindow.setVerticalSyncEnabled(true);
 
-    mFonts.load(Fonts::Main, "Media/Sansation.ttf");
-    mTextures.load(Textures::TitleScreen, "Media/Textures/TitleScreen.png");
-    mTextures.load(Textures::Preloader, "Media/Textures/Preloader.png");
-
-    mStatisticsText.setFont(mFonts.get(Fonts::Main));
-    mStatisticsText.setPosition(5.f, 5.f);
-    mStatisticsText.setCharacterSize(12u);
-
-    mTextures.load(Textures::Buttons, "Media/Textures/Buttons.png");
-    registerStates();
-    mMusic.setVolume(25.f);
-
-    mStateStack.registerState<LoadingState>(States::Loading);
-    mStateStack.pushState(States::Title);
-    mStateStack.pushState(States::Loading);
-}
-
-void Application::initialize()
-{
-    mStateStack.popState();
+    loadCommonResources();
+    initializeStatistics();
+    setupLoadingState();
 }
 
 void Application::run()
 {
     sf::Clock clock;
     sf::Time timeSinceLastUpdate = sf::Time::Zero;
+    runAsyncInitialization();
 
     while (mWindow.isOpen())
     {
@@ -114,6 +100,43 @@ void Application::updateStatistics(sf::Time dt)
         mStatisticsUpdateTime -= sf::seconds(1.0f);
         mStatisticsNumFrames = 0;
     }
+}
+
+void Application::runAsyncInitialization()
+{
+    mLoadFuture = std::async(std::launch::async, [&] {
+        try
+        {
+            mTextures.load(Textures::Buttons, "Media/Textures/Buttons.png");
+            mMusic.setVolume(25.f);
+            registerStates();
+            mStateStack.initialize();
+        }
+        catch (std::exception const& e)
+        {
+            std::cout << e.what() << std::endl;
+        }
+    });
+}
+
+void Application::setupLoadingState()
+{
+    mStateStack.registerState<LoadingState>(States::Loading);
+    mStateStack.pushState(States::Loading);
+}
+
+void Application::loadCommonResources()
+{
+    mFonts.load(Fonts::Main, "Media/Sansation.ttf");
+    mTextures.load(Textures::TitleScreen, "Media/Textures/TitleScreen.png");
+    mTextures.load(Textures::Preloader, "Media/Textures/Preloader.png");
+}
+
+void Application::initializeStatistics()
+{
+    mStatisticsText.setFont(mFonts.get(Fonts::Main));
+    mStatisticsText.setPosition(5.f, 5.f);
+    mStatisticsText.setCharacterSize(12u);
 }
 
 void Application::registerStates()

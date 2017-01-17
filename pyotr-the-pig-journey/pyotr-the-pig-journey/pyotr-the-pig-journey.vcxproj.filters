@@ -171,6 +171,9 @@
     <ClInclude Include="LoadingState.h">
       <Filter>state</Filter>
     </ClInclude>
+    <ClInclude Include="LazyLoad.h">
+      <Filter>utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pyotr-the-pig-journey.cpp" />

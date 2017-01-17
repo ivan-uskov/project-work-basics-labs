@@ -1,5 +1,6 @@
 #pragma once
 
+#include "LazyLoad.h"
 #include "StateIdentifiers.h"
 #include "ResourceIdentifiers.h"
 
@@ -18,10 +19,10 @@ class MusicPlayer;
 class SoundPlayer;
 class KeyBinding;
 
-class State
+class State : public LazyLoad
 {
 public:
-    typedef std::unique_ptr<State> Ptr;
+    typedef std::shared_ptr<State> Ptr;
 
     struct Context
     {
@@ -53,8 +54,11 @@ public:
     virtual bool update(sf::Time dt) = 0;
     virtual bool handleEvent(const sf::Event& event) = 0;
 
-    virtual void initialize() {};
-    virtual void onActivate() {};
+    virtual void onActivate()
+    {
+        initialize();
+    };
+
     virtual void onDeactivate() {};
 
 protected:

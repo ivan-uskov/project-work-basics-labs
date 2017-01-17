@@ -11,12 +11,13 @@
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Graphics/Text.hpp>
 
+#include <future>
+
 class Application
 {
 public:
     Application();
     void run();
-    void initialize();
 
 private:
     void processInput();
@@ -25,6 +26,11 @@ private:
 
     void updateStatistics(sf::Time dt);
     void registerStates();
+
+    void initializeStatistics();
+    void loadCommonResources();
+    void setupLoadingState();
+    void runAsyncInitialization();
 
 private:
     static const sf::Time TimePerFrame;
@@ -42,4 +48,5 @@ private:
     sf::Text mStatisticsText;
     sf::Time mStatisticsUpdateTime;
     size_t mStatisticsNumFrames = 0;
+    std::future<void> mLoadFuture;
 };

@@ -18,7 +18,7 @@ LoadingState::LoadingState(StateStack & stack, Context context)
     , mBackground(context.textures->get(Textures::TitleScreen))
 {}
 
-void LoadingState::initialize()
+void LoadingState::doInitialize()
 {
     mText.setString("loading");
     mText.setFont(getContext().fonts->get(Fonts::Main));

@@ -13,7 +13,7 @@ TitleState::TitleState(StateStack & stack, Context context)
     , mTextEffectTime(sf::Time::Zero)
 {}
 
-void TitleState::initialize()
+void TitleState::doInitialize()
 {
     mBackgroundSprite.setTexture(getContext().textures->get(Textures::TitleScreen));
     mText.setFont(getContext().fonts->get(Fonts::Main));

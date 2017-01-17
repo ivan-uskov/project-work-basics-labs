@@ -13,7 +13,7 @@ GameState::GameState(StateStack & stack, Context context)
     //context.music->play(Music::MissionTheme);
 }
 
-void GameState::initialize()
+void GameState::doInitialize()
 {
     mPlayer.setMissionStatus(Player::MissionRunning);
     loadTextures();

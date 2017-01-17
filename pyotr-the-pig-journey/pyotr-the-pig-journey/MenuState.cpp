@@ -14,7 +14,7 @@ MenuState::MenuState(StateStack& stack, Context context)
 {
 }
 
-void MenuState::initialize()
+void MenuState::doInitialize()
 {
     auto context = getContext();
     sf::Texture& texture = context.textures->get(Textures::TitleScreen);

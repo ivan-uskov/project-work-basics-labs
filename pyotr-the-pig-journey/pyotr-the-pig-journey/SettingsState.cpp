@@ -11,7 +11,7 @@ SettingsState::SettingsState(StateStack& stack, Context context)
     : State(stack, context)
 {}
 
-void SettingsState::initialize()
+void SettingsState::doInitialize()
 {
     auto context = getContext();
     mBackgroundSprite.setTexture(context.textures->get(Textures::TitleScreen));

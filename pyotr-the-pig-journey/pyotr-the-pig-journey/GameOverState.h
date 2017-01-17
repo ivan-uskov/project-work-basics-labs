@@ -15,7 +15,8 @@ public:
     bool update(sf::Time dt) override;
     bool handleEvent(const sf::Event& event) override;
 
-    void initialize() override;
+protected:
+    void doInitialize() override;
 
 private:
     sf::Text mGameOverText;

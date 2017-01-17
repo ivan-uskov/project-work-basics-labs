@@ -38,7 +38,9 @@ void StateStack::handleEvent(const sf::Event& event)
     for (auto itr = mStack.rbegin(); itr != mStack.rend(); ++itr)
     {
         if (!(*itr)->handleEvent(event))
+        {
             break;
+        }
     }
 
     applyPendingChanges();
@@ -64,42 +66,47 @@ bool StateStack::isEmpty() const
     return mStack.empty();
 }
 
-State::Ptr StateStack::createState(States::ID stateID)
+void StateStack::doInitialize()
 {
-    auto found = mFactories.find(stateID);
-    assert(found != mFactories.end());
-
-    auto state = found->second();
-    state->initialize();
-    return std::move(state);
+    for (auto & state : mStates)
+    {
+        state.second->initialize();
+    }
 }
 
 void StateStack::applyPendingChanges()
 {
-    std::for_each(mPendingList.begin(), mPendingList.end(), [&](auto change) {
+    for(auto change : mPendingList)
+    {
         switch (change.action)
         {
-        case Push:
-            mStack.push_back(createState(change.stateID));
-            break;
+            case Push:
+            {
+                auto & state = mStates[change.stateID];
+                state->onActivate();
+                mStack.push_back(state);
+            } break;
+            case Pop:
+            {
+                mStack.back()->onDeactivate();
+                mStack.pop_back();
 
-        case Pop:
-            mStack.back()->onDeactivate();
-            mStack.pop_back();
+                if (!mStack.empty())
+                {
+                    mStack.back()->onActivate();
+                }
+            } break;
+            case Clear:
+            {
+                for(auto & state : mStack)
+                {
+                    state->onDeactivate();
+                }
 
-            if (!mStack.empty())
-                mStack.back()->onActivate();
-            break;
-
-        case Clear:
-            std::for_each(mStack.begin(), mStack.end(), [](auto & state) {
-                state->onDeactivate();
-            });
-
-            mStack.clear();
-            break;
+                mStack.clear();
+            }break;
         }
-    });
+    }
 
     mPendingList.clear();
 }

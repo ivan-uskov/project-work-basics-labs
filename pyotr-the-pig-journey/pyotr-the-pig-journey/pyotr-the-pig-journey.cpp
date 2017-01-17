@@ -7,15 +7,7 @@ int main()
 {
     try
     {
-//        thread mThread([] {
-//            std::this_thread::sleep_for(chrono::seconds(20));
-//        });
-
-        Application app;
-        app.initialize();
-        app.run();
-
-  //      mThread.join();
+        Application().run();
     }
     catch (std::exception& e)
     {

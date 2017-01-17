@@ -17,7 +17,7 @@ GameOverState::GameOverState(StateStack & stack, Context context, const std::str
     mGameOverText.setString(text);
 }
 
-void GameOverState::initialize()
+void GameOverState::doInitialize()
 {
     auto context = getContext();
     sf::Font& font = context.fonts->get(Fonts::Main);

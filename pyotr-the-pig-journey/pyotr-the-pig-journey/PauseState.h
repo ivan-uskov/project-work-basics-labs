@@ -15,10 +15,11 @@ public:
     bool update(sf::Time dt) override;
     bool handleEvent(const sf::Event& event) override;
 
-    void initialize() override;
-
     void onActivate() override;
     void onDeactivate() override;
+
+protected:
+    void doInitialize() override;
 
 private:
     sf::Sprite			mBackgroundSprite;

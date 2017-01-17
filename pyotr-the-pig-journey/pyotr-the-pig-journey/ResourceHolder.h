@@ -5,7 +5,6 @@
 #include <memory>
 #include <stdexcept>
 #include <cassert>
-#include <mutex>
 
 template <typename Resource, typename Identifier>
 class ResourceHolder
