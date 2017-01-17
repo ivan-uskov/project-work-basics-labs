@@ -9,7 +9,7 @@
 class MenuState : public State
 {
 public:
-    MenuState(StateStack& stack, Context context);
+    MenuState(States::ID stateId, StateStack& stack, Context context);
 
     void draw() override;
     bool update(sf::Time dt) override;

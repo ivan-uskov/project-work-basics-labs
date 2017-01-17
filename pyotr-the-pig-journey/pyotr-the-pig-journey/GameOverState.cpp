@@ -9,9 +9,8 @@
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Graphics/View.hpp>
 
-
-GameOverState::GameOverState(StateStack & stack, Context context, const std::string & text)
-    : State(stack, context)
+GameOverState::GameOverState(States::ID stateId, StateStack & stack, Context context, const std::string & text)
+    : State(stateId, stack, context)
     , mElapsedTime(sf::Time::Zero)
 {
     mGameOverText.setString(text);

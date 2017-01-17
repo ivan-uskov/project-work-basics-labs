@@ -22,9 +22,10 @@ State::Context::Context(
 {
 }
 
-State::State(StateStack & stack, Context context)
+State::State(States::ID stateId, StateStack & stack, Context context)
     : mStack(&stack)
     , mContext(context)
+    , mStateId(stateId)
 {}
 
 void State::requestStackPush(States::ID stateID)
@@ -45,4 +46,9 @@ void State::requestStateClear()
 State::Context State::getContext() const
 {
     return mContext;
+}
+
+States::ID State::getId() const
+{
+    return mStateId;
 }

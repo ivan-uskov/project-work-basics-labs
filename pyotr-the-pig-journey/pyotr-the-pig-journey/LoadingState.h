@@ -8,7 +8,7 @@
 class LoadingState : public State
 {
 public:
-    LoadingState(StateStack & stack, Context context);
+    LoadingState(States::ID stateId, StateStack & stack, Context context);
 
     void draw() override;
     bool update(sf::Time dt) override;

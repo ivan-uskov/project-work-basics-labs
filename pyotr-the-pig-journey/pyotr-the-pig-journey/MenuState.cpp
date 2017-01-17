@@ -9,8 +9,8 @@
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Graphics/View.hpp>
 
-MenuState::MenuState(StateStack& stack, Context context)
-    : State(stack, context)
+MenuState::MenuState(States::ID stateId, StateStack& stack, Context context)
+    : State(stateId, stack, context)
 {
 }
 

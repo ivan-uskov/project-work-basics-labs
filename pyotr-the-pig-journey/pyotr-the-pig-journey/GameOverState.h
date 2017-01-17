@@ -9,7 +9,7 @@
 class GameOverState : public State
 {
 public:
-    GameOverState(StateStack & stack, Context context, const std::string& text);
+    GameOverState(States::ID stateId, StateStack & stack, Context context, const std::string& text);
 
     void draw() override;
     bool update(sf::Time dt) override;

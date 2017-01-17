@@ -9,7 +9,7 @@
 class PauseState : public State
 {
 public:
-    PauseState(StateStack& stack, Context context, bool letUpdatesThrough = false);
+    PauseState(States::ID stateId, StateStack& stack, Context context, bool letUpdatesThrough = false);
 
     void draw() override;
     bool update(sf::Time dt) override;

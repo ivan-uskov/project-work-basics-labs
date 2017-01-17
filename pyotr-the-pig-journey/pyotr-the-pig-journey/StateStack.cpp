@@ -46,6 +46,11 @@ void StateStack::handleEvent(const sf::Event& event)
     applyPendingChanges();
 }
 
+States::ID StateStack::getCurrentState() const
+{
+    return mStack.empty() ? States::None : mStack.back()->getId();
+}
+
 void StateStack::pushState(States::ID stateID)
 {
     mPendingList.push_back(PendingChange(Push, stateID));

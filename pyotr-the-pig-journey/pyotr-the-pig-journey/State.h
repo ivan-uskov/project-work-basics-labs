@@ -47,7 +47,7 @@ public:
 
 
 public:
-    State(StateStack & stack, Context context);
+    State(States::ID stateId, StateStack & stack, Context context);
     virtual ~State() = default;
 
     virtual void draw() = 0;
@@ -58,6 +58,8 @@ public:
     {
         initialize();
     };
+
+    States::ID getId() const;
 
     virtual void onDeactivate() {};
 
@@ -71,4 +73,5 @@ protected:
 private:
     StateStack * mStack;
     Context mContext;
+    States::ID mStateId;
 };

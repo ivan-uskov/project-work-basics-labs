@@ -12,8 +12,8 @@ namespace
 
 using namespace std;
 
-LoadingState::LoadingState(StateStack & stack, Context context)
-    : State(stack, context)
+LoadingState::LoadingState(States::ID stateId, StateStack & stack, Context context)
+    : State(stateId, stack, context)
     , mPreloader(context.textures->get(Textures::Preloader), sf::IntRect(0, 0, 50, 50))
     , mBackground(context.textures->get(Textures::TitleScreen))
 {}

@@ -38,6 +38,11 @@ void Application::run()
 
     while (mWindow.isOpen())
     {
+        if (mStateStack.isInitialized() && (mStateStack.getCurrentState() == States::Loading))
+        {
+            mStateStack.pushState(States::Title);
+        }
+
         sf::Time dt = clock.restart();
         timeSinceLastUpdate += dt;
         while (timeSinceLastUpdate > TimePerFrame)
@@ -104,19 +109,18 @@ void Application::updateStatistics(sf::Time dt)
 
 void Application::runAsyncInitialization()
 {
-    mLoadFuture = std::async(std::launch::async, [&] {
-        try
-        {
-            mTextures.load(Textures::Buttons, "Media/Textures/Buttons.png");
-            mMusic.setVolume(25.f);
-            registerStates();
-            mStateStack.initialize();
-        }
-        catch (std::exception const& e)
-        {
-            std::cout << e.what() << std::endl;
-        }
-    });
+    //TODO: initialize async
+    try
+    {
+        mTextures.load(Textures::Buttons, "Media/Textures/Buttons.png");
+        mMusic.setVolume(25.f);
+        registerStates();
+        mStateStack.initialize();
+    }
+    catch (std::exception const& e)
+    {
+        std::cout << e.what() << std::endl;
+    }
 }
 
 void Application::setupLoadingState()

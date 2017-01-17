@@ -8,7 +8,7 @@
 class TitleState : public State
 {
 public:
-    TitleState(StateStack & stack, Context context);
+    TitleState(States::ID stateId, StateStack & stack, Context context);
 
     void draw() override;
     bool update(sf::Time dt) override;

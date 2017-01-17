@@ -116,6 +116,7 @@ void World::initializeTractor()
 void World::installLevel(const LevelPtr & level, const LevelTexturesPtr & levelTextures)
 {
     mPlayerReachedFinish = false;
+    mPlayerTractor->reset();
     mPlayerTractor->setPosition(level->startPos);
     mWorldView.setCenter(level->startPos);
 

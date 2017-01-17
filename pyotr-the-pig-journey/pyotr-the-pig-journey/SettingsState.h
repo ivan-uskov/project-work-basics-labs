@@ -14,7 +14,7 @@
 class SettingsState : public State
 {
 public:
-    SettingsState(StateStack& stack, Context context);
+    SettingsState(States::ID stateId, StateStack& stack, Context context);
 
     virtual void draw();
     virtual bool update(sf::Time dt);

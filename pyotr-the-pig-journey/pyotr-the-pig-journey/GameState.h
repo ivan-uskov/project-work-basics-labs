@@ -12,11 +12,13 @@
 class GameState : public State
 {
 public:
-    GameState(StateStack& stack, Context context);
+    GameState(States::ID stateId, StateStack& stack, Context context);
 
     virtual void draw();
     virtual bool update(sf::Time dt);
     virtual bool handleEvent(const sf::Event& event);
+
+    void onActivate() override;
 
 protected:
     void doInitialize() override;
@@ -31,4 +33,7 @@ private:
     TextureHolder mTextures;
     LevelTexturesPtr mLevelTextures;
     std::unique_ptr<GUI::ScoreInfo> mScoreInfo;
+
+    size_t mCurrentLevel = 0;
+    std::function<void()> mActivateHandler;
 };

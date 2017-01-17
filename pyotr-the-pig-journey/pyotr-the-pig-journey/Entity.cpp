@@ -18,6 +18,13 @@ Entity::Entity(int hitpoints, Category::Type category)
     , mHitpoints(hitpoints)
 {}
 
+void Entity::reset()
+{
+    mVelocity = sf::Vector2f();
+    mDirection = sf::Vector2f();
+    mCollisions.clear();
+}
+
 void Entity::setVelocity(sf::Vector2f velocity)
 {
     mVelocity = velocity;
@@ -80,7 +87,7 @@ void Entity::updateCurrent(sf::Time dt, CommandQueue&)
     updateVelocity(dts);
     safeMove(mVelocity * dts);
 
-    mDirection = sf::Vector2f(0, 0);
+    mDirection = sf::Vector2f();
     mCollisions.clear();
 }
 

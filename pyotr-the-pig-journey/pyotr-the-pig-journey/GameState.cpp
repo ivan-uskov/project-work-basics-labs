@@ -5,8 +5,8 @@
 
 #include <SFML/Graphics/RenderWindow.hpp>
 
-GameState::GameState(StateStack & stack, Context context)
-    : State(stack, context)
+GameState::GameState(States::ID stateId, StateStack & stack, Context context)
+    : State(stateId, stack, context)
     , mWorld(*context.window, *context.fonts, *context.sounds)
     , mPlayer(1, context.keys1)
 {
@@ -23,7 +23,7 @@ void GameState::doInitialize()
         ++(*mScoreInfo);
     });
 
-    mWorld.installLevel(mLevels[0], mLevelTextures);
+    mWorld.installLevel(mLevels[mCurrentLevel], mLevelTextures);
 }
 
 void GameState::loadTextures()
@@ -66,6 +66,11 @@ bool GameState::update(sf::Time dt)
     {
         mPlayer.setMissionStatus(Player::MissionSuccess);
         requestStackPush(States::MissionSuccess);
+
+        mActivateHandler = [&] {
+            //++mCurrentLevel;
+            mWorld.installLevel(mLevels[mCurrentLevel], mLevelTextures);
+        };
     }
 
     auto & commands = mWorld.getCommandQueue();
@@ -85,4 +90,13 @@ bool GameState::handleEvent(const sf::Event& event)
     }
 
     return true;
+}
+
+void GameState::onActivate()
+{
+    if (mActivateHandler)
+    {
+        mActivateHandler();
+        mActivateHandler = nullptr;
+    }
 }

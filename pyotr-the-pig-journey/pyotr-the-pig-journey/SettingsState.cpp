@@ -7,8 +7,8 @@
 #include <SFML/Graphics/RenderWindow.hpp>
 
 
-SettingsState::SettingsState(StateStack& stack, Context context)
-    : State(stack, context)
+SettingsState::SettingsState(States::ID stateId, StateStack& stack, Context context)
+    : State(stateId, stack, context)
 {}
 
 void SettingsState::doInitialize()

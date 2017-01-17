@@ -11,8 +11,8 @@
 #include <SFML/Graphics/View.hpp>
 
 
-PauseState::PauseState(StateStack& stack, Context context, bool letUpdatesThrough)
-    : State(stack, context)
+PauseState::PauseState(States::ID stateId, StateStack& stack, Context context, bool letUpdatesThrough)
+    : State(stateId, stack, context)
     , mBackgroundSprite()
     , mLetUpdatesThrough(letUpdatesThrough)
 {}

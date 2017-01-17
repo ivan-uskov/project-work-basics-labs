@@ -20,6 +20,8 @@ public:
     void repair(int points);
     void damage(int points);
 
+    void reset();
+
 protected:
     void doDestroy() override;
     void updateCurrent(sf::Time dt, CommandQueue& commands) override;

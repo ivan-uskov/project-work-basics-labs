@@ -27,12 +27,14 @@ public:
     template <typename StateType, typename ...Parameters>
     void registerState(States::ID stateID, Parameters &&... params)
     {
-        mStates[stateID] = std::make_shared<StateType>(*this, mContext, std::forward<Parameters>(params)...);
+        mStates[stateID] = std::make_shared<StateType>(stateID, *this, mContext, std::forward<Parameters>(params)...);
     }
 
     void update(sf::Time dt);
     void draw();
     void handleEvent(const sf::Event& event);
+
+    States::ID getCurrentState() const;
 
     void pushState(States::ID stateID);
     void popState();
