@@ -34,9 +34,9 @@ void GameOverState::doInitialize()
     mScoreInfo = std::make_unique<GUI::ScoreInfo>(context.textures->get(Textures::ScoreInfo), sf::IntRect(0, 0, 180, 50));
     mScoreInfo->setPosition(0.5f * windowSize.x - 180.f / 2, windowSize.y * 0.5f);
 
-    float buttonX = 150.f;
-    float buttonY = 0.7f * windowSize.y;
     float margin = 50.f;
+    float buttonX = 150.f + (getId() == States::GameOver ? (GUI::Button::BUTTON_WIDTH + margin) / 2 : 0);
+    float buttonY = 0.7f * windowSize.y;
 
     auto menuButton = std::make_shared<GUI::Button>(context);
     menuButton->setPosition(buttonX, buttonY);
@@ -48,28 +48,31 @@ void GameOverState::doInitialize()
 
     buttonX += GUI::Button::BUTTON_WIDTH + margin;
 
-    auto replayButton = std::make_shared<GUI::Button>(context);
-    replayButton->setPosition(buttonX, buttonY);
-    replayButton->setText("Replay");
-    replayButton->setCallback([this] {
+    auto retryButton = std::make_shared<GUI::Button>(context);
+    retryButton->setPosition(buttonX, buttonY);
+    retryButton->setText("Retry");
+    retryButton->setCallback([this] {
         getState<GameState>(States::Game).prepareReplay();
         requestStackPop();
     });
 
-    buttonX += GUI::Button::BUTTON_WIDTH + margin;
-
-    auto nextButton = std::make_shared<GUI::Button>(context);
-    nextButton->setPosition(buttonX, buttonY);
-    nextButton->select();
-    nextButton->setText("Next");
-    nextButton->setCallback([this] {
-        getState<GameState>(States::Game).prepareNextLevel();
-        requestStackPop();
-    });
-
     mGUIContainer.pack(menuButton);
-    mGUIContainer.pack(replayButton);
-    mGUIContainer.pack(nextButton);
+    mGUIContainer.pack(retryButton);
+
+    if (getId() == States::MissionSuccess)
+    {
+        buttonX += GUI::Button::BUTTON_WIDTH + margin;
+
+        auto nextButton = std::make_shared<GUI::Button>(context);
+        nextButton->setPosition(buttonX, buttonY);
+        nextButton->setText("Next");
+        nextButton->setCallback([this] {
+            getState<GameState>(States::Game).prepareNextLevel();
+            requestStackPop();
+        });
+
+        mGUIContainer.pack(nextButton);
+    }
 }
 
 void GameOverState::setScore(unsigned score)

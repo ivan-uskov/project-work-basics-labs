@@ -79,9 +79,18 @@ bool GameState::update(sf::Time dt)
     }
     else if (mWorld.hasPlayerReachedFinish())
     {
-        mPlayer.setMissionStatus(Player::MissionSuccess);
-        getState<GameOverState>(States::MissionSuccess).setScore(mScoreInfo->getScore());
-        requestStackPush(States::MissionSuccess);
+        auto score = mScoreInfo->getScore();
+        if (score == 0)
+        {
+            mPlayer.setMissionStatus(Player::MissionFailure);
+            requestStackPush(States::GameOver);
+        }
+        else
+        {
+            mPlayer.setMissionStatus(Player::MissionSuccess);
+            getState<GameOverState>(States::MissionSuccess).setScore(mScoreInfo->getScore());
+            requestStackPush(States::MissionSuccess);
+        }
     }
 
     auto & commands = mWorld.getCommandQueue();

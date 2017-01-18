@@ -7,10 +7,10 @@
 namespace
 {
     const float GRAVITY = 9.8f;
-    const float TRACTION = 15.f;
+    const float TRACTION = 30.f;
     const float FRICTION = 3.f;
     const float PIXELS_IN_METER = 30;
-    const auto MAX_VELOCITY = sf::Vector2f(400, 400);
+    const auto MAX_VELOCITY = sf::Vector2f(800, 400);
 }
 
 Entity::Entity(int hitpoints, Category::Type category)

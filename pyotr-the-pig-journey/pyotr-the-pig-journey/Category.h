@@ -15,9 +15,10 @@ namespace Category
         ParticleSystem = 1 << 7,
         SoundEffect = 1 << 8,
         Star = 1 << 9,
+        Destroyer = 1 << 10,
 
         CenterOriginSprite = Star,
-        CanCollide = Tractor | Finish | Platform | Star,
+        CanCollide = Tractor | Finish | Platform | Star | Destroyer,
         Projectile = AlliedProjectile | EnemyProjectile,
         Entity = Tractor | Pickup | Projectile
     };
