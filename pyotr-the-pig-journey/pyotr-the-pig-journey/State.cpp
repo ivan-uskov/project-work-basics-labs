@@ -19,8 +19,7 @@ State::Context::Context(
     , sounds(&sounds)
     , keys1(&keys1)
     , keys2(&keys2)
-{
-}
+{}
 
 State::State(States::ID stateId, StateStack & stack, Context context)
     : mStack(&stack)

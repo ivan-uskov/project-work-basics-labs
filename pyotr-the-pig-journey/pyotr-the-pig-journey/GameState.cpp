@@ -1,5 +1,7 @@
 #include "stdafx.h"
 #include "GameState.h"
+#include "StateStack.h"
+#include "GameOverState.h"
 
 #include "MusicPlayer.h"
 
@@ -18,12 +20,10 @@ void GameState::doInitialize()
     mPlayer.setMissionStatus(Player::MissionRunning);
     loadTextures();
 
-    mScoreInfo = std::make_unique<GUI::ScoreInfo>(mTextures.get(Textures::ScoreInfo), sf::IntRect(0, 0, 180, 50));
+    mScoreInfo = std::make_unique<GUI::ScoreInfo>(getContext().textures->get(Textures::ScoreInfo), sf::IntRect(0, 0, 180, 50));
     mWorld.setCollectStarHandler([&] {
         ++(*mScoreInfo);
     });
-
-    mWorld.installLevel(mLevels[mCurrentLevel], mLevelTextures);
 }
 
 void GameState::loadTextures()
@@ -38,8 +38,23 @@ void GameState::loadTextures()
             mLevelTextures->get(key).setRepeated(textureInfo.repeated);
         });
     }
+}
 
-    mTextures.load(Textures::ScoreInfo, "Media/Textures/ScoreInfo.png");
+void GameState::prepareFirstLevel()
+{
+    mCurrentLevel = 0;
+    mWorld.installLevel(mLevels[mCurrentLevel], mLevelTextures);
+}
+
+void GameState::prepareReplay()
+{
+    mWorld.installLevel(mLevels[mCurrentLevel], mLevelTextures);
+}
+
+void GameState::prepareNextLevel()
+{
+    mCurrentLevel = std::min(++mCurrentLevel, mLevels.size() - 1);
+    mWorld.installLevel(mLevels[mCurrentLevel], mLevelTextures);
 }
 
 void GameState::draw()
@@ -65,12 +80,8 @@ bool GameState::update(sf::Time dt)
     else if (mWorld.hasPlayerReachedFinish())
     {
         mPlayer.setMissionStatus(Player::MissionSuccess);
+        getState<GameOverState>(States::MissionSuccess).setScore(mScoreInfo->getScore());
         requestStackPush(States::MissionSuccess);
-
-        mActivateHandler = [&] {
-            //++mCurrentLevel;
-            mWorld.installLevel(mLevels[mCurrentLevel], mLevelTextures);
-        };
     }
 
     auto & commands = mWorld.getCommandQueue();
@@ -94,9 +105,5 @@ bool GameState::handleEvent(const sf::Event& event)
 
 void GameState::onActivate()
 {
-    if (mActivateHandler)
-    {
-        mActivateHandler();
-        mActivateHandler = nullptr;
-    }
+    mScoreInfo->setScore(0);
 }

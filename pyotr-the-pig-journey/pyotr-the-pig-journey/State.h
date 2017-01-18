@@ -45,7 +45,6 @@ public:
         KeyBinding * keys2;
     };
 
-
 public:
     State(States::ID stateId, StateStack & stack, Context context);
     virtual ~State() = default;
@@ -69,6 +68,12 @@ protected:
     void requestStateClear();
 
     Context getContext() const;
+
+    template <typename T>
+    T & getState(States::ID stateId)
+    {
+        return static_cast<T&>(*(mStack->getState(stateId)));
+    }
 
 private:
     StateStack * mStack;

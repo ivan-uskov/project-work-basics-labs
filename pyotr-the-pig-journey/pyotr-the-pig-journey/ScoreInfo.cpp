@@ -20,6 +20,19 @@ namespace GUI
     {
     }
 
+    void ScoreInfo::setScore(unsigned score)
+    {
+        mScore = score;
+        auto rect = mSprite.getTextureRect();
+        rect.top = mScore * rect.height;
+        mSprite.setTextureRect(rect);
+    }
+
+    unsigned ScoreInfo::getScore() const
+    {
+        return mScore;
+    }
+
     void ScoreInfo::operator ++ ()
     {
         ++mScore;

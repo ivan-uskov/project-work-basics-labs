@@ -45,10 +45,21 @@ void LoadingState::draw()
 bool LoadingState::update(sf::Time dt)
 {
     mPreloader.rotate(PRELOADER_ROTATION_SPEED * dt.asSeconds());
-    return true;
+    mElapsedTime += dt;
+    if (mElapsedTime > sf::seconds(mSecondsOnState))
+    {
+        requestStateClear();
+        requestStackPush(States::Title);
+    }
+    return false;
 }
 
 bool LoadingState::handleEvent(const sf::Event & event)
 {
     return true;
+}
+
+void LoadingState::onActivate()
+{
+    mElapsedTime = sf::Time::Zero;
 }

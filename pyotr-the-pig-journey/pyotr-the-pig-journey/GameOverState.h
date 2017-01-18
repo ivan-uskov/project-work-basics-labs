@@ -2,6 +2,7 @@
 
 #include "State.h"
 #include "Container.h"
+#include "ScoreInfo.h"
 
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Text.hpp>
@@ -15,10 +16,14 @@ public:
     bool update(sf::Time dt) override;
     bool handleEvent(const sf::Event& event) override;
 
+    void setScore(unsigned score);
+
 protected:
     void doInitialize() override;
 
 private:
     sf::Text mGameOverText;
     sf::Time mElapsedTime;
+    GUI::Container mGUIContainer;
+    std::unique_ptr<GUI::ScoreInfo> mScoreInfo;
 };

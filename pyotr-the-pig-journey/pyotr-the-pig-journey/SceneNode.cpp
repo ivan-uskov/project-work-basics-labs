@@ -156,6 +156,11 @@ void SceneNode::checkNodeCollision(SceneNode& node, std::set<Pair>& collisionPai
     }
 }
 
+void SceneNode::removeChildren()
+{
+    mChildren.clear();
+}
+
 void SceneNode::removeWrecks()
 {
     // Remove all children which request so

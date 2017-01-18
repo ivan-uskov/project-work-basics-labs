@@ -35,6 +35,7 @@ public:
     void handleEvent(const sf::Event& event);
 
     States::ID getCurrentState() const;
+    State::Ptr getState(States::ID stateId);
 
     void pushState(States::ID stateID);
     void popState();

@@ -5,6 +5,8 @@
 #include "Utility.h"
 #include "MusicPlayer.h"
 #include "ResourceHolder.h"
+#include "GameState.h"
+#include "StateStack.h"
 
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Graphics/View.hpp>
@@ -27,9 +29,9 @@ void MenuState::doInitialize()
     auto playButton = std::make_shared<GUI::Button>(context);
     playButton->setPosition(buttonX, buttonY);
     playButton->setText("Play");
-    playButton->setCallback([this]()
-    {
-        requestStackPop();
+    playButton->setCallback([this] {
+        getState<GameState>(States::Game).prepareFirstLevel();
+        requestStackPop() ;
         requestStackPush(States::Game);
     });
 
@@ -38,8 +40,7 @@ void MenuState::doInitialize()
     auto settingsButton = std::make_shared<GUI::Button>(context);
     settingsButton->setPosition(buttonX, buttonY);
     settingsButton->setText("Settings");
-    settingsButton->setCallback([this]()
-    {
+    settingsButton->setCallback([this] {
         requestStackPush(States::Settings);
     });
 
@@ -48,8 +49,7 @@ void MenuState::doInitialize()
     auto exitButton = std::make_shared<GUI::Button>(context);
     exitButton->setPosition(buttonX, buttonY);
     exitButton->setText("Exit");
-    exitButton->setCallback([this]()
-    {
+    exitButton->setCallback([this] {
         requestStackPop();
     });
 

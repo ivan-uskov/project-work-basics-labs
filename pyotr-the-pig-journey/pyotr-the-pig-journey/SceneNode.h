@@ -43,6 +43,8 @@ public:
     bool isDestroyed() const;
     void destroy();
 
+    void removeChildren();
+
 protected:
     virtual void doDestroy() {};
 

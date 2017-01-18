@@ -38,11 +38,6 @@ void Application::run()
 
     while (mWindow.isOpen())
     {
-        if (mStateStack.isInitialized() && (mStateStack.getCurrentState() == States::Loading))
-        {
-            mStateStack.pushState(States::Title);
-        }
-
         sf::Time dt = clock.restart();
         timeSinceLastUpdate += dt;
         while (timeSinceLastUpdate > TimePerFrame)
@@ -112,6 +107,7 @@ void Application::runAsyncInitialization()
     //TODO: initialize async
     try
     {
+        mTextures.load(Textures::ScoreInfo, "Media/Textures/ScoreInfo.png");
         mTextures.load(Textures::Buttons, "Media/Textures/Buttons.png");
         mMusic.setVolume(25.f);
         registerStates();
@@ -150,6 +146,6 @@ void Application::registerStates()
     mStateStack.registerState<GameState>(States::Game);
     mStateStack.registerState<PauseState>(States::Pause);
     mStateStack.registerState<SettingsState>(States::Settings);
-    mStateStack.registerState<GameOverState>(States::GameOver, "Mission Failed!");
-    mStateStack.registerState<GameOverState>(States::MissionSuccess, "Mission Successful!");
+    mStateStack.registerState<GameOverState>(States::GameOver, "Escape Failed!");
+    mStateStack.registerState<GameOverState>(States::MissionSuccess, "Escape Successful!");
 }

@@ -120,6 +120,7 @@ void World::installLevel(const LevelPtr & level, const LevelTexturesPtr & levelT
     mPlayerTractor->setPosition(level->startPos);
     mWorldView.setCenter(level->startPos);
 
+    mSceneLayers[Layer::Level]->removeChildren();
     level->iterateElements([&](const LevelElementInfo & info) {
         auto node = make_unique<SpriteNode>(levelTextures->get(info.key), info.rect, info.type);
         node->setPosition(info.pos);

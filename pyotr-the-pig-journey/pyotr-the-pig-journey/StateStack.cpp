@@ -51,6 +51,11 @@ States::ID StateStack::getCurrentState() const
     return mStack.empty() ? States::None : mStack.back()->getId();
 }
 
+State::Ptr StateStack::getState(States::ID stateId)
+{
+    return mStates[stateId];
+}
+
 void StateStack::pushState(States::ID stateID)
 {
     mPendingList.push_back(PendingChange(Push, stateID));

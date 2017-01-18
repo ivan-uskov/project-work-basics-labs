@@ -36,11 +36,19 @@ namespace GUI
         }
         else if (event.type == sf::Event::KeyReleased)
         {
-            if (event.key.code == sf::Keyboard::W || event.key.code == sf::Keyboard::Up)
+            if (
+                event.key.code == sf::Keyboard::W  ||
+                event.key.code == sf::Keyboard::Up ||
+                event.key.code == sf::Keyboard::Left
+            )
             {
                 selectPrevious();
             }
-            else if (event.key.code == sf::Keyboard::S || event.key.code == sf::Keyboard::Down)
+            else if (
+                event.key.code == sf::Keyboard::S    ||
+                event.key.code == sf::Keyboard::Down ||
+                event.key.code == sf::Keyboard::Right
+            )
             {
                 selectNext();
             }
