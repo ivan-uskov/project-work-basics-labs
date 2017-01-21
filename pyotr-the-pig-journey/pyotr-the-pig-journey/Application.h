@@ -11,8 +11,6 @@
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Graphics/Text.hpp>
 
-#include <future>
-
 class Application
 {
 public:
@@ -48,5 +46,4 @@ private:
     sf::Text mStatisticsText;
     sf::Time mStatisticsUpdateTime;
     size_t mStatisticsNumFrames = 0;
-    std::future<void> mLoadFuture;
 };

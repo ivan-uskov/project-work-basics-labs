@@ -17,11 +17,21 @@ public:
     bool handleEvent(const sf::Event& event) override;
 
     void setScore(unsigned score);
+    void showNextButtonIf(bool needShowNextButton);
 
 protected:
     void doInitialize() override;
 
 private:
+    enum Button
+    {
+        Menu = 0,
+        Retry = 1,
+        Next = 2
+    };
+
+    bool mNeedShowNextButton = false;
+    bool mNeedIncludeNextButton;
     sf::Text mGameOverText;
     sf::Time mElapsedTime;
     GUI::Container mGUIContainer;

@@ -16,6 +16,7 @@
 GameOverState::GameOverState(States::ID stateId, StateStack & stack, Context context, const std::string & text)
     : State(stateId, stack, context)
     , mElapsedTime(sf::Time::Zero)
+    , mNeedIncludeNextButton(stateId == States::MissionSuccess)
 {
     mGameOverText.setString(text);
 }
@@ -59,7 +60,7 @@ void GameOverState::doInitialize()
     mGUIContainer.pack(menuButton);
     mGUIContainer.pack(retryButton);
 
-    if (getId() == States::MissionSuccess)
+    if (mNeedIncludeNextButton)
     {
         buttonX += GUI::Button::BUTTON_WIDTH + margin;
 
@@ -90,6 +91,15 @@ void GameOverState::draw()
     backgroundShape.setFillColor(sf::Color(0, 0, 0, 150));
     backgroundShape.setSize(window.getView().getSize());
 
+    if (mNeedIncludeNextButton)
+    {
+        if (mNeedShowNextButton)
+        {
+            //TODO: hide next button if need
+        }
+    }
+
+
     window.draw(backgroundShape);
     window.draw(mGameOverText);
     window.draw(mGUIContainer);
@@ -105,4 +115,9 @@ bool GameOverState::handleEvent(const sf::Event& event)
 {
     mGUIContainer.handleEvent(event);
     return false;
+}
+
+void GameOverState::showNextButtonIf(bool needShowNextButton)
+{
+    mNeedShowNextButton = needShowNextButton;
 }

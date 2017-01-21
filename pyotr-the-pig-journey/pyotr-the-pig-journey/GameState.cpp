@@ -88,7 +88,9 @@ bool GameState::update(sf::Time dt)
         else
         {
             mPlayer.setMissionStatus(Player::MissionSuccess);
-            getState<GameOverState>(States::MissionSuccess).setScore(mScoreInfo->getScore());
+            auto & gameOverState = getState<GameOverState>(States::MissionSuccess);
+            gameOverState.setScore(mScoreInfo->getScore());
+            gameOverState.showNextButtonIf(hasNextLevel());
             requestStackPush(States::MissionSuccess);
         }
     }
@@ -115,4 +117,9 @@ bool GameState::handleEvent(const sf::Event& event)
 void GameState::onActivate()
 {
     mScoreInfo->setScore(0);
+}
+
+bool GameState::hasNextLevel() const
+{
+    return (mCurrentLevel + 1) < mLevels.size();
 }

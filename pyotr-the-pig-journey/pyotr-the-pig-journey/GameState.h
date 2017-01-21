@@ -29,6 +29,7 @@ protected:
 
 private:
     void loadTextures();
+    bool hasNextLevel() const;
 
 private:
     World mWorld;
