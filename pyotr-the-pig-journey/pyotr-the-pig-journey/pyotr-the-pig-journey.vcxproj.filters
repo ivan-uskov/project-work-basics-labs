@@ -90,9 +90,6 @@
     <ClInclude Include="Utility.h">
       <Filter>utils</Filter>
     </ClInclude>
-    <ClInclude Include="EmitterNode.h">
-      <Filter>node</Filter>
-    </ClInclude>
     <ClInclude Include="CommandQueue.h">
       <Filter>command</Filter>
     </ClInclude>
@@ -104,15 +101,6 @@
     </ClInclude>
     <ClInclude Include="SceneNode.h">
       <Filter>node</Filter>
-    </ClInclude>
-    <ClInclude Include="Projectile.h">
-      <Filter>node\entity</Filter>
-    </ClInclude>
-    <ClInclude Include="Pickup.h">
-      <Filter>node\entity</Filter>
-    </ClInclude>
-    <ClInclude Include="Particle.h">
-      <Filter>node\entity</Filter>
     </ClInclude>
     <ClInclude Include="SoundNode.h">
       <Filter>node</Filter>
@@ -129,9 +117,6 @@
     <ClInclude Include="Category.h">
       <Filter>conf</Filter>
     </ClInclude>
-    <ClInclude Include="ParticleNode.h">
-      <Filter>node</Filter>
-    </ClInclude>
     <ClInclude Include="Animation.h">
       <Filter>animation</Filter>
     </ClInclude>
@@ -146,9 +131,6 @@
     </ClInclude>
     <ClInclude Include="Tractor.h">
       <Filter>node\entity</Filter>
-    </ClInclude>
-    <ClInclude Include="DataTables.h">
-      <Filter>conf</Filter>
     </ClInclude>
     <ClInclude Include="LevelInfo.h">
       <Filter>conf</Filter>
@@ -213,9 +195,6 @@
     <ClCompile Include="Utility.cpp">
       <Filter>utils</Filter>
     </ClCompile>
-    <ClCompile Include="EmitterNode.cpp">
-      <Filter>node</Filter>
-    </ClCompile>
     <ClCompile Include="CommandQueue.cpp">
       <Filter>command</Filter>
     </ClCompile>
@@ -225,17 +204,8 @@
     <ClCompile Include="MenuState.cpp">
       <Filter>state</Filter>
     </ClCompile>
-    <ClCompile Include="ParticleNode.cpp">
-      <Filter>node</Filter>
-    </ClCompile>
     <ClCompile Include="SceneNode.cpp">
       <Filter>node</Filter>
-    </ClCompile>
-    <ClCompile Include="Projectile.cpp">
-      <Filter>node\entity</Filter>
-    </ClCompile>
-    <ClCompile Include="Pickup.cpp">
-      <Filter>node\entity</Filter>
     </ClCompile>
     <ClCompile Include="SoundNode.cpp">
       <Filter>node</Filter>
@@ -263,9 +233,6 @@
     </ClCompile>
     <ClCompile Include="Tractor.cpp">
       <Filter>node\entity</Filter>
-    </ClCompile>
-    <ClCompile Include="DataTables.cpp">
-      <Filter>conf</Filter>
     </ClCompile>
     <ClCompile Include="LevelInfo.cpp">
       <Filter>conf</Filter>

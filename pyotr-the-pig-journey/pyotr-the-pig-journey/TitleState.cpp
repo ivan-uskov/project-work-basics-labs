@@ -15,8 +15,8 @@ TitleState::TitleState(States::ID stateId, StateStack & stack, Context context)
 
 void TitleState::doInitialize()
 {
-    mBackgroundSprite.setTexture(getContext().textures->get(Textures::TitleScreen));
-    mText.setFont(getContext().fonts->get(Fonts::Main));
+    mBackgroundSprite.setTexture(getContext().textures[Textures::TitleScreen]);
+    mText.setFont(getContext().fonts[Fonts::Main]);
     mText.setString("Press any key");
     mText.setFillColor(sf::Color::Black);
 
@@ -25,7 +25,7 @@ void TitleState::doInitialize()
 
 void TitleState::draw()
 {
-    sf::RenderWindow & window = *(getContext().window);
+    sf::RenderWindow & window = getContext().window;
     window.draw(mBackgroundSprite);
 
     if (mShowText)
@@ -51,7 +51,7 @@ bool TitleState::update(sf::Time dt)
 bool TitleState::handleEvent(const sf::Event & event)
 {
     // If any key is pressed, trigger the next screen
-    if (event.type == sf::Event::KeyReleased)
+    if (event.type == sf::Event::KeyReleased || event.type == sf::Event::MouseButtonReleased)
     {
         requestStackPop();
         requestStackPush(States::Menu);

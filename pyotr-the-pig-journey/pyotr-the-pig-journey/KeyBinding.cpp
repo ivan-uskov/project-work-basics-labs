@@ -15,7 +15,6 @@ KeyBinding::KeyBinding(int controlPreconfiguration)
         mKeyMap[sf::Keyboard::Up] = PlayerAction::MoveUp;
         mKeyMap[sf::Keyboard::Down] = PlayerAction::MoveDown;
         mKeyMap[sf::Keyboard::Space] = PlayerAction::Fire;
-        mKeyMap[sf::Keyboard::M] = PlayerAction::LaunchMissile;
     }
     else if (controlPreconfiguration == 2)
     {
@@ -25,22 +24,23 @@ KeyBinding::KeyBinding(int controlPreconfiguration)
         mKeyMap[sf::Keyboard::W] = PlayerAction::MoveUp;
         mKeyMap[sf::Keyboard::S] = PlayerAction::MoveDown;
         mKeyMap[sf::Keyboard::F] = PlayerAction::Fire;
-        mKeyMap[sf::Keyboard::R] = PlayerAction::LaunchMissile;
     }
 }
 
 void KeyBinding::assignKey(Action action, sf::Keyboard::Key key)
 {
-    // Remove all keys that already map to action
     for (auto itr = mKeyMap.begin(); itr != mKeyMap.end(); )
     {
         if (itr->second == action)
+        {
             mKeyMap.erase(itr++);
+        }
         else
+        {
             ++itr;
+        }
     }
 
-    // Insert new binding
     mKeyMap[key] = action;
 }
 

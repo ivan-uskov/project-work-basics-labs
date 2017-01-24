@@ -10,6 +10,7 @@
 #include <SFML/System/Time.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Graphics/Text.hpp>
+#include <SFML/Graphics/Sprite.hpp>
 
 class Application
 {
@@ -43,6 +44,7 @@ private:
     KeyBinding mKeyBinding2;
     StateStack mStateStack;
 
+    sf::Sprite mCursorSprite;
     sf::Text mStatisticsText;
     sf::Time mStatisticsUpdateTime;
     size_t mStatisticsNumFrames = 0;

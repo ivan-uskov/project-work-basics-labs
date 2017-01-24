@@ -5,18 +5,17 @@
 #include "SoundPlayer.h"
 #include "ResourceHolder.h"
 
-#include <SFML/Window/Event.hpp>
 #include <SFML/Graphics/RenderStates.hpp>
 #include <SFML/Graphics/RenderTarget.hpp>
 
 namespace GUI
 {
     Button::Button(State::Context context)
-        : mCallback()
-        , mSprite(context.textures->get(Textures::Buttons))
-        , mText("", context.fonts->get(Fonts::Main), BUTTON_CHAR_SIZE)
+        : Component(true)
+        , mSprite(context.textures[Textures::Buttons])
+        , mText("", context.fonts[Fonts::Main], BUTTON_CHAR_SIZE)
         , mIsToggle(false)
-        , mSounds(*context.sounds)
+        , mSounds(context.sounds)
     {
         changeTexture(Normal);
 
@@ -41,11 +40,6 @@ namespace GUI
         mIsToggle = flag;
     }
 
-    bool Button::isSelectable() const
-    {
-        return true;
-    }
-
     void Button::select()
     {
         Component::select();
@@ -64,7 +58,7 @@ namespace GUI
     {
         Component::activate();
 
-        // If we are toggle then we should show that the button is pressed and thus "toggled".
+        // If we are toggle then we should show that the button is pressed and this "toggled".
         if (mIsToggle)
         {
             changeTexture(Pressed);
@@ -102,13 +96,8 @@ namespace GUI
         }
     }
 
-    void Button::handleEvent(const sf::Event&)
+    void Button::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
     {
-    }
-
-    void Button::draw(sf::RenderTarget& target, sf::RenderStates states) const
-    {
-        states.transform *= getTransform();
         target.draw(mSprite, states);
         target.draw(mText, states);
     }
@@ -119,4 +108,8 @@ namespace GUI
         mSprite.setTextureRect(textureRect);
     }
 
+    sf::FloatRect Button::getBoundingRect() const
+    {
+        return getWorldTransform().transformRect(mSprite.getGlobalBounds());
+    }
 }

@@ -1,10 +1,7 @@
 #include "stdafx.h"
 #include "World.h"
 
-#include "Projectile.h"
-#include "Pickup.h"
 #include "TextNode.h"
-#include "ParticleNode.h"
 #include "SoundNode.h"
 #include "Utility.h"
 
@@ -16,6 +13,8 @@
 #include <limits>
 
 using namespace std;
+
+bool matchesCategories(SceneNode::Pair& colliders, Category::Type type1, Category::Type type2);
 
 World::World(sf::RenderTarget & outputTarget, FontHolder & fonts, SoundPlayer & sounds)
     : mTarget(outputTarget)
@@ -30,8 +29,6 @@ World::World(sf::RenderTarget & outputTarget, FontHolder & fonts, SoundPlayer & 
 
 void World::update(sf::Time dt)
 {
-    guideMissiles();
-
     while (!mCommandQueue.isEmpty())
     {
         mSceneGraph.onCommand(mCommandQueue.pop(), dt);
@@ -69,48 +66,28 @@ bool World::hasPlayerReachedFinish() const
 
 void World::initializeLayers()
 {
-    {
-        auto levelLayer = make_unique<SceneNode>();
-        mSceneLayers[Layer::Level] = levelLayer.get();
-        mSceneGraph.attachChild(move(levelLayer));
-    }
-    {
-        auto playerLayer = make_unique<SceneNode>();
-        mSceneLayers[Layer::Player] = playerLayer.get();
-        mSceneGraph.attachChild(move(playerLayer));
-    }
+    auto levelLayer = make_unique<SceneNode>();
+    mSceneLayers[Layer::Level] = levelLayer.get();
+    mSceneGraph.attachChild(move(levelLayer));
+
+    auto playerLayer = make_unique<SceneNode>();
+    mSceneLayers[Layer::Player] = playerLayer.get();
+    mSceneGraph.attachChild(move(playerLayer));
 }
 
 void World::initializeTractor()
 {
     mTextures.load(Textures::Entities, "Media/Textures/Entities.png");
-    mTextures.load(Textures::Particle, "Media/Textures/Particle.png");
     mTextures.load(Textures::Explosion, "Media/Textures/Explosion.png");
 
-    std::unique_ptr<Tractor> player(new Tractor(Tractor::Eagle, mTextures, mFonts));
+    auto player = std::make_unique<Tractor>(mTextures, mFonts);
     player->setPosition(mWorldView.getCenter());
     player->setIdentifier(1);
 
     mPlayerTractor = player.get();
     mSceneLayers[Layer::Player]->attachChild(std::move(player));
 
-    // Add particle node to the scene
-    {
-        auto smokeNode = std::make_unique<ParticleNode>(Particle::Smoke, mTextures);
-        mSceneLayers[Layer::Player]->attachChild(std::move(smokeNode));
-    }
-
-    // Add propellant particle node to the scene
-    {
-        auto propellantNode = std::make_unique<ParticleNode>(Particle::Propellant, mTextures);
-        mSceneLayers[Layer::Player]->attachChild(std::move(propellantNode));
-    }
-
-    // Add sound effect node
-    {
-        auto soundNode = std::make_unique<SoundNode>(mSounds);
-        mSceneLayers[Layer::Player]->attachChild(std::move(soundNode));
-    }
+    mSceneLayers[Layer::Player]->emplaceChild<SoundNode>(mSounds);
 }
 
 void World::installLevel(const LevelPtr & level, const LevelTexturesPtr & levelTextures)
@@ -122,7 +99,7 @@ void World::installLevel(const LevelPtr & level, const LevelTexturesPtr & levelT
 
     mSceneLayers[Layer::Level]->removeChildren();
     level->iterateElements([&](const LevelElementInfo & info) {
-        auto node = make_unique<SpriteNode>(levelTextures->get(info.key), info.rect, info.type);
+        auto node = make_unique<SpriteNode>((*levelTextures)[info.key], info.rect, info.type);
         node->setPosition(info.pos);
         mSceneLayers[Layer::Level]->attachChild(move(node));
     });
@@ -149,27 +126,6 @@ void World::adaptPlayerPosition()
         position.y = std::min(position.y, viewBounds.top + viewBounds.height - borderDistance - rect.height / 2);
 
         mPlayerTractor->setPosition(position);
-    }
-}
-
-bool matchesCategories(SceneNode::Pair& colliders, Category::Type type1, Category::Type type2)
-{
-    unsigned int category1 = colliders.first->getCategory();
-    unsigned int category2 = colliders.second->getCategory();
-
-    // Make sure first pair entry has category type1 and second has type2
-    if ((type1 & category1) && (type2 & category2))
-    {
-        return true;
-    }
-    else if ((type1 & category2) && (type2 & category1))
-    {
-        std::swap(colliders.first, colliders.second);
-        return true;
-    }
-    else
-    {
-        return false;
     }
 }
 
@@ -200,15 +156,6 @@ void World::handleCollisions()
                 mCollectStarHandler();
             }
         }
-        else if (matchesCategories(pair, Category::Tractor, Category::Pickup))
-        {
-            auto& player = static_cast<Tractor&>(*pair.first);
-            auto& pickup = static_cast<Pickup&>(*pair.second);
-
-            pickup.apply(player);
-            pickup.destroy();
-            player.playLocalSound(mCommandQueue, SoundEffect::CollectPickup);
-        }
     }
 }
 
@@ -229,20 +176,28 @@ void World::updateSounds()
     mSounds.removeStoppedSounds();
 }
 
-void World::guideMissiles()
-{
-    mCommandQueue.emplace(
-        Category::AlliedProjectile,
-        derivedAction<Projectile>([this](Projectile& missile, sf::Time) {
-            if (!missile.isGuided())
-            {
-                return;
-            }
-        })
-    );
-}
-
 sf::FloatRect World::getViewBounds() const
 {
     return sf::FloatRect(mWorldView.getCenter() - mWorldView.getSize() / 2.f, mWorldView.getSize());
+}
+
+bool matchesCategories(SceneNode::Pair& colliders, Category::Type type1, Category::Type type2)
+{
+    unsigned int category1 = colliders.first->getCategory();
+    unsigned int category2 = colliders.second->getCategory();
+
+    // Make sure first pair entry has category type1 and second has type2
+    if ((type1 & category1) && (type2 & category2))
+    {
+        return true;
+    }
+    else if ((type1 & category2) && (type2 & category1))
+    {
+        std::swap(colliders.first, colliders.second);
+        return true;
+    }
+    else
+    {
+        return false;
+    }
 }

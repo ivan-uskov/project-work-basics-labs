@@ -10,23 +10,13 @@ namespace GUI
 {
 
     Label::Label(const std::string& text, const FontHolder& fonts)
-        : mText(text, fonts.get(Fonts::Main), 16)
+        : mText(text, fonts[Fonts::Main], 16)
     {
         mText.setFillColor(sf::Color::Black);
     }
 
-    bool Label::isSelectable() const
+    void Label::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
     {
-        return false;
-    }
-
-    void Label::handleEvent(const sf::Event&)
-    {
-    }
-
-    void Label::draw(sf::RenderTarget& target, sf::RenderStates states) const
-    {
-        states.transform *= getTransform();
         target.draw(mText, states);
     }
 
@@ -35,4 +25,8 @@ namespace GUI
         mText.setString(text);
     }
 
+    sf::FloatRect Label::getBoundingRect() const
+    {
+        return getWorldTransform().transformRect(mText.getGlobalBounds());
+    }
 }

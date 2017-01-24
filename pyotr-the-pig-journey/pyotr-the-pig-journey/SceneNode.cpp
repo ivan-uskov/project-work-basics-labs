@@ -13,8 +13,7 @@
 
 SceneNode::SceneNode(Category::Type category)
     : mCategory(category)
-{
-}
+{}
 
 void SceneNode::attachChild(Ptr child)
 {
@@ -36,45 +35,26 @@ SceneNode::Ptr SceneNode::detachChild(const SceneNode& node)
 void SceneNode::update(sf::Time dt, CommandQueue& commands)
 {
     updateCurrent(dt, commands);
-    updateChildren(dt, commands);
-}
 
-void SceneNode::updateCurrent(sf::Time, CommandQueue&)
-{
-    // Do nothing by default
-}
-
-void SceneNode::updateChildren(sf::Time dt, CommandQueue & commands)
-{
-    std::for_each(mChildren.begin(), mChildren.end(), [&](auto & child) {
+    for (auto & child : mChildren)
+    {
         child->update(dt, commands);
-    });
+    }
 }
 
 void SceneNode::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
-    // Apply transform of current node
     states.transform *= getTransform();
 
-    // Draw node and children with changed transform
     drawCurrent(target, states);
-    drawChildren(target, states);
 
-    // Draw bounding rectangle - disabled by default
-    //drawBoundingRect(target, states);
-}
-
-void SceneNode::drawCurrent(sf::RenderTarget&, sf::RenderStates) const
-{
-    // Do nothing by default
-}
-
-void SceneNode::drawChildren(sf::RenderTarget& target, sf::RenderStates states) const
-{
     for (auto const& child : mChildren)
     {
         child->draw(target, states);
     }
+
+    // Draw bounding rectangle - disabled by default
+    //drawBoundingRect(target, states);
 }
 
 void SceneNode::drawBoundingRect(sf::RenderTarget& target, sf::RenderStates) const
@@ -120,14 +100,14 @@ void SceneNode::onCommand(const Command& command, sf::Time dt)
     }
 }
 
-unsigned int SceneNode::getCategory() const
+unsigned SceneNode::getCategory() const
 {
     return mCategory;
 }
 
 bool SceneNode::canCollide() const
 {
-    return (getCategory() & Category::CanCollide) && !isDestroyed();
+    return (mCategory & Category::CanCollide) && !SceneNode::isMarkedForRemoval();
 }
 
 void SceneNode::checkSceneCollision(SceneNode& node, std::set<Pair>& collisionPairs)
@@ -191,11 +171,6 @@ sf::FloatRect SceneNode::getBoundingRect() const
 }
 
 bool SceneNode::isMarkedForRemoval() const
-{
-    return isDestroyed();
-}
-
-bool SceneNode::isDestroyed() const
 {
     return mMarkedForRemoval;
 }

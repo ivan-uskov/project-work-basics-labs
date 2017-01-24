@@ -20,19 +20,19 @@ PauseState::PauseState(States::ID stateId, StateStack& stack, Context context, b
 void PauseState::onActivate()
 {
     State::onActivate();
-    getContext().music->setPaused(true);
+    getContext().music.setPaused(true);
 }
 
 void PauseState::onDeactivate()
 {
-    getContext().music->setPaused(false);
+    getContext().music.setPaused(false);
 }
 
 void PauseState::doInitialize()
 {
     auto context = getContext();
-    sf::Font& font = context.fonts->get(Fonts::Main);
-    sf::Vector2f windowSize(context.window->getSize());
+    sf::Font& font = context.fonts[Fonts::Main];
+    sf::Vector2f windowSize(context.window.getSize());
 
     mPausedText.setFont(font);
     mPausedText.setString("Game Paused");
@@ -63,7 +63,7 @@ void PauseState::doInitialize()
 
 void PauseState::draw()
 {
-    sf::RenderWindow& window = *getContext().window;
+    sf::RenderWindow & window = getContext().window;
     window.setView(window.getDefaultView());
 
     sf::RectangleShape backgroundShape;

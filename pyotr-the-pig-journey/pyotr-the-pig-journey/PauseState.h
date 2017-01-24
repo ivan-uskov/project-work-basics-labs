@@ -22,8 +22,8 @@ protected:
     void doInitialize() override;
 
 private:
-    sf::Sprite			mBackgroundSprite;
-    sf::Text			mPausedText;
-    GUI::Container 		mGUIContainer;
-    bool				mLetUpdatesThrough;
+    sf::Sprite mBackgroundSprite;
+    sf::Text mPausedText;
+    GUI::Container mGUIContainer;
+    bool mLetUpdatesThrough;
 };

@@ -1,10 +1,6 @@
 #pragma once
 
-#include <SFML/System/NonCopyable.hpp>
-#include <SFML/Graphics/Drawable.hpp>
-#include <SFML/Graphics/Transformable.hpp>
-
-#include <memory>
+#include "SceneNode.h"
 
 namespace sf
 {
@@ -13,18 +9,14 @@ namespace sf
 
 namespace GUI
 {
-
-    class Component : public sf::Drawable, public sf::Transformable, private sf::NonCopyable
+    class Component : public SceneNode
     {
     public:
         typedef std::shared_ptr<Component> Ptr;
 
-
     public:
-        Component();
-        virtual ~Component() = default;
+        Component(bool isSelectable = false);
 
-        virtual bool isSelectable() const = 0;
         bool isSelected() const;
         virtual void select();
         virtual void deselect();
@@ -33,12 +25,12 @@ namespace GUI
         virtual void activate();
         virtual void deactivate();
 
-        virtual void handleEvent(const sf::Event& event) = 0;
-
+        bool isSelectable() const;
 
     private:
-        bool mIsSelected;
-        bool mIsActive;
+        bool mIsSelectable = false;
+        bool mIsSelected = false;
+        bool mIsActive = false;
     };
 
 }

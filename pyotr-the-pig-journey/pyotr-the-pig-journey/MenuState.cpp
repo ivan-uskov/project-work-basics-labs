@@ -19,7 +19,7 @@ MenuState::MenuState(States::ID stateId, StateStack& stack, Context context)
 void MenuState::doInitialize()
 {
     auto context = getContext();
-    sf::Texture& texture = context.textures->get(Textures::TitleScreen);
+    sf::Texture & texture = context.textures[Textures::TitleScreen];
     mBackgroundSprite.setTexture(texture);
 
     float buttonX = 100.f;
@@ -62,7 +62,7 @@ void MenuState::doInitialize()
 
 void MenuState::draw()
 {
-    sf::RenderWindow& window = *getContext().window;
+    sf::RenderWindow & window = getContext().window;
 
     window.setView(window.getDefaultView());
 

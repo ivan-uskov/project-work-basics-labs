@@ -1,40 +1,41 @@
 #pragma once
 
 #include "Component.h"
+#include <SFML/Window/Event.hpp>
 
 #include <vector>
 #include <memory>
 
 namespace GUI
 {
-
     class Container : public Component
     {
     public:
         typedef std::shared_ptr<Container> Ptr;
 
     public:
-        Container();
+        Container() = default;
 
         void pack(Component::Ptr component);
 
-        virtual bool isSelectable() const;
         virtual void handleEvent(const sf::Event& event);
 
-        void showElement(size_t index);
-        void hideElement(size_t index);
+    protected:
+        virtual void drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const override;
 
     private:
-        virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
-
         bool hasSelection() const;
         void select(std::size_t index);
         void selectNext();
         void selectPrevious();
 
+        void handleKeyReleased(int key);
+        void handleMouseMoved(const sf::Event::MouseMoveEvent & position);
+        void handleMouseClicked(const sf::Event::MouseButtonEvent & event);
+
     private:
         std::vector<Component::Ptr> mChildren;
-        int mSelectedChild;
+        int mSelectedChild = -1;
     };
 
 }

@@ -12,13 +12,13 @@ State::Context::Context(
     KeyBinding & keys1,
     KeyBinding & keys2
 )
-    : window(&window)
-    , textures(&textures)
-    , fonts(&fonts)
-    , music(&music)
-    , sounds(&sounds)
-    , keys1(&keys1)
-    , keys2(&keys2)
+    : window(window)
+    , textures(textures)
+    , fonts(fonts)
+    , music(music)
+    , sounds(sounds)
+    , keys1(keys1)
+    , keys2(keys2)
 {}
 
 State::State(States::ID stateId, StateStack & stack, Context context)

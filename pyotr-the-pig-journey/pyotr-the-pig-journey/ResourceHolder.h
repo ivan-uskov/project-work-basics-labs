@@ -11,7 +11,7 @@ class ResourceHolder
 {
 public:
     template <typename ...Parameters>
-    void load(Identifier id, const std::string& filename, Parameters&&... params)
+    Resource & load(Identifier id, const std::string& filename, Parameters&&... params)
     {
         auto resource = std::make_unique<Resource>();
         if (!resource->loadFromFile(filename, std::forward<Parameters>(params)...))
@@ -19,10 +19,12 @@ public:
             throw std::runtime_error("ResourceHolder::load - Failed to load " + filename);
         }
 
-        insertResource(std::move(id), std::move(resource));
+        insertResource(id, std::move(resource));
+
+        return (*this)[id];
     }
 
-    Resource & get(Identifier id)
+    Resource & operator [] (Identifier id)
     {
         auto found = mResourceMap.find(id);
         assert(found != mResourceMap.end());
@@ -30,7 +32,7 @@ public:
         return *found->second;
     }
 
-    const Resource & get(Identifier id) const
+    const Resource & operator [] (Identifier id) const
     {
         auto found = mResourceMap.find(id);
         assert(found != mResourceMap.end());
@@ -39,7 +41,7 @@ public:
     }
 
 private:
-    void insertResource(Identifier id, std::unique_ptr<Resource> resource)
+    void insertResource(const Identifier & id, std::unique_ptr<Resource> resource)
     {
         mResourceMap.insert(std::make_pair(id, std::move(resource)));
     }

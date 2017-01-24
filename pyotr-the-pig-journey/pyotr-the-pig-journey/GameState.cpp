@@ -9,8 +9,8 @@
 
 GameState::GameState(States::ID stateId, StateStack & stack, Context context)
     : State(stateId, stack, context)
-    , mWorld(*context.window, *context.fonts, *context.sounds)
-    , mPlayer(1, context.keys1)
+    , mWorld(context.window, context.fonts, context.sounds)
+    , mPlayer(1, &context.keys1)
 {
     //context.music->play(Music::MissionTheme);
 }
@@ -20,7 +20,7 @@ void GameState::doInitialize()
     mPlayer.setMissionStatus(Player::MissionRunning);
     loadTextures();
 
-    mScoreInfo = std::make_unique<GUI::ScoreInfo>(getContext().textures->get(Textures::ScoreInfo), sf::IntRect(0, 0, 180, 50));
+    mScoreInfo = std::make_unique<GUI::ScoreInfo>(getContext().textures[Textures::ScoreInfo], sf::IntRect(0, 0, 180, 50));
     mWorld.setCollectStarHandler([&] {
         ++(*mScoreInfo);
     });
@@ -34,8 +34,7 @@ void GameState::loadTextures()
     {
         level->iterateElements([&](auto const& textureInfo) {
             auto key = textureInfo.key;
-            mLevelTextures->load(key, "Media/" + key);
-            mLevelTextures->get(key).setRepeated(textureInfo.repeated);
+            mLevelTextures->load(key, "Media/" + key).setRepeated(textureInfo.repeated);
         });
     }
 }
@@ -61,7 +60,7 @@ void GameState::draw()
 {
     mWorld.draw();
 
-    auto & window = *getContext().window;
+    auto & window = getContext().window;
     auto width = window.getSize().x;
     mScoreInfo->setPosition(sf::Vector2f(width - 180.f - 15, 15));
     window.setView(window.getDefaultView());

@@ -3,6 +3,5 @@
 
 Command::Command(unsigned category, Action && action)
     : action(move(action))
-    , category(Category::None)
-{
-}
+    , category(category)
+{}

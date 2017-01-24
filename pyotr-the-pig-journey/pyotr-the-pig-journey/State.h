@@ -36,13 +36,13 @@ public:
             KeyBinding & keys2
         );
 
-        sf::RenderWindow * window;
-        TextureHolder * textures;
-        FontHolder * fonts;
-        MusicPlayer * music;
-        SoundPlayer * sounds;
-        KeyBinding * keys1;
-        KeyBinding * keys2;
+        sf::RenderWindow & window;
+        TextureHolder & textures;
+        FontHolder & fonts;
+        MusicPlayer & music;
+        SoundPlayer & sounds;
+        KeyBinding & keys1;
+        KeyBinding & keys2;
     };
 
 public:

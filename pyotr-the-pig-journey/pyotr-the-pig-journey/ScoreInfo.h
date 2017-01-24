@@ -14,14 +14,12 @@ namespace GUI
 
         void operator ++ ();
 
-        bool isSelectable() const override;
-        void handleEvent(const sf::Event& event) override;
-
         void setScore(unsigned score);
         unsigned getScore() const;
 
     protected:
-        void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
+        void drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const override;
+
     private:
         unsigned mScore = 0;
         sf::Sprite mSprite;

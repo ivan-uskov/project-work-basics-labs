@@ -8,17 +8,7 @@ namespace GUI
 {
     ScoreInfo::ScoreInfo(const sf::Texture& texture, sf::IntRect const& textureRect)
         : mSprite(texture, textureRect)
-    {
-    }
-
-    bool ScoreInfo::isSelectable() const
-    {
-        return false;
-    }
-
-    void ScoreInfo::handleEvent(const sf::Event&)
-    {
-    }
+    {}
 
     void ScoreInfo::setScore(unsigned score)
     {
@@ -41,9 +31,8 @@ namespace GUI
         mSprite.setTextureRect(rect);
     }
 
-    void ScoreInfo::draw(sf::RenderTarget& target, sf::RenderStates states) const
+    void ScoreInfo::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
     {
-        states.transform *= getTransform();
         target.draw(mSprite, states);
     }
 }

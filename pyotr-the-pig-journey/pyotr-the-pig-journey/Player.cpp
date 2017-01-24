@@ -31,42 +31,6 @@ struct TractorMover
     int tractorID;
 };
 
-struct TractorFireTrigger
-{
-    TractorFireTrigger(int identifier)
-        : tractorID(identifier)
-    {
-    }
-
-    void operator () (Tractor& tractor, sf::Time) const
-    {
-        if (tractor.getIdentifier() == tractorID)
-        {
-            tractor.fire();
-        }
-    }
-
-    int tractorID;
-};
-
-struct TractorMissileTrigger
-{
-    TractorMissileTrigger(int identifier)
-        : tractorID(identifier)
-    {
-    }
-
-    void operator () (Tractor& tractor, sf::Time) const
-    {
-        if (tractor.getIdentifier() == tractorID)
-        {
-            tractor.launchMissile();
-        }
-    }
-
-    int tractorID;
-};
-
 Player::Player(sf::Int32 identifier, const KeyBinding* binding)
     : mKeyBinding(binding)
     , mCurrentMissionStatus(MissionRunning)
@@ -116,8 +80,4 @@ void Player::initializeActions()
 {
     mActionBinding[PlayerAction::MoveLeft].action = derivedAction<Tractor>(TractorMover(-1, 0, mIdentifier));
     mActionBinding[PlayerAction::MoveRight].action = derivedAction<Tractor>(TractorMover(+1, 0, mIdentifier));
-    //mActionBinding[PlayerAction::MoveUp].action = derivedAction<Tractor>(TractorMover(0, -1, mIdentifier));
-    //mActionBinding[PlayerAction::MoveDown].action = derivedAction<Tractor>(TractorMover(0, +1, mIdentifier));
-    mActionBinding[PlayerAction::Fire].action = derivedAction<Tractor>(TractorFireTrigger(mIdentifier));
-    mActionBinding[PlayerAction::LaunchMissile].action = derivedAction<Tractor>(TractorMissileTrigger(mIdentifier));
 }

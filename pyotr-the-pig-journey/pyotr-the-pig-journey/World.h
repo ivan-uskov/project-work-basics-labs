@@ -7,12 +7,9 @@
 #include "Tractor.h"
 #include "CommandQueue.h"
 #include "Command.h"
-#include "Pickup.h"
 #include "SoundPlayer.h"
-
 #include "LevelInfo.h"
 
-#include <SFML/System/NonCopyable.hpp>
 #include <SFML/Graphics/View.hpp>
 #include <SFML/Graphics/Texture.hpp>
 
@@ -47,8 +44,6 @@ private:
     void adaptPlayerPosition();
     void handleCollisions();
     void updateSounds();
-
-    void guideMissiles();
 
     void initializeTractor();
     void initializeLayers();

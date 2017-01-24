@@ -14,17 +14,15 @@ SettingsState::SettingsState(States::ID stateId, StateStack& stack, Context cont
 void SettingsState::doInitialize()
 {
     auto context = getContext();
-    mBackgroundSprite.setTexture(context.textures->get(Textures::TitleScreen));
+    mBackgroundSprite.setTexture(context.textures[Textures::TitleScreen]);
 
-    // Build key binding buttons and labels
-    for (std::size_t x = 0; x < 2; ++x)
+    for (size_t x = 0; x < 2; ++x)
     {
         addButtonLabel(PlayerAction::MoveLeft, x, 0, "Move Left", context);
         addButtonLabel(PlayerAction::MoveRight, x, 1, "Move Right", context);
         addButtonLabel(PlayerAction::MoveUp, x, 2, "Move Up", context);
         addButtonLabel(PlayerAction::MoveDown, x, 3, "Move Down", context);
         addButtonLabel(PlayerAction::Fire, x, 4, "Fire", context);
-        addButtonLabel(PlayerAction::LaunchMissile, x, 5, "Missile", context);
     }
 
     updateLabels();
@@ -39,7 +37,7 @@ void SettingsState::doInitialize()
 
 void SettingsState::draw()
 {
-    sf::RenderWindow& window = *getContext().window;
+    sf::RenderWindow & window = getContext().window;
 
     window.draw(mBackgroundSprite);
     window.draw(mGUIContainer);
@@ -64,11 +62,11 @@ bool SettingsState::handleEvent(const sf::Event& event)
             {
                 if (i < PlayerAction::Count) // Player 1
                 {
-                    getContext().keys1->assignKey(static_cast<PlayerAction::Type>(i), event.key.code);
+                    getContext().keys1.assignKey(static_cast<PlayerAction::Type>(i), event.key.code);
                 }
                 else // Player 2
                 {
-                    getContext().keys2->assignKey(static_cast<PlayerAction::Type>(i - PlayerAction::Count), event.key.code);
+                    getContext().keys2.assignKey(static_cast<PlayerAction::Type>(i - PlayerAction::Count), event.key.code);
                 }
 
                 mBindingButtons[i]->deactivate();
@@ -97,8 +95,8 @@ void SettingsState::updateLabels()
         auto action = static_cast<PlayerAction::Type>(i);
 
         // Get keys of both players
-        sf::Keyboard::Key key1 = getContext().keys1->getAssignedKey(action);
-        sf::Keyboard::Key key2 = getContext().keys2->getAssignedKey(action);
+        sf::Keyboard::Key key1 = getContext().keys1.getAssignedKey(action);
+        sf::Keyboard::Key key2 = getContext().keys2.getAssignedKey(action);
 
         // Assign both key strings to labels
         mBindingLabels[i]->setText(toString(key1));
@@ -116,7 +114,7 @@ void SettingsState::addButtonLabel(std::size_t index, std::size_t x, std::size_t
     mBindingButtons[index]->setText(text);
     mBindingButtons[index]->setToggle(true);
 
-    mBindingLabels[index] = std::make_shared<GUI::Label>("", *context.fonts);
+    mBindingLabels[index] = std::make_shared<GUI::Label>("", context.fonts);
     mBindingLabels[index]->setPosition(400.f*x + 300.f, 50.f*y + 315.f);
 
     mGUIContainer.pack(mBindingButtons[index]);

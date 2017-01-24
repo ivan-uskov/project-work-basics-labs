@@ -17,13 +17,14 @@ using namespace std;
 const sf::Time Application::TimePerFrame = sf::seconds(1.f / 60.f);
 
 Application::Application()
-    : mWindow(sf::VideoMode(1024, 768), "Survive Game", sf::Style::Close)
+    : mWindow(sf::VideoMode(1024, 768), "Pyotr journey", sf::Style::Close)
     , mKeyBinding1(1)
     , mKeyBinding2(2)
     , mStateStack(State::Context(mWindow, mTextures, mFonts, mMusic, mSounds, mKeyBinding1, mKeyBinding2))
 {
     mWindow.setKeyRepeatEnabled(false);
     mWindow.setVerticalSyncEnabled(true);
+    mWindow.setMouseCursorVisible(false);
 
     loadCommonResources();
     initializeStatistics();
@@ -75,6 +76,7 @@ void Application::processInput()
 void Application::update(sf::Time dt)
 {
     mStateStack.update(dt);
+    mCursorSprite.setPosition(static_cast<sf::Vector2f>(sf::Mouse::getPosition(mWindow)));
 }
 
 void Application::render()
@@ -85,6 +87,7 @@ void Application::render()
 
     mWindow.setView(mWindow.getDefaultView());
     mWindow.draw(mStatisticsText);
+    mWindow.draw(mCursorSprite);
 
     mWindow.display();
 }
@@ -107,8 +110,10 @@ void Application::runAsyncInitialization()
     //TODO: initialize async
     try
     {
+        mTextures.load(Textures::Cursor, "Media/Textures/Cursor.png");
         mTextures.load(Textures::ScoreInfo, "Media/Textures/ScoreInfo.png");
         mTextures.load(Textures::Buttons, "Media/Textures/Buttons.png");
+        mCursorSprite = sf::Sprite(mTextures[Textures::Cursor]);
         mMusic.setVolume(25.f);
         registerStates();
         mStateStack.initialize();
@@ -134,7 +139,7 @@ void Application::loadCommonResources()
 
 void Application::initializeStatistics()
 {
-    mStatisticsText.setFont(mFonts.get(Fonts::Main));
+    mStatisticsText.setFont(mFonts[Fonts::Main]);
     mStatisticsText.setPosition(5.f, 5.f);
     mStatisticsText.setCharacterSize(12u);
 }

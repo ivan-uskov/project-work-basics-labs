@@ -16,15 +16,9 @@ namespace
 }
 
 SoundPlayer::SoundPlayer()
-    : mSoundBuffers()
-    , mSounds()
 {
-    mSoundBuffers.load(SoundEffect::AlliedGunfire, "Media/Sound/AlliedGunfire.wav");
-    mSoundBuffers.load(SoundEffect::EnemyGunfire, "Media/Sound/EnemyGunfire.wav");
     mSoundBuffers.load(SoundEffect::Explosion1, "Media/Sound/Explosion1.wav");
     mSoundBuffers.load(SoundEffect::Explosion2, "Media/Sound/Explosion2.wav");
-    mSoundBuffers.load(SoundEffect::LaunchMissile, "Media/Sound/LaunchMissile.wav");
-    mSoundBuffers.load(SoundEffect::CollectPickup, "Media/Sound/CollectPickup.wav");
     mSoundBuffers.load(SoundEffect::CollectStar, "Media/Sound/CollectStar.wav");
     mSoundBuffers.load(SoundEffect::Button, "Media/Sound/Button.wav");
 
@@ -42,7 +36,7 @@ void SoundPlayer::play(SoundEffect::ID effect, sf::Vector2f position)
     mSounds.push_back(sf::Sound());
     sf::Sound& sound = mSounds.back();
 
-    sound.setBuffer(mSoundBuffers.get(effect));
+    sound.setBuffer(mSoundBuffers[effect]);
     sound.setPosition(position.x, -position.y, 0.f);
     sound.setAttenuation(Attenuation);
     sound.setMinDistance(MinDistance3D);

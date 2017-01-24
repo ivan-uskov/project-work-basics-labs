@@ -2,10 +2,11 @@
 
 #include "Category.h"
 
-#include <SFML/System/NonCopyable.hpp>
 #include <SFML/System/Time.hpp>
-#include <SFML/Graphics/Transformable.hpp>
+#include <SFML/Window/Event.hpp>
 #include <SFML/Graphics/Drawable.hpp>
+#include <SFML/System/NonCopyable.hpp>
+#include <SFML/Graphics/Transformable.hpp>
 
 #include <vector>
 #include <set>
@@ -24,40 +25,44 @@ public:
 public:
     explicit SceneNode(Category::Type category = Category::None);
 
+    virtual void handleEvent(const sf::Event& event) {};
+    void update(sf::Time dt, CommandQueue& commands);
+    unsigned getCategory() const;
+
+    template <typename T, typename... Args>
+    void emplaceChild(Args&&... args)
+    {
+        attachChild(std::make_unique<T>(std::forward<Args>(args)...));
+    }
     void attachChild(Ptr child);
     Ptr detachChild(const SceneNode& node);
-
-    void update(sf::Time dt, CommandQueue& commands);
+    void removeChildren();
 
     sf::Vector2f getWorldPosition() const;
     sf::Transform getWorldTransform() const;
+    virtual sf::FloatRect getBoundingRect() const;
 
     void onCommand(const Command& command, sf::Time dt);
-    unsigned int getCategory() const;
 
     void checkSceneCollision(SceneNode& sceneGraph, std::set<Pair>& collisionPairs);
+
     void removeWrecks();
-    virtual sf::FloatRect getBoundingRect() const;
     virtual bool isMarkedForRemoval() const;
 
-    bool isDestroyed() const;
     void destroy();
-
-    void removeChildren();
 
 protected:
     virtual void doDestroy() {};
+
+    virtual void updateCurrent(sf::Time dt, CommandQueue& commands)                   {};
+    virtual void drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const {};
+
+    void draw(sf::RenderTarget& target, sf::RenderStates states) const override final;
 
 private:
     void checkNodeCollision(SceneNode& node, std::set<Pair>& collisionPairs);
     bool canCollide() const;
 
-    virtual void updateCurrent(sf::Time dt, CommandQueue& commands);
-    void updateChildren(sf::Time dt, CommandQueue& commands);
-
-    virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
-    virtual void drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const;
-    void drawChildren(sf::RenderTarget& target, sf::RenderStates states) const;
     void drawBoundingRect(sf::RenderTarget& target, sf::RenderStates states) const;
 
 private:

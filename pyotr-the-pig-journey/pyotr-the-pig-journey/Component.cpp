@@ -3,11 +3,13 @@
 
 namespace GUI
 {
+    Component::Component(bool isSelectable)
+        : mIsSelectable(isSelectable)
+    {}
 
-    Component::Component()
-        : mIsSelected(false)
-        , mIsActive(false)
+    bool Component::isSelectable() const
     {
+        return mIsSelectable;
     }
 
     bool Component::isSelected() const
@@ -39,5 +41,4 @@ namespace GUI
     {
         mIsActive = false;
     }
-
 }

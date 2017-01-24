@@ -5,26 +5,18 @@
 #include <SFML/Graphics/RenderStates.hpp>
 #include <SFML/Graphics/RenderTarget.hpp>
 
+using namespace std;
+
 namespace GUI
 {
-
-    Container::Container()
-        : mChildren()
-        , mSelectedChild(-1)
-    {
-    }
-
     void Container::pack(Component::Ptr component)
     {
         mChildren.push_back(component);
 
         if (!hasSelection() && component->isSelectable())
+        {
             select(mChildren.size() - 1);
-    }
-
-    bool Container::isSelectable() const
-    {
-        return false;
+        }
     }
 
     void Container::handleEvent(const sf::Event& event)
@@ -36,34 +28,84 @@ namespace GUI
         }
         else if (event.type == sf::Event::KeyReleased)
         {
-            if (
-                event.key.code == sf::Keyboard::W  ||
-                event.key.code == sf::Keyboard::Up ||
-                event.key.code == sf::Keyboard::Left
-            )
+            handleKeyReleased(event.key.code);
+        }
+        else if (event.type == sf::Event::MouseMoved)
+        {
+            handleMouseMoved(event.mouseMove);
+        }
+        else if (event.type == sf::Event::MouseButtonReleased)
+        {
+            handleMouseClicked(event.mouseButton);
+        }
+    }
+
+    void Container::handleMouseMoved(const sf::Event::MouseMoveEvent & event)
+    {
+        auto it = find_if(mChildren.begin(), mChildren.end(), [&event](const Component::Ptr & child) {
+            return child->getBoundingRect().contains(event.x, event.y);
+        });
+
+        if (it != mChildren.end())
+        {
+            for (auto & child : mChildren)
             {
-                selectPrevious();
+                child->deselect();
             }
-            else if (
-                event.key.code == sf::Keyboard::S    ||
-                event.key.code == sf::Keyboard::Down ||
-                event.key.code == sf::Keyboard::Right
-            )
+
+            (*it)->select();
+        }
+    }
+
+    void Container::handleMouseClicked(const sf::Event::MouseButtonEvent & event)
+    {
+        if (event.button == sf::Mouse::Left)
+        {
+            auto it = find_if(mChildren.begin(), mChildren.end(), [&event](const Component::Ptr & child) {
+                return child->getBoundingRect().contains(event.x, event.y);
+            });
+
+            if (it != mChildren.end())
             {
-                selectNext();
-            }
-            else if (event.key.code == sf::Keyboard::Return || event.key.code == sf::Keyboard::Space)
-            {
-                if (hasSelection())
-                    mChildren[mSelectedChild]->activate();
+                for (auto & child : mChildren)
+                {
+                    child->deactivate();
+                }
+
+                (*it)->activate();
             }
         }
     }
 
-    void Container::draw(sf::RenderTarget& target, sf::RenderStates states) const
+    void Container::handleKeyReleased(int key)
     {
-        states.transform *= getTransform();
+        if (
+            key == sf::Keyboard::W ||
+            key == sf::Keyboard::Up ||
+            key == sf::Keyboard::Left
+            )
+        {
+            selectPrevious();
+        }
+        else if (
+            key == sf::Keyboard::S ||
+            key == sf::Keyboard::Down ||
+            key == sf::Keyboard::Right
+            )
+        {
+            selectNext();
+        }
+        else if (key == sf::Keyboard::Return || key == sf::Keyboard::Space)
+        {
+            if (hasSelection())
+            {
+                mChildren[mSelectedChild]->activate();
+            }
+        }
+    }
 
+    void Container::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
+    {
         for (const Component::Ptr& child : mChildren)
         {
             target.draw(*child, states);

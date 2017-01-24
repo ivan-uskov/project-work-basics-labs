@@ -19,21 +19,10 @@ namespace Textures
         TitleScreen,
         Buttons,
         Explosion,
-        Particle,
         FinishLine,
         ScoreInfo,
-        Preloader
-    };
-}
-
-namespace Shaders
-{
-    enum ID
-    {
-        BrightnessPass,
-        DownSamplePass,
-        GaussianBlurPass,
-        AddPass,
+        Preloader,
+        Cursor
     };
 }
 
@@ -49,14 +38,11 @@ namespace SoundEffect
 {
     enum ID
     {
-        AlliedGunfire,
-        EnemyGunfire,
         Explosion1,
         Explosion2,
         LaunchMissile,
-        CollectPickup,
         CollectStar,
-        Button,
+        Button
     };
 }
 

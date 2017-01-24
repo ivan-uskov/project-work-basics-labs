@@ -24,15 +24,15 @@ GameOverState::GameOverState(States::ID stateId, StateStack & stack, Context con
 void GameOverState::doInitialize()
 {
     auto context = getContext();
-    sf::Font& font = context.fonts->get(Fonts::Main);
-    sf::Vector2f windowSize(context.window->getSize());
+    sf::Font& font = context.fonts[Fonts::Main];
+    sf::Vector2f windowSize(context.window.getSize());
 
     mGameOverText.setFont(font);
     mGameOverText.setCharacterSize(70);
     centerOrigin(mGameOverText);
     mGameOverText.setPosition(0.5f * windowSize.x, 0.3f * windowSize.y);
 
-    mScoreInfo = std::make_unique<GUI::ScoreInfo>(context.textures->get(Textures::ScoreInfo), sf::IntRect(0, 0, 180, 50));
+    mScoreInfo = std::make_unique<GUI::ScoreInfo>(context.textures[Textures::ScoreInfo], sf::IntRect(0, 0, 180, 50));
     mScoreInfo->setPosition(0.5f * windowSize.x - 180.f / 2, windowSize.y * 0.5f);
 
     float margin = 50.f;
@@ -83,7 +83,7 @@ void GameOverState::setScore(unsigned score)
 
 void GameOverState::draw()
 {
-    sf::RenderWindow& window = *getContext().window;
+    sf::RenderWindow& window = getContext().window;
     window.setView(window.getDefaultView());
 
     // Create dark, semitransparent background
@@ -98,7 +98,6 @@ void GameOverState::draw()
             //TODO: hide next button if need
         }
     }
-
 
     window.draw(backgroundShape);
     window.draw(mGameOverText);
