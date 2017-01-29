@@ -22,7 +22,6 @@ World::World(sf::RenderTarget & outputTarget, FontHolder & fonts, SoundPlayer & 
     , mFonts(fonts)
     , mSounds(sounds)
 {
-    mWorldView.zoom(1.5);
     initializeLayers();
     initializeTractor();
 }
@@ -77,16 +76,14 @@ void World::initializeLayers()
 
 void World::initializeTractor()
 {
-    mTextures.load(Textures::Entities, "Media/Textures/Entities.png");
+    mTextures.load(Textures::PeterOnTractor, "Media/PeterViews/PeterOnTractor.png");
     mTextures.load(Textures::Explosion, "Media/Textures/Explosion.png");
 
-    auto player = std::make_unique<Tractor>(mTextures, mFonts);
+    auto player = std::make_unique<PlayerNode>(mTextures, mFonts);
     player->setPosition(mWorldView.getCenter());
-    player->setIdentifier(1);
 
     mPlayerTractor = player.get();
     mSceneLayers[Layer::Player]->attachChild(std::move(player));
-
     mSceneLayers[Layer::Player]->emplaceChild<SoundNode>(mSounds);
 }
 
@@ -148,7 +145,7 @@ void World::handleCollisions()
         else if (matchesCategories(pair, Category::Tractor, Category::Star))
         {
             pair.second->destroy();
-            auto & player = static_cast<Tractor&>(*pair.first);
+            auto & player = static_cast<PlayerNode&>(*pair.first);
             player.playLocalSound(mCommandQueue, SoundEffect::CollectStar);
 
             if (mCollectStarHandler)

@@ -13,7 +13,7 @@ namespace Textures
 {
     enum ID
     {
-        Entities,
+        PeterOnTractor,
         Clouds,
         Grass,
         TitleScreen,

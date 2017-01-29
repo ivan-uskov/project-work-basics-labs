@@ -4,7 +4,7 @@
 #include "ResourceIdentifiers.h"
 #include "SceneNode.h"
 #include "SpriteNode.h"
-#include "Tractor.h"
+#include "PlayerNode.h"
 #include "CommandQueue.h"
 #include "Command.h"
 #include "SoundPlayer.h"
@@ -16,7 +16,6 @@
 #include <array>
 #include <queue>
 
-// Forward declaration
 namespace sf
 {
     class RenderTarget;
@@ -69,6 +68,6 @@ private:
     std::array<SceneNode*, LayerCount> mSceneLayers;
     CommandQueue mCommandQueue;
 
-    Tractor * mPlayerTractor = nullptr;
+    PlayerNode * mPlayerTractor = nullptr;
     bool mPlayerReachedFinish = false;
 };

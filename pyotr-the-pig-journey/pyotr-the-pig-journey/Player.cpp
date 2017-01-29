@@ -2,7 +2,7 @@
 #include "Player.h"
 
 #include "CommandQueue.h"
-#include "Tractor.h"
+#include "PlayerNode.h"
 
 #include <map>
 #include <string>
@@ -11,24 +11,19 @@
 
 using namespace std::placeholders;
 
-struct TractorMover
+struct Mover
 {
-    TractorMover(float vx, float vy, int identifier)
+    Mover(float vx, float vy)
         : direction(vx, vy)
-        , tractorID(identifier)
     {
     }
 
-    void operator() (Tractor& tractor, sf::Time) const
+    void operator() (PlayerNode & tractor, sf::Time) const
     {
-        if (tractor.getIdentifier() == tractorID)
-        {
             tractor.go(direction);
-        }
     }
 
     sf::Vector2f direction;
-    int tractorID;
 };
 
 Player::Player(sf::Int32 identifier, const KeyBinding* binding)
@@ -78,6 +73,6 @@ Player::MissionStatus Player::getMissionStatus() const
 
 void Player::initializeActions()
 {
-    mActionBinding[PlayerAction::MoveLeft].action = derivedAction<Tractor>(TractorMover(-1, 0, mIdentifier));
-    mActionBinding[PlayerAction::MoveRight].action = derivedAction<Tractor>(TractorMover(+1, 0, mIdentifier));
+    mActionBinding[PlayerAction::MoveLeft].action = derivedAction<PlayerNode>(Mover(-1, 0));
+    mActionBinding[PlayerAction::MoveRight].action = derivedAction<PlayerNode>(Mover(+1, 0));
 }

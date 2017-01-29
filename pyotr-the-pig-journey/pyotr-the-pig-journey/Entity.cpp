@@ -10,7 +10,7 @@ namespace
     const float TRACTION = 10.f;
     const float FRICTION = 3.f;
     const float PIXELS_IN_METER = 30;
-    const auto MAX_VELOCITY = sf::Vector2f(800, 400);
+    const auto MAX_VELOCITY = sf::Vector2f(400, 300);
 }
 
 Entity::Entity(int hitpoints, Category::Type category)

@@ -40,6 +40,9 @@
     <Filter Include="node\gui">
       <UniqueIdentifier>{9bb9a800-03d8-4519-b565-177fcaa220aa}</UniqueIdentifier>
     </Filter>
+    <Filter Include="node\player_view">
+      <UniqueIdentifier>{7b4b62c8-638a-418f-8f7b-b505552a4977}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -129,9 +132,6 @@
     <ClInclude Include="World.h">
       <Filter>controllers</Filter>
     </ClInclude>
-    <ClInclude Include="Tractor.h">
-      <Filter>node\entity</Filter>
-    </ClInclude>
     <ClInclude Include="LevelInfo.h">
       <Filter>conf</Filter>
     </ClInclude>
@@ -155,6 +155,15 @@
     </ClInclude>
     <ClInclude Include="ScoreInfo.h">
       <Filter>node\gui</Filter>
+    </ClInclude>
+    <ClInclude Include="TractorView.h">
+      <Filter>node\player_view</Filter>
+    </ClInclude>
+    <ClInclude Include="IPlayerView.h">
+      <Filter>node\player_view</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerNode.h">
+      <Filter>node\entity</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -231,9 +240,6 @@
     <ClCompile Include="World.cpp">
       <Filter>controllers</Filter>
     </ClCompile>
-    <ClCompile Include="Tractor.cpp">
-      <Filter>node\entity</Filter>
-    </ClCompile>
     <ClCompile Include="LevelInfo.cpp">
       <Filter>conf</Filter>
     </ClCompile>
@@ -254,6 +260,12 @@
     </ClCompile>
     <ClCompile Include="ScoreInfo.cpp">
       <Filter>node\gui</Filter>
+    </ClCompile>
+    <ClCompile Include="TractorView.cpp">
+      <Filter>node\player_view</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerNode.cpp">
+      <Filter>node\entity</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

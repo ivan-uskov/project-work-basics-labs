@@ -43,7 +43,7 @@ namespace GUI
     void Container::handleMouseMoved(const sf::Event::MouseMoveEvent & event)
     {
         auto it = find_if(mChildren.begin(), mChildren.end(), [&event](const Component::Ptr & child) {
-            return child->getBoundingRect().contains(event.x, event.y);
+            return child->getBoundingRect().contains(float(event.x), float(event.y));
         });
 
         if (it != mChildren.end())
@@ -62,7 +62,7 @@ namespace GUI
         if (event.button == sf::Mouse::Left)
         {
             auto it = find_if(mChildren.begin(), mChildren.end(), [&event](const Component::Ptr & child) {
-                return child->getBoundingRect().contains(event.x, event.y);
+                return child->getBoundingRect().contains(float(event.x), float(event.y));
             });
 
             if (it != mChildren.end())

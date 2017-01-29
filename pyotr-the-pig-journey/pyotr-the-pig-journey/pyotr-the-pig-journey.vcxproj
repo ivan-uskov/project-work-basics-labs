@@ -156,11 +156,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="IPlayerView.h" />
     <ClInclude Include="LazyLoad.h" />
     <ClInclude Include="LevelInfo.h" />
     <ClInclude Include="LoadingState.h" />
     <ClInclude Include="ScoreInfo.h" />
-    <ClInclude Include="Tractor.h" />
+    <ClInclude Include="PlayerNode.h" />
     <ClInclude Include="Animation.h" />
     <ClInclude Include="Application.h" />
     <ClInclude Include="Button.h" />
@@ -192,6 +193,7 @@
     <ClInclude Include="targetver.h" />
     <ClInclude Include="TextNode.h" />
     <ClInclude Include="TitleState.h" />
+    <ClInclude Include="TractorView.h" />
     <ClInclude Include="Utility.h" />
     <ClInclude Include="World.h" />
   </ItemGroup>
@@ -199,7 +201,7 @@
     <ClCompile Include="LevelInfo.cpp" />
     <ClCompile Include="LoadingState.cpp" />
     <ClCompile Include="ScoreInfo.cpp" />
-    <ClCompile Include="Tractor.cpp" />
+    <ClCompile Include="PlayerNode.cpp" />
     <ClCompile Include="Animation.cpp" />
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="Button.cpp" />
@@ -232,6 +234,7 @@
     </ClCompile>
     <ClCompile Include="TextNode.cpp" />
     <ClCompile Include="TitleState.cpp" />
+    <ClCompile Include="TractorView.cpp" />
     <ClCompile Include="Utility.cpp" />
     <ClCompile Include="World.cpp" />
   </ItemGroup>
